@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="./tippy.all.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Patua+One" rel="stylesheet">
+  <link rel="stylesheet" href="./css/character-selection.css">
+  <link rel="stylesheet" href="./css/select.css">
+  <link rel="stylesheet" href="./css/animate.min.css">
+  <link rel="stylesheet" href="./css/rpg-awesome.min.css">
+  <link rel="stylesheet" href="./css/game-interface.css">
+  <link rel="stylesheet" href="./css/spell-interface.css">
+ 
+  <title>D20 2</title>
+</head>
+
+<body>
+  <div class="character-selection">
+    <button class="melee">
+      <h1>Melee</h1>
+      <p>Tanky warriors that focus on defensive abilties, but have weak offensive abilities. </p>
+      <ul>
+        <li>Base damage: 1d6</li>
+        <li>Base armour: 14</li>
+      </ul>
+    </button>
+    <button class="ranged">
+      <h1>Ranged</h1>
+      <p>Agile rangers that have a balance of defensive and offensive abilities. </p>
+      <ul>
+        <li>Base damage: 1d8</li>
+        <li>Base armour: 10</li>
+      </ul>
+    </button>
+    <button class="magic">
+      <h1>Magic</h1>
+      <p>Powerful mages that focus on offensive abiltiies, but have weak defensive abilities. </p>
+      <ul>
+        <li>Base damage: 1d10</li>
+        <li>Base armour: 8</li>
+      </ul>
+    </button>
+  </div>
+
+  <div class="game-interface">
+    <div class="health-interface">
+      <div class="player-health health-player ">0</div>
+      <div class="monster-health health-monster">0</div>
+      <div class="player-label health-player health-label">You</div>
+      <div class="monster-label health-monster health-label">Monster</div>
+      <div class="player-stats">
+        <div class="info-item player-damage-tip" id="">
+          <div class="player-damage">0</div>
+          <div class="info-label">
+            <span class="ra ra-sword"></span>
+            DMG</div>
+        </div>
+        <div class="info-item player-armour-tip">
+          <div class="player-armour" id="">0</div>
+          <div class="info-label">
+            <span class="ra ra-shield"></span>
+            AC</div>
+        </div>
+        <div class="info-item player-runic-tip">
+          <div class="player-runic">0</div>
+          <div class="info-label">
+            <span class="ra ra-crystals colour-runic"></span>
+            RUNIC</div>
+        </div>
+        <div class="info-item player-mana-tip">
+          <div class="player-mana">100</div>
+          <div class="info-label">
+            <span class="ra ra-lightning-bolt"></span>
+            PP</div>
+        </div>
+      </div>
+      <div class="monster-stats">
+        <div class="info-item player-damage-tip">
+          <div class="monster-damage">8</div>
+          <div class="info-label">
+            <span class="ra ra-sword"></span>
+            DMG</div>
+        </div>
+        <div class="info-item player-armour-tip">
+          <div class="monster-armour">5</div>
+          <div class="info-label">
+            <span class="ra ra-shield"></span>
+            AC</div>
+        </div>
+        <div class="info-item monster-rage-tip">
+          <div class="monster-rage">0</div>
+          <div class="info-label">
+            <span class="ra ra-eyeball"></span>
+            RAGE</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ability-interface">
+      <button class="spell basic-attack pull-right">
+        <span class="ra ra-sword basic-attack-icon icon"></span>
+      </button>
+      <div class="spells-interface">
+        <button class="q spell spell-dragon-breath">
+          <span class="ra ra-dragon-breath icon"></span>
+        </button>
+        <button class="w">
+          <span class="wi"></span>
+        </button>
+        <button id="e">
+          <span id="ei"></span>
+        </button>
+        <button id="r">
+          <span id="ri"></span>
+        </button>
+      </div>
+      <button class="special-attack pull-left">Armour</button>      
+    </div>
+
+    <div class="log-interface">
+      <ul id="list" class="list">
+        <li class="log log-player-spell">List item</li>
+        <li class="show">List item</li>
+      </ul>
+    </div>
+
+    <table class="table" id="table-log">
+    </table>
+
+  </div>
+  
+  <script src="jquery-3.3.1.js"></script>
+  
+  <script src="core.js"></script>
+</body>
+
+</html>
