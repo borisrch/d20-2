@@ -55,13 +55,13 @@
         <div class="info-item player-damage-tip" id="">
           <div class="player-damage">0</div>
           <div class="info-label">
-            <span class="ra ra-sword"></span>
+            <span class="ra ra-sword colour-damage"></span>
             DMG</div>
         </div>
         <div class="info-item player-armour-tip">
           <div class="player-armour" id="">0</div>
           <div class="info-label">
-            <span class="ra ra-shield"></span>
+            <span class="ra ra-shield colour-ac"></span>
             AC</div>
         </div>
         <div class="info-item player-runic-tip">
@@ -73,7 +73,7 @@
         <div class="info-item player-mana-tip">
           <div class="player-mana">100</div>
           <div class="info-label">
-            <span class="ra ra-lightning-bolt"></span>
+            <span class="ra ra-lightning-bolt colour-mana"></span>
             PP</div>
         </div>
       </div>
@@ -81,31 +81,31 @@
         <div class="info-item player-damage-tip">
           <div class="monster-damage">8</div>
           <div class="info-label">
-            <span class="ra ra-sword"></span>
+            <span class="ra ra-sword colour-damage"></span>
             DMG</div>
         </div>
         <div class="info-item player-armour-tip">
           <div class="monster-armour">5</div>
           <div class="info-label">
-            <span class="ra ra-shield"></span>
+            <span class="ra ra-shield colour-ac"></span>
             AC</div>
         </div>
         <div class="info-item monster-rage-tip">
           <div class="monster-rage">0</div>
           <div class="info-label">
-            <span class="ra ra-eyeball"></span>
+            <span class="ra ra-player-pyromaniac colour-rage"></span>
             RAGE</div>
         </div>
       </div>
     </div>
 
     <div class="ability-interface">
-      <button class="spell basic-attack pull-right">
+      <button class="spell basic-attack pull-right" id="basic-attack">
         <span class="ra ra-sword basic-attack-icon icon"></span>
       </button>
-      <div class="spells-interface">
-        <button class="q spell spell-dragon-breath">
-          <span class="ra ra-dragon-breath icon"></span>
+          <div class="spells-interface">
+            <button class="q spell spell-dragon-breath">
+              <span class="ra ra-dragon-breath icon"></span>
         </button>
         <button class="w">
           <span class="wi"></span>
@@ -122,8 +122,7 @@
 
     <div class="log-interface">
       <ul id="list" class="list">
-        <li class="log log-player-spell">List item</li>
-        <li class="show">List item</li>
+        <li class="log log-monster-spell">List item</li>
       </ul>
     </div>
 

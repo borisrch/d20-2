@@ -2,10 +2,6 @@ button:focus {
   outline: 0;
 }
 
-.colour-runic {
-  color: #673AB7;
-}
-
 .spells-interface {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;

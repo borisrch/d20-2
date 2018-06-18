@@ -68,6 +68,26 @@ body {
   
 }
 
+.colour-runic {
+  color: #AB47BC;
+}
+
+.colour-ac {
+  color: #2196F3;
+}
+
+.colour-mana {
+  color: #FF9800;
+}
+
+.colour-damage {
+  color: #d32f2f;
+}
+
+.colour-rage {
+  color: #AB47BC;
+}
+
 .ability-interface {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -90,6 +110,7 @@ body {
   -webkit-transform: scale(1.3);
   -ms-transform: scale(1.3);
   transform: scale(1.3);
+  cursor: pointer;
 }
 
 .basic-attack {

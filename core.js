@@ -10,6 +10,11 @@ let playerDamage = 0;
 let playerRunic = 0;
 let playerMana = 0;
 
+let monsterArmour = 0;
+let monsterDamage = 0;
+let monsterRage = 0;
+
+
 let playerHitChanceModifier = 0;
 
 const log = function(message, style) {
@@ -107,24 +112,9 @@ const goblin = {
   }
 }
 
-const monsterProto = {
-  monsterArmour: 0,
-  monsterDamage: 0,
-  monsterRage: 0,
-  monsterTurn() {
-    // Check if monster rage is > BASELINE RAGE    
-        // Trigger monsterTurnSpellRageAttack();
-    // Roll for monsterTurnSpell > % spellChance
-    
-    // Roll for monsterTurnBasicAttack()
-  },
-  spellOne() {
-    
-  },
-  spellOneRage() {
+// Must Define After Monster, but before Basic Attack
 
-  },
-}
+let currentMonster = goblin;
 
 
 const playerTurnBasicAttack = function() {
@@ -182,6 +172,10 @@ const mageInit = function() {
 
   $('.w').addClass('spell spell-dragon-breath');
   $('.wi').addClass('ra ra-dragon-breath icon');
+
+  document.getElementById('basic-attack').addEventListener('click', () => {
+    playerTurnBasicAttack();
+  });
 }
 
 const updateStats = function () {
@@ -218,20 +212,19 @@ const tippyInit = function () {
 }
 
 const tippyMage = function() {
+  
   const title = 'title';
+
+  const basicAttackTip = '<b>Basic Attack:</b> Deal 1d' + playerDamage + ' damage.';
+  $('.basic-attack').prop(title, basicAttackTip);
+  tippy('.basic-attack');
 
   const mageSpellQ = '<b>Scorch (50 SP)</b>: Ignore 1d2 AC and deal 1d10 damage. Ignore an additional ' + playerRunic + 'd2 AC with Runic level.';
   $('.q').prop(title, mageSpellQ);
   tippy('.q');
 }
 
+console.log(currentMonster);
+$(".character-selection").hide();
 init('mage');
 
-const currentMonster = goblin;
-
-for (let i = 0; i < 4; i++) {
-  goblin.monsterTurnAttack();
-  playerTurnBasicAttack();
-}
-
-$(".character-selection").hide();
