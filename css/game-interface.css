@@ -104,32 +104,7 @@ body {
   margin-top: 20px; 
 }
 
-.ability-interface > button {
-  border: none;
-  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.10);
-  border-radius: 4px;
-  font-family: 'Patua One', 'Times New Roman', cursive;
-  transition:all 0.3s ease;
-}
 
-.ability-interface > button:hover {
-  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
-  -webkit-transform: scale(1.3);
-  -ms-transform: scale(1.3);
-  transform: scale(1.3);
-  cursor: pointer;
-}
-
-.basic-attack {
-  background: rgb(255,91,23);
-  background: linear-gradient(90deg, rgba(255,91,23,1) 0%, rgba(255,124,0,1) 100%);
-}
-
-.basic-attack-icon {  
-  background-image: linear-gradient(45deg, rgb(63, 1, 1) 0%, rgb(0, 0, 0) 100%);
-  color:transparent; -webkit-background-clip: text;
-  background-clip: text;
-}
 
 .special-attack {
   background: #FFA726;

@@ -1,3 +1,5 @@
+import { DEV } from './dev';
+
 export const roll = function(n) {
   let min = 1;
   let max = Math.floor(n);
@@ -5,8 +7,12 @@ export const roll = function(n) {
   return result;
 }
 
-
 export const attack = function(playerDamage, playerHitChanceModifier, playerDamageModifier, playerMultiplier, monsterArmour) {
+
+  if(DEV) {
+    console.log('pDamage: ' + playerDamage + ' pHitChance: ' + playerHitChanceModifier + ' pDamageMod ' + playerDamageModifier + ' pMultiplier: ' + playerMultiplier + ' monsterArmour: ' + monsterArmour);
+  }
+
   let result = 0;
   let hit = roll(20) + playerHitChanceModifier;  
   if (hit >= monsterArmour) {

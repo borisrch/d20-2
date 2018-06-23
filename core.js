@@ -4,11 +4,10 @@
 
 import { roll, attack } from './rollattack';
 import { log } from './log';
-
-const DEV = true; 
+import { DEV } from './dev';
 
 if(DEV) {
-  log('build alpha 0.2', 'pb')
+  log('BUILD ALPHA 0.2.8', 'pb');
 }
 
 let playerHealth = 0;
@@ -17,14 +16,12 @@ let playerDamage = 0;
 let playerRunic = 0;
 let playerMana = 0;
 
+let monsterHealth = 0;
 let monsterArmour = 0;
 let monsterDamage = 0;
 let monsterRage = 0;
 
-
 let playerHitChanceModifier = 0;
-
-
 
 const goblin = {
   monsterArmour: 15,
@@ -65,11 +62,17 @@ const goblin = {
 
 let currentMonster = goblin;
 
-
 const playerTurnBasicAttack = function() {
   let result = attack(playerDamage, playerHitChanceModifier, 0, 1, currentMonster.monsterArmour);
-  if (result != null) {      
-    log('You hit for ' + result + ' damage!', 'pb');
+  if (result != null) {
+    if(monsterHealth - result < 0) {
+      monsterHealth = 0;
+      log('You have slain Goblin!', 'pb');
+    } else {
+      monsterHealth = monsterHealth - result;
+      log('You hit for ' + result + ' damage!', 'pb');
+    }        
+    updateStats();
   } else {
     log('You missed.', 'miss-player');
   }
@@ -86,12 +89,10 @@ const playerTurnSpellAttack = function spellHandler(spell) {
   }
 }
 
-
-
-
 const init = function(mode) {
   
   tippyInit();
+  monsterInit();
 
   switch(mode) {
     case 'warrior':
@@ -102,12 +103,14 @@ const init = function(mode) {
 
     case 'mage':
     mageInit();
-    tippyMage();
+    tippyMage();    
     break;
 
     default:
     console.log('Error in init');
   }
+
+  updateStats();  
 }
 
 const mageInit = function() {
@@ -116,8 +119,6 @@ const mageInit = function() {
   playerArmour = 8;
   playerRunic = 2;
   playerMana = 100;
-
-  updateStats();  
 
   $('.q').addClass('spell spell-dragon-breath');
   $('.qi').addClass('ra ra-dragon-breath icon');
@@ -134,6 +135,8 @@ const mageInit = function() {
   document.getElementById('basic-attack').addEventListener('click', () => {
     playerTurnBasicAttack();
   });
+
+
 }
 
 const updateStats = function () {
@@ -142,7 +145,11 @@ const updateStats = function () {
   $('.player-armour').text(playerArmour);
   $('.player-runic').text(playerRunic);
   $('.player-mana').text(playerMana);
-  tippyMage();
+
+  $('.monster-health').text(monsterHealth);
+  $('.monster-armour').text(monsterArmour);
+  $('.monster-damage').text(monsterDamage);
+  $('.monster-rage').text(monsterRage);
 }
 
 const tippyInit = function () {
@@ -169,8 +176,7 @@ const tippyInit = function () {
   tippy('.monster-rage-tip');
 }
 
-const tippyMage = function() {
-  
+const tippyMage = function() {  
   const title = 'title';
 
   const basicAttackTip = '<b>Basic Attack:</b> Deal 1d' + playerDamage + ' damage.';
@@ -182,7 +188,13 @@ const tippyMage = function() {
   tippy('.q');
 }
 
+const monsterInit = function() {
+  monsterArmour = 0;
+  monsterDamage = 8;
+  monsterHealth = 20;  
+  monsterRage = 69;
+}
+
 console.log(currentMonster);
 $(".character-selection").hide();
 init('mage');
-
