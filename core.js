@@ -63,7 +63,7 @@ const goblin = {
 let currentMonster = goblin;
 
 const playerTurnBasicAttack = function() {
-  let result = attack(playerDamage, playerHitChanceModifier, 0, 1, currentMonster.monsterArmour);
+  let result = attack(playerDamage, playerHitChanceModifier, 0, 1, monsterArmour);
   if (result != null) {
     if(monsterHealth - result < 0) {
       monsterHealth = 0;
