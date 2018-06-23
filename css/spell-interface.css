@@ -43,7 +43,39 @@ button:focus {
   background-image: linear-gradient(90deg, rgb(253, 74, 29) 0%, rgba(252,176,69,1) 100%);  
   color:transparent; -webkit-background-clip: text;
   background-clip: text;
+}
 
+.spell-lightning-trio {
+  background: rgb(80,24,167);
+  background: linear-gradient(28deg, rgb(180, 81, 197) 0%, rgb(73, 93, 206) 100%);
+}
+
+.ra-lightning-trio {
+  background-image: linear-gradient(130deg, rgba(255,255,255,1) 0%, #FFEB3B 100%);  
+  color:transparent; -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.spell-frostfire {
+  background: rgb(80,24,167);
+  background: linear-gradient(318deg, #FFF9C4 0%, #9CCC65 100%);
+}
+
+.ra-frostfire {
+  background-image: linear-gradient(130deg, rgb(117, 72, 194) 0%, rgb(35, 152, 248) 100%);  
+  color:transparent; -webkit-background-clip: text;
+  background-clip: text;  
+}
+
+.spell-fire-shield {
+  background: rgb(80,24,167);
+  background: linear-gradient(318deg, #3949AB 0%, #00ACC1 100%);  
+}
+
+.ra-fire-shield {
+  background-image: linear-gradient(130deg, #9FA8DA 0%, #81D4FA 100%);  
+  color:transparent; -webkit-background-clip: text;
+  background-clip: text;    
 }
 
 .icon {

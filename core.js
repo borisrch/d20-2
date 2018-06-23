@@ -2,7 +2,14 @@
 // Webpack - load in modules when needed.
 // Refactor html
 
+import { roll, attack } from './rollattack';
+import { log } from './log';
+
 const DEV = true; 
+
+if(DEV) {
+  log('build alpha 0.2', 'pb')
+}
 
 let playerHealth = 0;
 let playerArmour = 0;
@@ -17,73 +24,15 @@ let monsterRage = 0;
 
 let playerHitChanceModifier = 0;
 
-const log = function(message, style) {
-  let logStyle = styleHandler(style);
-  let logSize = $('.list').children().length;
-  let logMessage = '<li>' + message + '</li>';
-  let prepared = $(logMessage).addClass(logStyle);  
-  if (logSize < 8) {    
-    $('ul.list').prepend(prepared);
-  }
-  else {
-    $('.list li').last().remove();
-    $('ul.list').prepend(prepared);
-  }
 
-}
-
-const styleHandler = function(style) {
-  switch(style) {
-    // Monster basic
-    case 'mb':
-    return 'log log-monster-basic animated slideInDown';
-
-    case 'ms':
-    return 'log log-monster-spell animated bounceIn';
-
-    case 'miss':
-    return 'log log-miss animated slideInDown';
-
-    case 'miss-player':
-    return 'log log-player-miss animated slideInDown';
-
-    case 'pb':
-    return 'log log-player-basic animated slideInDown';
-
-    default:
-    console.log('Error in styleHandler');
-    break;
-  }
-}
-
-const roll = function(n) {
-  let min = 1;
-  let max = Math.floor(n);
-  let result = Math.floor(Math.random() * (max - min + 1)) + min;
-  return result;
-}
-
-
-const attack = function playerAttack(playerDamage, playerHitChanceModifier, playerDamageModifier, playerMultiplier, monsterArmour) {
-  let result = 0;
-  let hit = roll(20) + playerHitChanceModifier;  
-  if (hit >= monsterArmour) {
-    for (let i = 0; i < playerMultiplier; i++) {
-      result += roll(playerDamage);
-    }
-    result += playerDamageModifier;    
-    return result;
-  }
-  return result = null;
-}
 
 const goblin = {
-  monsterArmour: 5,
+  monsterArmour: 15,
   monsterDamage: 4,
   monsterRage: 0,
   monsterTurnAttack() {
     let result = roll(100);
-
+    
     if(DEV) {
       console.log('Goblin Abilty Chance ' + result)
     }
@@ -168,10 +117,19 @@ const mageInit = function() {
   playerRunic = 2;
   playerMana = 100;
 
-  updateStats();
+  updateStats();  
 
-  $('.w').addClass('spell spell-dragon-breath');
-  $('.wi').addClass('ra ra-dragon-breath icon');
+  $('.q').addClass('spell spell-dragon-breath');
+  $('.qi').addClass('ra ra-dragon-breath icon');
+
+  $('.w').addClass('spell spell-lightning-trio');
+  $('.wi').addClass('ra ra-lightning-trio icon');
+
+  $('.e').addClass('spell spell-frostfire');
+  $('.ei').addClass('ra ra-frostfire icon');
+
+  $('.r').addClass('spell spell-fire-shield');
+  $('.ri').addClass('ra ra-fire-shield icon');
 
   document.getElementById('basic-attack').addEventListener('click', () => {
     playerTurnBasicAttack();
@@ -219,7 +177,7 @@ const tippyMage = function() {
   $('.basic-attack').prop(title, basicAttackTip);
   tippy('.basic-attack');
 
-  const mageSpellQ = '<b>Scorch (50 SP)</b>: Ignore 1d2 AC and deal 1d10 damage. Ignore an additional ' + playerRunic + 'd2 AC with Runic level.';
+  const mageSpellQ = '<b>Scorch (50 PP)</b>: Ignore 1d2 AC and deal 1d10 damage. Ignore an additional 1d2 AC per Runic level.';
   $('.q').prop(title, mageSpellQ);
   tippy('.q');
 }
