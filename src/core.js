@@ -8,7 +8,7 @@ import { DEV } from './dev';
 import Stats from './stats';
 
 if(DEV) {
-  log('BUILD ALPHA 0.2.11', 'pb');
+  log('BUILD ALPHA 0.2.13', 'pb');
 }
 
 let playerHealth = Stats.playerHealth;
@@ -61,7 +61,22 @@ const goblin = {
   }
 }
 
-const monsterTurnHandler = function () {
+const monsterTurnHandler = function (result) {
+
+  if (DEV) {
+    console.log('monsterTurnhandler :: result:' + result);
+  }
+
+  if(Stats.monsterHealth - result < 0) {
+    Stats.monsterHealth = 0;
+    $('.monster-health').addClass('animated jello');
+    log('You have slain Goblin!', 'pb');
+  } else {    
+    Stats.monsterHealth = Stats.monsterHealth - result;
+    $('.monster-health').addClass('animated jello');
+    log('You hit for ' + result + ' damage!', 'pb');
+  }
+  updateStats();
   
 }
 
@@ -70,17 +85,9 @@ const monsterTurnHandler = function () {
 let currentMonster = goblin;
 
 const playerTurnBasicAttack = function() {
-  let result = attack(playerDamage, playerHitChanceModifier, 0, 1, monsterArmour);
+  let result = attack(Stats.playerDamage, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour);
   if (result != null) {
-    if(monsterHealth - result < 0) {
-      monsterHealth = 0;
-      log('You have slain Goblin!', 'pb');
-
-    } else {
-      monsterHealth = monsterHealth - result;
-      log('You hit for ' + result + ' damage!', 'pb');
-    }        
-    updateStats();
+    monsterTurnHandler(result);
   } else {
     log('You missed.', 'miss-player');
   }
@@ -122,11 +129,11 @@ const init = function(mode) {
 }
 
 const mageInit = function() {
-  playerHealth = 100;
-  playerDamage = 10;
-  playerArmour = 8;
-  playerRunic = 2;
-  playerMana = 100;
+  Stats.playerHealth = 100;
+  Stats.playerDamage = 10;
+  Stats.playerArmour = 8;
+  Stats.playerRunic = 2;
+  Stats.playerMana = 100;
 
   $('.q').addClass('spell spell-dragon-breath');
   $('.qi').addClass('ra ra-dragon-breath icon');
@@ -146,16 +153,16 @@ const mageInit = function() {
 }
 
 const updateStats = function () {
-  $('.player-health').text(playerHealth);
-  $('.player-damage').text(playerDamage);
-  $('.player-armour').text(playerArmour);
-  $('.player-runic').text(playerRunic);
-  $('.player-mana').text(playerMana);
+  $('.player-health').text(Stats.playerHealth);
+  $('.player-damage').text(Stats.playerDamage);
+  $('.player-armour').text(Stats.playerArmour);
+  $('.player-runic').text(Stats.playerRunic);
+  $('.player-mana').text(Stats.playerMana);
 
-  $('.monster-health').text(monsterHealth);
-  $('.monster-armour').text(monsterArmour);
-  $('.monster-damage').text(monsterDamage);
-  $('.monster-rage').text(monsterRage);
+  $('.monster-health').text(Stats.monsterHealth);
+  $('.monster-armour').text(Stats.monsterArmour);
+  $('.monster-damage').text(Stats.monsterDamage);
+  $('.monster-rage').text(Stats.monsterRage);
 }
 
 const tippyInit = function () {
@@ -195,10 +202,10 @@ const tippyMage = function() {
 }
 
 const monsterInit = function() {
-  monsterArmour = 0;
-  monsterDamage = 8;
-  monsterHealth = 20;  
-  monsterRage = 69;
+  Stats.monsterArmour = 0;
+  Stats.monsterDamage = 8;
+  Stats.monsterHealth = 20;  
+  Stats.monsterRage = 69;
 }
 
 console.log(currentMonster);
