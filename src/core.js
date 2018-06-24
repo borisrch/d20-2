@@ -4,11 +4,12 @@
 
 import { roll, attack } from './rollattack';
 import { log } from './log';
+import { disable, enable } from './disable';
 import { DEV } from './dev';
 import Stats from './stats';
 
 if(DEV) {
-  log('BUILD ALPHA 0.2.13', 'pb');
+  log('BUILD ALPHA 0.2.16', 'pb');
 }
 
 let playerHealth = Stats.playerHealth;
@@ -64,22 +65,26 @@ const goblin = {
 const monsterTurnHandler = function (result) {
 
   if (DEV) {
-    console.log('monsterTurnhandler :: result:' + result);
+    console.log('@monsterTurnhandler result:' + result);
   }
 
   if(Stats.monsterHealth - result < 0) {
     Stats.monsterHealth = 0;
-    $('.monster-health').addClass('animated jello');
     log('You have slain Goblin!', 'pb');    
   } else {    
     Stats.monsterHealth = Stats.monsterHealth - result;
-    $('.monster-health').addClass('animated jello');
     log('You hit for ' + result + ' damage!', 'pb');
   }
+  $('.monster-health').addClass('animated jello');
   updateStats();
+  disable();
   setTimeout(() => {
     $('.monster-health').removeClass('animated jello');
   }, 500);
+  setTimeout(() => {
+    currentMonster.turn(); 
+    enable();
+  }, 1500);
 }
 
 // Must Define After Monster, but before Basic Attack
@@ -126,7 +131,6 @@ const init = function(mode) {
     default:
     console.log('Error in init');
   }
-
   updateStats();  
 }
 
@@ -194,7 +198,7 @@ const tippyInit = function () {
 const tippyMage = function() {  
   const title = 'title';
 
-  const basicAttackTip = '<b>Basic Attack:</b> Deal 1d' + playerDamage + ' damage.';
+  const basicAttackTip = '<b>Basic Attack:</b> Deal 1d' + Stats.playerDamage + ' damage.';
   $('.basic-attack').prop(title, basicAttackTip);
   tippy('.basic-attack');
 
@@ -210,7 +214,6 @@ const monsterInit = function() {
   Stats.monsterRage = 69;
 }
 
-console.log(currentMonster);
 $(".character-selection").hide();
 init('mage');
 

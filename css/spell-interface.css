@@ -3,7 +3,8 @@ button:focus {
 }
 
 button:disabled {
-  filter: grayscale(95%) brightness(150%);   
+  filter: grayscale(95%) brightness(120%);
+  
 }
 
 .ability-interface > button {
