@@ -5,22 +5,23 @@
 import { roll, attack } from './rollattack';
 import { log } from './log';
 import { DEV } from './dev';
+import Stats from './stats';
 
 if(DEV) {
-  log('BUILD ALPHA 0.2.9', 'pb');
+  log('BUILD ALPHA 0.2.11', 'pb');
 }
 
-let playerHealth = 0;
-let playerArmour = 0;
-let playerDamage = 0;
-let playerRunic = 0;
-let playerMana = 0;
+let playerHealth = Stats.playerHealth;
+let playerArmour = Stats.playerArmour;
+let playerDamage = Stats.playerDamage;
+let playerRunic = Stats.playerRunic;
+let playerMana = Stats.playerMana;
 
-let monsterHealth = 0;
-let monsterArmour = 0;
-let monsterDamage = 0;
-let monsterRage = 0;
-let monsterName = null;
+let monsterHealth = Stats.monsterHealth;
+let monsterArmour = Stats.monsterArmour;
+let monsterDamage = Stats.monsterDamage;
+let monsterRage = Stats.monsterRage;
+let monsterName = Stats.monsterName;
 
 let playerHitChanceModifier = 0;
 
