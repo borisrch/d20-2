@@ -70,14 +70,16 @@ const monsterTurnHandler = function (result) {
   if(Stats.monsterHealth - result < 0) {
     Stats.monsterHealth = 0;
     $('.monster-health').addClass('animated jello');
-    log('You have slain Goblin!', 'pb');
+    log('You have slain Goblin!', 'pb');    
   } else {    
     Stats.monsterHealth = Stats.monsterHealth - result;
     $('.monster-health').addClass('animated jello');
     log('You hit for ' + result + ' damage!', 'pb');
   }
   updateStats();
-  
+  setTimeout(() => {
+    $('.monster-health').removeClass('animated jello');
+  }, 500);
 }
 
 // Must Define After Monster, but before Basic Attack
