@@ -7,7 +7,7 @@ import { log } from './log';
 import { DEV } from './dev';
 
 if(DEV) {
-  log('BUILD ALPHA 0.2.8', 'pb');
+  log('BUILD ALPHA 0.2.9', 'pb');
 }
 
 let playerHealth = 0;
@@ -20,14 +20,16 @@ let monsterHealth = 0;
 let monsterArmour = 0;
 let monsterDamage = 0;
 let monsterRage = 0;
+let monsterName = null;
 
 let playerHitChanceModifier = 0;
 
 const goblin = {
+  name: 'Goblin',
   monsterArmour: 15,
   monsterDamage: 4,
   monsterRage: 0,
-  monsterTurnAttack() {
+  turn() {
     let result = roll(100);
     
     if(DEV) {
@@ -58,6 +60,10 @@ const goblin = {
   }
 }
 
+const monsterTurnHandler = function () {
+  
+}
+
 // Must Define After Monster, but before Basic Attack
 
 let currentMonster = goblin;
@@ -68,6 +74,7 @@ const playerTurnBasicAttack = function() {
     if(monsterHealth - result < 0) {
       monsterHealth = 0;
       log('You have slain Goblin!', 'pb');
+
     } else {
       monsterHealth = monsterHealth - result;
       log('You hit for ' + result + ' damage!', 'pb');
@@ -135,8 +142,6 @@ const mageInit = function() {
   document.getElementById('basic-attack').addEventListener('click', () => {
     playerTurnBasicAttack();
   });
-
-
 }
 
 const updateStats = function () {
@@ -198,3 +203,7 @@ const monsterInit = function() {
 console.log(currentMonster);
 $(".character-selection").hide();
 init('mage');
+
+for (let i = 0 ; i < 10 ; i++ ) {
+  // currentMonster.turn();
+}
