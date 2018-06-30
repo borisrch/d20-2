@@ -101,11 +101,11 @@ button:disabled {
 
 .spell-fire-shield {
   background: rgb(80,24,167);
-  background: linear-gradient(318deg, #3949AB 0%, #00ACC1 100%);  
+  background: linear-gradient(130deg, rgb(179, 186, 223) 0%, #81D4FA 100%); 
 }
 
 .ra-fire-shield {
-  background-image: linear-gradient(130deg, #9FA8DA 0%, #81D4FA 100%);  
+  background-image: linear-gradient(318deg, #3949AB 0%, #00ACC1 100%);  
   color:transparent; -webkit-background-clip: text;
   background-clip: text;    
 }

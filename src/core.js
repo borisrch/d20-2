@@ -7,9 +7,10 @@ import { log } from './log';
 import { disable, enable } from './disable';
 import { DEV } from './dev';
 import Stats from './stats';
+import { manaCheck } from './mana';
 
 if(DEV) {
-  log('BUILD ALPHA 0.2.19', 'pb');
+  log('BUILD ALPHA 0.2.20 - Implement PP', 'pb');
 }
 
 let playerHealth = Stats.playerHealth;
@@ -35,7 +36,7 @@ const goblin = {
     let result = roll(100);
     
     if(DEV) {
-      console.log('Goblin Abilty Chance ' + result)
+      console.log('Goblin Abilty Chance ' + result);
     }
 
     if (result > 75) {      
@@ -153,7 +154,7 @@ const mageInit = function() {
   });
 
   document.getElementById('q').addEventListener('click', () => {
-    scorch();
+    manaCheck(50, scorch);
   });
 }
 
@@ -198,13 +199,14 @@ const tippyMage = function() {
   const title = 'title';
 
   const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
-  const damageIcon = '<span class="ra ra-sword colour-damage"></span>';
+  const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
+  const runicIcon = '<span class="ra ra-crystals colour-runic"></span>';
 
   const basicAttackTip = '<b>Basic Attack:</b> Deal 1d' + Stats.playerDamage + ' damage.';
   $('.basic-attack').prop(title, basicAttackTip);
   tippy('.basic-attack');
 
-  const mageSpellQ = '<b>Scorch (50 PP)</b>: Ignore 1d2' + armourIcon + ' and deal 1d10' + damageIcon + '. Ignore an additional 1d2 AC per Runic level.';
+  const mageSpellQ = '<b>Scorch (50 PP)</b>: Ignore 1d2 ' + armourIcon + ' and deal 1d10 ' + damageIcon + '. Ignore an additional 1d2 ' + armourIcon + ' per ' + runicIcon + ' level.';
   $('.q').prop(title, mageSpellQ);
   tippy('.q');
 }
@@ -232,9 +234,12 @@ const scorch = function() {
   if(result != null) {
     log('You <i>Scorch</i> for ' + result + ' damage!', 'ps-scorch');
     monsterHealthHelper(result);
+    
   } else {
     log('You missed Scorch!', 'miss-player');
   }
+  
+  Stats.playerMana = Stats.playerMana - 50;
   endTurn(result);
 
 }

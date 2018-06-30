@@ -95,6 +95,14 @@ body {
   color: #AB47BC;
 }
 
+.colour-damage-tip {
+ color: #ff5252; 
+}
+
+.colour-runic-tip {
+  color: #E040FB;
+}
+
 .ability-interface {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
