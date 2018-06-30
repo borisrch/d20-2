@@ -2,14 +2,14 @@
 // Webpack - load in modules when needed.
 // Refactor html
 
-import { roll, attack } from './rollattack';
+import { roll, attack, bonus } from './rollattack';
 import { log } from './log';
 import { disable, enable } from './disable';
 import { DEV } from './dev';
 import Stats from './stats';
 
 if(DEV) {
-  log('BUILD ALPHA 0.2.16', 'pb');
+  log('BUILD ALPHA 0.2.19', 'pb');
 }
 
 let playerHealth = Stats.playerHealth;
@@ -62,10 +62,9 @@ const goblin = {
   }
 }
 
-const monsterTurnHandler = function (result) {
-
+const monsterHealthHelper = function (result) {
   if (DEV) {
-    console.log('@monsterTurnhandler result:' + result);
+    console.log('@monsterHealthHelper result:' + result);
   }
 
   if(Stats.monsterHealth - result < 0) {
@@ -73,9 +72,14 @@ const monsterTurnHandler = function (result) {
     log('You have slain Goblin!', 'pb');    
   } else {    
     Stats.monsterHealth = Stats.monsterHealth - result;
-    log('You hit for ' + result + ' damage!', 'pb');
-  }
-  $('.monster-health').addClass('animated jello');
+    
+  }  
+}
+
+const endTurn = function(result) {
+  if(result) {
+    $('.monster-health').addClass('animated jello');
+  }  
   updateStats();
   disable();
   setTimeout(() => {
@@ -94,21 +98,12 @@ let currentMonster = goblin;
 const playerTurnBasicAttack = function() {
   let result = attack(Stats.playerDamage, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour);
   if (result != null) {
-    monsterTurnHandler(result);
+    log('You hit for ' + result + ' damage!', 'pb');
+    monsterHealthHelper(result);
   } else {
     log('You missed.', 'miss-player');
   }
-}
-
-const playerTurnSpellAttack = function spellHandler(spell) {
-  switch (spell) {
-    case 'Magic Missile':
-    magicMissile();
-    break;
-
-    default:
-    console.log('Error in spellHandler');
-  }
+  endTurn(result);
 }
 
 const init = function(mode) {
@@ -156,6 +151,10 @@ const mageInit = function() {
   document.getElementById('basic-attack').addEventListener('click', () => {
     playerTurnBasicAttack();
   });
+
+  document.getElementById('q').addEventListener('click', () => {
+    scorch();
+  });
 }
 
 const updateStats = function () {
@@ -198,20 +197,46 @@ const tippyInit = function () {
 const tippyMage = function() {  
   const title = 'title';
 
+  const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
+  const damageIcon = '<span class="ra ra-sword colour-damage"></span>';
+
   const basicAttackTip = '<b>Basic Attack:</b> Deal 1d' + Stats.playerDamage + ' damage.';
   $('.basic-attack').prop(title, basicAttackTip);
   tippy('.basic-attack');
 
-  const mageSpellQ = '<b>Scorch (50 PP)</b>: Ignore 1d2 AC and deal 1d10 damage. Ignore an additional 1d2 AC per Runic level.';
+  const mageSpellQ = '<b>Scorch (50 PP)</b>: Ignore 1d2' + armourIcon + ' and deal 1d10' + damageIcon + '. Ignore an additional 1d2 AC per Runic level.';
   $('.q').prop(title, mageSpellQ);
   tippy('.q');
 }
 
 const monsterInit = function() {
-  Stats.monsterArmour = 0;
+  Stats.monsterArmour = 10;
   Stats.monsterDamage = 8;
   Stats.monsterHealth = 20;  
   Stats.monsterRage = 69;
+}
+
+const scorch = function() {
+
+  let base = roll(2);   
+  let bonusRes = bonus(Stats.playerRunic, 2);
+  let total = base + bonusRes;
+
+  if(DEV) {
+    console.log('Scorch base AC-ignore roll: ' + base);
+    console.log('Scorch bonus AC-ignore roll: ' + bonusRes);
+  }
+
+  let result = attack(10, 0, 0, 1, Stats.monsterArmour - total);
+
+  if(result != null) {
+    log('You <i>Scorch</i> for ' + result + ' damage!', 'ps-scorch');
+    monsterHealthHelper(result);
+  } else {
+    log('You missed Scorch!', 'miss-player');
+  }
+  endTurn(result);
+
 }
 
 $(".character-selection").hide();

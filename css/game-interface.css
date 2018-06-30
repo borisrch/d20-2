@@ -7,7 +7,7 @@ body {
 }
 
 .game-interface {
-  font-family: 'Patua One', 'Times New Roman', cursive;
+  font-family: 'Patua One', 'Verdana', cursive;
   background: rgba(255, 255, 255, 0.96);
   width: 70vw;
   min-width: 600px;
@@ -169,7 +169,7 @@ body {
 }
 
 .tippy-popper {
-  font-family: 'Patua One', 'Times New Roman', cursive;  
+  font-family: 'Patua One', 'Verdana', cursive;  
 }
 
 /*

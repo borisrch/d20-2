@@ -3,7 +3,7 @@ button:focus {
 }
 
 button:disabled {
-  filter: grayscale(95%) brightness(120%);
+  filter: opacity(35%);
   
 }
 

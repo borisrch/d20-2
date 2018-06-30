@@ -16,6 +16,9 @@ const styleHandler = function(style) {
     case 'pb':
     return 'log log-player-basic animated slideInDown';
 
+    case 'ps-scorch':
+    return 'log log-player-spell animated tada';
+
     default:
     console.log('Error in styleHandler');
     break;

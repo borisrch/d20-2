@@ -7,6 +7,14 @@ export const roll = function(n) {
   return result;
 }
 
+export const bonus = function(runic, n) {
+  let b = 0;
+  for (let i = 0; i < runic; i++) {
+    b = b + roll(n);
+  }
+  return b;
+}
+
 export const attack = function(playerDamage, playerHitChanceModifier, playerDamageModifier, playerMultiplier, monsterArmour) {
 
   if(DEV) {
