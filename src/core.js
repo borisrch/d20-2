@@ -10,7 +10,7 @@ import Stats from './stats';
 import { manaCheck } from './mana';
 
 if(DEV) {
-  log('BUILD ALPHA 0.2.22', 'info');
+  log('BUILD ALPHA 0.2.23 - AlzursThunder', 'info');
 }
 
 let playerHealth = Stats.playerHealth;
@@ -245,13 +245,17 @@ const tippyMage = function() {
   const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
   const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
 
-  const basicAttackTip = '<b>Basic Attack:</b> Deal 1d' + Stats.playerDamage + ' damage.';
+  const basicAttackTip = '<b>Basic Attack</b> - Deal 1d' + Stats.playerDamage + ' damage.';
   $('.basic-attack').prop(title, basicAttackTip);
   tippy('.basic-attack');
 
-  const mageSpellQ = '<b>Scorch (75 PP)</b>: Ignore 1d2 ' + armourIcon + ' and deal 1d10 ' + damageIcon + '. Ignore an additional 1d2 ' + armourIcon + ' per ' + runicIcon + ' level.';
+  const mageSpellQ = '<b>Scorch (75 PP)</b> - Ignore 1d2 ' + armourIcon + ' and deal 1d10 ' + damageIcon + '. Ignore an additional 1d2 ' + armourIcon + ' per ' + runicIcon + ' level.';
   $('.q').prop(title, mageSpellQ);
   tippy('.q');
+
+  const mageSpellW = '<b>Alzur\'s Thunder (100 PP)</b> - Deal 1d8 ' + damageIcon + ' and apply <i>Shocked</i>. Shock deals bonus 1d4 damage and lasts for ' + runicIcon + ' turns.';
+  $('.w').prop(title, mageSpellW);
+  tippy('.w');
 }
 
 const monsterInit = function() {
@@ -286,6 +290,12 @@ const scorch = function() {
 
   endTurn(result);
 
+}
+
+const alzurs_thunder = function() {
+
+  Stats.playerMana = Stats.playerMana - 75;
+  
 }
 
 $(".character-selection").hide();
