@@ -2,7 +2,7 @@
 // Webpack - load in modules when needed.
 // Refactor html
 
-import { roll, attack, bonus } from './rollattack';
+import { roll, attack, bonus, getRandomInt } from './rollattack';
 import { log } from './log';
 import { disable, enable } from './disable';
 import { DEV } from './dev';
@@ -32,6 +32,7 @@ const goblin = {
   monsterArmour: 15,
   monsterDamage: 4,
   monsterRage: 0,
+  names: ['Wormface', 'Grubhead', 'Fartbreath', 'Poopnose', 'Wormhair'],
   turn() {
     let result = roll(100);
     
@@ -47,23 +48,27 @@ const goblin = {
   },
   basicAttack() {
     let result = attack(this.monsterDamage, 0, 0, 1, playerArmour);
-    if (result != null) {      
+    if (result != null) {
+      playerHealthHelper(result);
       log('Goblin hits for ' + result + ' damage!', 'mb');
     } else {
       log('Goblin missed.', 'miss');
     }
+    endTurnMonster(result);
   },
   goblinSpit() {
     let result = attack(this.monsterDamage, 1, 0, 1, playerArmour);
     if (result != null) {
+      playerHealthHelper(result);
       log('Goblin uses <i>Goblin Spit</i> for ' + result + ' damage!', 'ms');
     } else {
       log('Goblin missed.', 'miss');
     }
+    endTurnMonster(result);
   }
 }
 
-const monsterHealthHelper = function (result) {
+const monsterHealthHelper = function(result) {
   if (DEV) {
     console.log('@monsterHealthHelper result:' + result);
   }
@@ -77,6 +82,16 @@ const monsterHealthHelper = function (result) {
   }  
 }
 
+const playerHealthHelper = function(result) {
+  if(Stats.playerHealth - result <= 0) {
+    Stats.playerHealth = 0;
+    log('You died to ' + currentMonster.name + '!', 'ms');
+  } else {
+    Stats.playerHealth = Stats.playerHealth - result;
+  }
+  
+}
+
 const endTurn = function(result) {
   if (result) {
     $('.monster-health').addClass('animated jello');
@@ -86,7 +101,7 @@ const endTurn = function(result) {
     Stats.playerMana = 100;
   } else {
     Stats.playerMana = Stats.playerMana + 25;
-    $('.player-mana').addClass('cssanimation lePeek sequence');
+    $('.player-mana').addClass('colour-mana-add');
   }
 
   updateStats();
@@ -100,7 +115,7 @@ const endTurn = function(result) {
   }, 500);
 
   setTimeout(() => {
-    $('.player-mana').removeClass('cssanimation lePeek sequence');
+    $('.player-mana').removeClass('colour-mana-add');
   }, 1000);
 
 
@@ -108,6 +123,16 @@ const endTurn = function(result) {
     currentMonster.turn(); 
     enable();
   }, 1500);
+}
+
+const endTurnMonster = function(result) {
+  if (result) {
+    $('.player-health').addClass('animated jello');
+  }  
+  updateStats();
+  setTimeout(() => {
+    $('.player-health').removeClass('animated jello');
+  }, 500);
 }
 
 // Must Define After Monster, but before Basic Attack
@@ -266,6 +291,6 @@ const scorch = function() {
 $(".character-selection").hide();
 init('mage');
 
-for (let i = 0 ; i < 10 ; i++ ) {
-  // currentMonster.turn();
+for (let i = 0 ; i < 100 ; i++ ) {
+  // console.log(getRandomInt(5));
 }

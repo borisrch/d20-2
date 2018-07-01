@@ -71,8 +71,11 @@ body {
   grid-template-columns: 1fr;
   grid-template: 1fr;
   grid-gap: 5px;
-  justify-items: center; 
-  
+  justify-items: center;   
+}
+
+.player-mana {
+  transition: all 0.5s ease;
 }
 
 .colour-runic {
@@ -101,6 +104,10 @@ body {
 
 .colour-runic-tip {
   color: #E040FB;
+}
+
+.colour-mana-add {
+  color: #00BCD4;
 }
 
 .ability-interface {
@@ -167,7 +174,7 @@ body {
 
 .log-player-spell {
   background-color: #D6EAF8;
-  border-left: 5px solid #3498DB;
+  border-right: 5px solid #3498DB;
   color: #3498DB;
 }
 

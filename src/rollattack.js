@@ -32,3 +32,7 @@ export const attack = function(playerDamage, playerHitChanceModifier, playerDama
   }
   return result = null;
 }
+
+export const getRandomInt = function(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
