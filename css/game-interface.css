@@ -176,6 +176,11 @@ body {
   color: #90CAF9;
 }
 
+.log-info {
+  border-right: 5px solid #90A4AE;
+  color: #90A4AE;  
+}
+
 .tippy-popper {
   font-family: 'Patua One', 'Verdana', cursive;  
 }

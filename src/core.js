@@ -10,7 +10,7 @@ import Stats from './stats';
 import { manaCheck } from './mana';
 
 if(DEV) {
-  log('BUILD ALPHA 0.2.20 - Implement PP', 'pb');
+  log('BUILD ALPHA 0.2.21 - Implement PP', 'pb');
 }
 
 let playerHealth = Stats.playerHealth;
@@ -80,12 +80,21 @@ const monsterHealthHelper = function (result) {
 const endTurn = function(result) {
   if(result) {
     $('.monster-health').addClass('animated jello');
-  }  
+  }
+  
+  Stats.playerMana = Stats.playerMana + 25;
+
+  // mana + 25
+  // animate mana
+
   updateStats();
   disable();
   setTimeout(() => {
     $('.monster-health').removeClass('animated jello');
   }, 500);
+
+  // remove animated mana
+
   setTimeout(() => {
     currentMonster.turn(); 
     enable();
@@ -200,7 +209,7 @@ const tippyMage = function() {
 
   const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
   const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
-  const runicIcon = '<span class="ra ra-crystals colour-runic"></span>';
+  const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
 
   const basicAttackTip = '<b>Basic Attack:</b> Deal 1d' + Stats.playerDamage + ' damage.';
   $('.basic-attack').prop(title, basicAttackTip);
@@ -220,6 +229,8 @@ const monsterInit = function() {
 
 const scorch = function() {
 
+  Stats.playerMana = Stats.playerMana - 50;
+
   let base = roll(2);   
   let bonusRes = bonus(Stats.playerRunic, 2);
   let total = base + bonusRes;
@@ -238,8 +249,7 @@ const scorch = function() {
   } else {
     log('You missed Scorch!', 'miss-player');
   }
-  
-  Stats.playerMana = Stats.playerMana - 50;
+
   endTurn(result);
 
 }

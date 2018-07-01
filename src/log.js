@@ -13,6 +13,9 @@ const styleHandler = function(style) {
     case 'miss-player':
     return 'log log-player-miss animated slideInDown';
 
+    case 'info':
+    return 'log log-info animated slideInDown';
+
     case 'pb':
     return 'log log-player-basic animated slideInDown';
 

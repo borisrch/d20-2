@@ -12,7 +12,7 @@ export const manaCheck = function(cost, spellCallback) {
   }
   
   if (Stats.playerMana < cost) {
-    log('Not enough PP to cast.', 'pb');
+    log('Not enough PP to cast.', 'info');
   } else {    
     spellCallback();
   }
