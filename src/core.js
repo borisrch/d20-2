@@ -86,7 +86,7 @@ const endTurn = function(result) {
     Stats.playerMana = 100;
   } else {
     Stats.playerMana = Stats.playerMana + 25;
-    $('.player-mana').addClass('animated bounce');
+    $('.player-mana').addClass('cssanimation lePeek sequence');
   }
 
   updateStats();
@@ -100,7 +100,7 @@ const endTurn = function(result) {
   }, 500);
 
   setTimeout(() => {
-    $('.player-mana').removeClass('animated bounce');
+    $('.player-mana').removeClass('cssanimation lePeek sequence');
   }, 1000);
 
 
