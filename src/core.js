@@ -10,7 +10,7 @@ import Stats from './stats';
 import { manaCheck } from './mana';
 
 if(DEV) {
-  log('BUILD ALPHA 0.2.21 - Implement PP', 'pb');
+  log('BUILD ALPHA 0.2.22', 'info');
 }
 
 let playerHealth = Stats.playerHealth;
@@ -78,22 +78,31 @@ const monsterHealthHelper = function (result) {
 }
 
 const endTurn = function(result) {
-  if(result) {
+  if (result) {
     $('.monster-health').addClass('animated jello');
   }
   
-  Stats.playerMana = Stats.playerMana + 25;
-
-  // mana + 25
-  // animate mana
+  if (Stats.playerMana + 25 >= 100) {
+    Stats.playerMana = 100;
+  } else {
+    Stats.playerMana = Stats.playerMana + 25;
+    $('.player-mana').addClass('animated bounce');
+  }
 
   updateStats();
+
   disable();
+
+  // Remove animation classes.
+
   setTimeout(() => {
     $('.monster-health').removeClass('animated jello');
   }, 500);
 
-  // remove animated mana
+  setTimeout(() => {
+    $('.player-mana').removeClass('animated bounce');
+  }, 1000);
+
 
   setTimeout(() => {
     currentMonster.turn(); 
@@ -163,7 +172,7 @@ const mageInit = function() {
   });
 
   document.getElementById('q').addEventListener('click', () => {
-    manaCheck(50, scorch);
+    manaCheck(75, scorch);
   });
 }
 
@@ -215,7 +224,7 @@ const tippyMage = function() {
   $('.basic-attack').prop(title, basicAttackTip);
   tippy('.basic-attack');
 
-  const mageSpellQ = '<b>Scorch (50 PP)</b>: Ignore 1d2 ' + armourIcon + ' and deal 1d10 ' + damageIcon + '. Ignore an additional 1d2 ' + armourIcon + ' per ' + runicIcon + ' level.';
+  const mageSpellQ = '<b>Scorch (75 PP)</b>: Ignore 1d2 ' + armourIcon + ' and deal 1d10 ' + damageIcon + '. Ignore an additional 1d2 ' + armourIcon + ' per ' + runicIcon + ' level.';
   $('.q').prop(title, mageSpellQ);
   tippy('.q');
 }
@@ -229,7 +238,7 @@ const monsterInit = function() {
 
 const scorch = function() {
 
-  Stats.playerMana = Stats.playerMana - 50;
+  Stats.playerMana = Stats.playerMana - 75;
 
   let base = roll(2);   
   let bonusRes = bonus(Stats.playerRunic, 2);
