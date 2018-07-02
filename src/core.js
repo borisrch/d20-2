@@ -31,6 +31,7 @@ let monsterName = Stats.monsterName;
 
 let playerHitChanceModifier = 0;
 
+// Add items for other classes
 let mageItem = [
   { name: 'Oak Wand', type: 'weapon' },
   { name: 'Ebony Wand', type: 'weapon' },
@@ -399,7 +400,7 @@ const weaponModal = new tingle.modal({
   }
 });
 
-// Incomplete function
+// Incomplete function. Add item types to this.
 const advance = function() {
   
   if (DEV) {
@@ -407,6 +408,8 @@ const advance = function() {
   }
 
   Stats.playerLevel = Stats.playerLevel + 1;
+
+  // NEED TO ADD CHECK FOR LAST MONSTERS !! if (Stats.playerLevel > 10) or whatever.
 
   let item = mageItem[Stats.playerLevel];
 
