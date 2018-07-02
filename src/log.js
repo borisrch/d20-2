@@ -16,6 +16,12 @@ const styleHandler = function(style) {
     case 'info':
     return 'log log-info animated slideInDown';
 
+    case 'victory':
+    return 'log log-victory animated bounceInDown';
+
+    case 'defeat':
+    return 'log log-defeat animated bounceInDown';
+
     case 'pb':
     return 'log log-player-basic animated slideInDown';
 

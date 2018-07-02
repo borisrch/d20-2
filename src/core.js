@@ -38,12 +38,12 @@ const chicken = {
 
   },
   basicAttack() {
-    
+
   }
 }
 
 const goblin = {
-  name: 'Goblin',
+  name: 'Wormface, the Goblin',
   monsterArmour: 15,
   monsterDamage: 4,
   monsterRage: 0,
@@ -91,7 +91,7 @@ const monsterHealthHelper = function(result) {
 
   if(Stats.monsterHealth - result < 0) {
     Stats.monsterHealth = 0;
-    log('You have slain Goblin!', 'pb');    
+    log('You have slain ' + Stats.monsterName + '!', 'victory');    
   } else {    
     Stats.monsterHealth = Stats.monsterHealth - result;
     

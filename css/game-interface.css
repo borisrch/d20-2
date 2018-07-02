@@ -187,8 +187,23 @@ body {
   color: rgb(173, 190, 201);  
 }
 
+.log-victory {
+  border-right: 5px solid #009688;
+  border-left: 5px solid #009688;
+  color: #009688;
+}
+
+.log-defeat {
+
+}
+
 .tippy-popper {
   font-family: 'Patua One', 'Verdana', cursive;  
+}
+
+.items {
+  background: none;
+  padding-left: 0px;
 }
 
 /*
