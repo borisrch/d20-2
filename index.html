@@ -7,12 +7,15 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="./tippy.all.min.js"></script>
   <link href="https://fonts.googleapis.com/css?family=Patua+One" rel="stylesheet">
+  <link rel="stylesheet" href="./css/tingle.min.css">
   <link rel="stylesheet" href="./css/character-selection.css">
   <link rel="stylesheet" href="./css/select.css">
   <link rel="stylesheet" href="./css/animate.min.css">
   <link rel="stylesheet" href="./css/rpg-awesome.min.css">
   <link rel="stylesheet" href="./css/game-interface.css">
   <link rel="stylesheet" href="./css/spell-interface.css">
+  
+  <script src="./tingle.min.js"></script>
   <title>D20 2</title>
 </head>
 
@@ -99,29 +102,41 @@
     </div>
 
     <div class="ability-interface">
+
       <button class="spell basic-attack pull-right" id="basic-attack">
         <span class="ra ra-sword basic-attack-icon icon"></span>
       </button>
+
           <div class="spells-interface">
             <button class="q" id="q">
               <span class="qi"></span>
-        </button>
-        <button class="w"  id="w">
-          <span class="wi"></span>
-        </button>
-        <button class="e">
-          <span class="ei"></span>
-        </button>
-        <button class="r">
-          <span class="ri"></span>
-        </button>
-      </div>
-      <button class="special-attack pull-left">
-        <select name="" id="" class="items">
-          <option value="TEST">TEST</option>
-        </select>
-      </button>      
+            </button>
+            <button class="w"  id="w">
+              <span class="wi"></span>
+            </button>
+            <button class="e">
+              <span class="ei"></span>
+            </button>
+            <button class="r">
+              <span class="ri"></span>
+            </button>
+          </div> 
+
+          <div class="equipment-interface pull-left">
+            <button class="spell" id="equipment-weapon">
+                <span class="ra ra-hand-emblem icon"></span>
+            </button>
+            <button class="spell" id="equipment-amulet">
+                <span class="ra ra-gem-pendant icon"></span>
+            </button>
+            <button class="spell" id="equipment-trinket">
+                <span class="ra ra-ankh icon"></span>
+            </button>
+          </div>
+    
     </div>
+
+
 
     <div class="log-interface">
       <ul id="list" class="list">
@@ -134,7 +149,7 @@
   </div>
   
   <script src="jquery-3.3.1.js"></script>
-
+  
   <script src="dist/entry.bundle.js"></script>
 </body>
 

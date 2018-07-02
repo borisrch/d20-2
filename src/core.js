@@ -10,8 +10,10 @@ import Stats from './stats';
 import { manaCheck } from './mana';
 import { alzursThunderCondition } from './conditions';
 
+import MicroModal from 'micromodal';
+
 if(DEV) {
-  log('BUILD ALPHA 0.2.23 - AlzursThunder', 'info');
+  log('BUILD ALPHA 0.2.24 - Equipment', 'info');
 }
 
 let playerHealth = Stats.playerHealth;
@@ -210,6 +212,13 @@ const mageInit = function() {
   $('.r').addClass('spell spell-fire-shield');
   $('.ri').addClass('ra ra-fire-shield icon');
 
+  weaponModal.setContent('<span class="modal-title">Select Weapon</span>');
+
+  weaponModal.addFooterBtn('Oak Wand', 'spell equipment-icon', function() {
+    // here goes some logic
+    modal.close();
+});
+
   document.getElementById('basic-attack').addEventListener('click', () => {
     playerTurnBasicAttack();
   });
@@ -220,6 +229,10 @@ const mageInit = function() {
 
   document.getElementById('w').addEventListener('click', () => {
     manaCheck(100, alzurs_thunder);
+  });
+
+  document.getElementById('equipment-weapon').addEventListener('click', () => {
+    weaponModal.open();
   });
 }
 
@@ -279,6 +292,7 @@ const tippyMage = function() {
   const mageSpellW = '<b>Alzur\'s Thunder (100 PP)</b> - Deal 2d4 ' + damageIcon + ' and apply <i>Shocked</i>. Shock deals bonus 1d4 ' + damageIcon + ' for ' + runicIcon + ' turns.';
   $('.w').prop(title, mageSpellW);
   tippy('.w');
+
 }
 
 const monsterInit = function() {
@@ -339,8 +353,31 @@ const alzurs_thunder = function() {
   endTurn(result);  
 }
 
+
+
+const weaponModal = new tingle.modal({
+  footer: true,
+  stickyFooter: false,
+  closeMethods: ['button', 'escape'],
+  closeLabel: "Close",
+  cssClass: ['custom-class-1', 'custom-class-2'],
+  onOpen: function() {
+      console.log('modal open');
+  },
+  onClose: function() {
+      console.log('modal closed');
+  },
+  beforeClose: function() {
+      // here's goes some logic
+      // e.g. save content before closing the modal
+      return true; // close the modal
+  }
+});
+
 $(".character-selection").hide();
+
 init('mage');
+
 
 for (let i = 0 ; i < 100 ; i++ ) {
   // console.log(getRandomInt(5));

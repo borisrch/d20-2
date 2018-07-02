@@ -119,10 +119,9 @@ body {
   margin-top: 20px; 
 }
 
-.special-attack {
+.equipment-button {
   background: #FFA726;
   font-size: 1em;
-  padding: 15px;
 }
 
 .pull-right {
@@ -201,9 +200,58 @@ body {
   font-family: 'Patua One', 'Verdana', cursive;  
 }
 
-.items {
-  background: none;
-  padding-left: 0px;
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.min {
+  min-width: none;
+  min-height: none;
+}
+
+.show { 
+  display: block;
+}
+
+.modal-title {
+  font-size: 1.25em;
+}
+
+.equipment-icon {
+  font-size: 1.25em;
+  padding: 15px;
+}
+
+.tingle-modal-box__content {
+  font-family: 'Patua One', 'Verdana', cursive;  
+  padding: 15px;
+  
+}
+
+.tingle-modal-box__footer > button {
+  border: none;
+  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.10);
+  border-radius: 4px;
+  font-family: 'Patua One', 'Times New Roman', cursive;
+  transition:all 0.3s ease;
+}
+
+.tingle-modal-box__footer > button:hover {
+  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+  -webkit-transform: scale(1.3);
+  -ms-transform: scale(1.3);
+  transform: scale(1.3);
+  cursor: pointer;
 }
 
 /*
