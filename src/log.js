@@ -22,6 +22,9 @@ const styleHandler = function(style) {
     case 'ps-scorch':
     return 'log log-player-spell animated tada';
 
+    case 'ps-thunder':
+    return 'log log-player-spell animated flash';
+
     default:
     console.log('Error in styleHandler');
     break;

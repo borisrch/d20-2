@@ -124,7 +124,7 @@ const endTurn = function(result) {
   setTimeout(() => {
     currentMonster.turn(); 
     enable();
-  }, 1500);
+  }, 1900);
 }
 
 const endTurnMonster = function(result) {
@@ -314,7 +314,7 @@ const alzurs_thunder = function() {
   alzursThunderCondition.turns = Stats.playerRunic;
 
   if(result != null) {
-    log('You summon <i>Alzur\'s Thunder</i> for ' + result + ' damage!', 'ps-scorch');
+    log('You summon <i>Alzur\'s Thunder</i> for ' + result + ' damage!', 'ps-thunder');
     monsterHealthHelper(result);
     
   } else {
