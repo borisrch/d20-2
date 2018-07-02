@@ -25,6 +25,11 @@ let monsterDamage = Stats.monsterDamage;
 let monsterRage = Stats.monsterRage;
 let monsterName = Stats.monsterName;
 
+let AlzurThunderState = {
+  state: true,
+  turns: 4,
+}
+
 let playerHitChanceModifier = 0;
 
 const goblin = {
@@ -245,7 +250,7 @@ const tippyMage = function() {
   const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
   const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
 
-  const basicAttackTip = '<b>Basic Attack</b> - Deal 1d' + Stats.playerDamage + ' damage.';
+  const basicAttackTip = '<b>Basic Attack</b> - Deal 1d' + Stats.playerDamage + ' ' + damageIcon + ' .';
   $('.basic-attack').prop(title, basicAttackTip);
   tippy('.basic-attack');
 
@@ -253,7 +258,7 @@ const tippyMage = function() {
   $('.q').prop(title, mageSpellQ);
   tippy('.q');
 
-  const mageSpellW = '<b>Alzur\'s Thunder (100 PP)</b> - Deal 1d8 ' + damageIcon + ' and apply <i>Shocked</i>. Shock deals bonus 1d4 damage and lasts for ' + runicIcon + ' turns.';
+  const mageSpellW = '<b>Alzur\'s Thunder (100 PP)</b> - Deal 1d8 ' + damageIcon + ' and apply <i>Shocked</i>. Shock deals bonus 1d4 ' + damageIcon + ' for ' + runicIcon + ' turns.';
   $('.w').prop(title, mageSpellW);
   tippy('.w');
 }
