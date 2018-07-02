@@ -6,7 +6,7 @@ export const selectWeapon = function(weapon) {
     Stats.playerRunic = 2;
     break;
 
-    case 'ebony-wand':
+    case 'Ebony Wand':
     Stats.playerRunic = 3;
     break;
 

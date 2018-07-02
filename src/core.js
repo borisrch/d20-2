@@ -14,7 +14,7 @@ import { selectWeapon } from './equipment';
 import MicroModal from 'micromodal';
 
 if(DEV) {
-  log('BUILD ALPHA 0.2.24 - Equipment', 'info');
+  log('BUILD ALPHA 0.2.26 - Equipment', 'info');
 }
 
 let playerHealth = Stats.playerHealth;
@@ -30,6 +30,14 @@ let monsterRage = Stats.monsterRage;
 let monsterName = Stats.monsterName;
 
 let playerHitChanceModifier = 0;
+
+let mageItem = [
+  { name: 'Oak Wand', type: 'weapon' },
+  { name: 'Ebony Wand', type: 'weapon' },
+  { name: 'Seismic Wand', type: 'weapon' },
+  { name: 'Elder Wand', type: 'weapon' }
+]
+
 
 const chicken = {
   name: 'Chicken',
@@ -47,6 +55,7 @@ const chicken = {
 
 const goblin = {
   name: 'Wormface, the Goblin',
+  monsterHealth: 20,
   monsterArmour: 15,
   monsterDamage: 4,
   monsterRage: 0,
@@ -95,7 +104,7 @@ const monsterHealthHelper = function(result) {
   if(Stats.monsterHealth - result < 0) {
     Stats.monsterHealth = 0;
     log('You have slain ' + Stats.monsterName + '!', 'victory');
-    unlock('ebony');
+    advance();
   } else {    
     Stats.monsterHealth = Stats.monsterHealth - result;
     
@@ -185,6 +194,7 @@ const init = function(mode) {
     break;
 
     case 'mage':
+    Stats.playerClass = 'mage';
     mageInit();
     tippyMage();    
     break;
@@ -388,6 +398,64 @@ const weaponModal = new tingle.modal({
       return true; // close the modal
   }
 });
+
+// Incomplete function
+const advance = function() {
+  
+  if (DEV) {
+    console.log('@Advance');
+  }
+
+  Stats.playerLevel = Stats.playerLevel + 1;
+
+  let item = mageItem[Stats.playerLevel];
+
+  if (item.type === 'weapon') {
+      weaponModal.addFooterBtn(item.name, 'equipment-icon', function() {
+      selectWeapon(item.name);
+      updateStats();
+      log(Stats.monsterName + ' dropped: ' + item.name +'!', 'victory');
+
+      weaponModal.close();
+    });
+  }
+
+  if (item.type === 'amulet') {
+
+  }
+
+  if (item.type === 'trinket') {
+    
+  }
+
+  currentMonster = getNextMonster(Stats.playerLevel);
+
+  Stats.monsterHealth = currentMonster.monsterHealth;
+  Stats.monsterDamage = currentMonster.monsterDamage;
+  Stats.monsterName = currentMonster.name;
+  Stats.monsterRage = 0;
+
+  updateStats();
+  
+}
+
+const getNextMonster = function(level) {
+  switch(level) {
+    case 0:
+    return goblin;
+    break;
+
+    case 1:
+    return goblin;
+    break;
+
+    default:
+    console.log('@Error at getNextMonster');
+    return goblin;
+    break;
+  }
+}
+
 
 $(".character-selection").hide();
 

@@ -5,6 +5,8 @@ export default {
   playerRunic: 0,
   playerMana: 0,
   playerHitChanceModifier: 0,
+  playerLevel: 0,
+  playerClass: 'null',
   monsterHealth: 0,
   monsterArmour: 0,
   monsterDamage: 0,
