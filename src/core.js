@@ -9,6 +9,7 @@ import { DEV } from './dev';
 import Stats from './stats';
 import { manaCheck } from './mana';
 import { alzursThunderCondition } from './conditions';
+import { selectWeapon } from './equipment';
 
 import MicroModal from 'micromodal';
 
@@ -215,9 +216,10 @@ const mageInit = function() {
   weaponModal.setContent('<span class="modal-title">Select Weapon</span>');
 
   weaponModal.addFooterBtn('Oak Wand', 'equipment-icon', function() {
-    // here goes some logic
-    modal.close();
-});
+    selectWeapon('oak-wand');
+    updateStats();
+    weaponModal.close();
+  });
 
   document.getElementById('basic-attack').addEventListener('click', () => {
     playerTurnBasicAttack();
@@ -353,6 +355,19 @@ const alzurs_thunder = function() {
   endTurn(result);  
 }
 
+const unlock = function(item) {
+  switch(item) {
+    case 'ebony':
+    weaponModal.addFooterBtn('Oak Wand', 'equipment-icon', function() {
+      selectWeapon('oak-wand');
+      updateStats();
+      weaponModal.close();
+    });
+
+    default:
+    break;
+  }
+}
 
 
 const weaponModal = new tingle.modal({
@@ -362,10 +377,10 @@ const weaponModal = new tingle.modal({
   closeLabel: "Close",
   cssClass: ['custom-class-1', 'custom-class-2'],
   onOpen: function() {
-      console.log('modal open');
+      
   },
   onClose: function() {
-      console.log('modal closed');
+      
   },
   beforeClose: function() {
       // here's goes some logic
