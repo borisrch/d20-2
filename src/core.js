@@ -2,7 +2,7 @@
 // Webpack - load in modules when needed.
 // Refactor html
 
-import { roll, attack, bonus, getRandomInt } from './rollattack';
+import { roll, attack, pureAttack, bonus, getRandomInt } from './rollattack';
 import { log } from './log';
 import { disable, enable } from './disable';
 import { DEV } from './dev';
@@ -47,7 +47,7 @@ const goblin = {
     }
   },
   basicAttack() {
-    let result = attack(this.monsterDamage, 0, 0, 1, playerArmour);
+    let result = pureAttack(Stats.monsterDamage, 0, 0, 1, playerArmour);
     if (result != null) {
       playerHealthHelper(result);
       log('Goblin hits for ' + result + ' damage!', 'mb');
@@ -57,7 +57,7 @@ const goblin = {
     endTurnMonster(result);
   },
   goblinSpit() {
-    let result = attack(this.monsterDamage, 1, 0, 1, playerArmour);
+    let result = pureAttack(Stats.monsterDamage, 1, 0, 1, playerArmour);
     if (result != null) {
       playerHealthHelper(result);
       log('Goblin uses <i>Goblin Spit</i> for ' + result + ' damage!', 'ms');

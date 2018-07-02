@@ -26,7 +26,8 @@ export const attack = function(playerDamage, playerHitChanceModifier, playerDama
   }
 
   if (DEV) {
-    console.log('pDamage: ' + playerDamage + ' pHitChance: ' + playerHitChanceModifier + ' pDamageMod ' + playerDamageModifier + ' pMultiplier: ' + playerMultiplier + ' monsterArmour: ' + monsterArmour);
+    console.log('@Attack')
+    console.log('Damage: ' + playerDamage + ' HitChance: ' + playerHitChanceModifier + ' DamageMod ' + playerDamageModifier + ' Multiplier: ' + playerMultiplier + ' Armour: ' + monsterArmour);
     console.log('Extra Spell Damage: ' + extra);
   }
 
@@ -38,6 +39,25 @@ export const attack = function(playerDamage, playerHitChanceModifier, playerDama
     }
     result += playerDamageModifier;    
     return result + extra;
+  }
+  return result = null;
+}
+
+export const pureAttack = function(playerDamage, playerHitChanceModifier, playerDamageModifier, playerMultiplier, monsterArmour) {
+
+  if (DEV) {
+    console.log('@PureAttack');
+    console.log('Damage: ' + playerDamage + ' HitChance: ' + playerHitChanceModifier + ' DamageMod ' + playerDamageModifier + ' Multiplier: ' + playerMultiplier + ' Armour: ' + monsterArmour);    
+  }
+
+  let result = 0;
+  let hit = roll(20) + playerHitChanceModifier;  
+  if (hit >= monsterArmour) {
+    for (let i = 0; i < playerMultiplier; i++) {
+      result += roll(playerDamage);
+    }
+    result += playerDamageModifier;    
+    return result;
   }
   return result = null;
 }
