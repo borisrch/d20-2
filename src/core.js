@@ -218,6 +218,7 @@ const updateStats = function () {
   $('.monster-armour').text(Stats.monsterArmour);
   $('.monster-damage').text(Stats.monsterDamage);
   $('.monster-rage').text(Stats.monsterRage);
+  $('.monster-label').text(Stats.monsterName);
 }
 
 const tippyInit = function () {
@@ -265,10 +266,11 @@ const tippyMage = function() {
 }
 
 const monsterInit = function() {
-  Stats.monsterArmour = 10;
-  Stats.monsterDamage = 8;
+  Stats.monsterArmour = 4;
+  Stats.monsterDamage = 4;
   Stats.monsterHealth = 20;  
   Stats.monsterRage = 69;
+  Stats.monsterName = goblin.name;
 }
 
 const scorch = function() {
@@ -300,7 +302,7 @@ const scorch = function() {
 
 const alzurs_thunder = function() {
 
-  Stats.playerMana = Stats.playerMana - 75;
+  Stats.playerMana = Stats.playerMana - 100;
 
   if (DEV) {
     console.log('@AlzursThunder');
