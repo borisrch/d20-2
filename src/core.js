@@ -94,7 +94,8 @@ const monsterHealthHelper = function(result) {
 
   if(Stats.monsterHealth - result < 0) {
     Stats.monsterHealth = 0;
-    log('You have slain ' + Stats.monsterName + '!', 'victory');    
+    log('You have slain ' + Stats.monsterName + '!', 'victory');
+    unlock('ebony');
   } else {    
     Stats.monsterHealth = Stats.monsterHealth - result;
     
@@ -358,8 +359,8 @@ const alzurs_thunder = function() {
 const unlock = function(item) {
   switch(item) {
     case 'ebony':
-    weaponModal.addFooterBtn('Oak Wand', 'equipment-icon', function() {
-      selectWeapon('oak-wand');
+    weaponModal.addFooterBtn('Ebony Wand', 'equipment-icon', function() {
+      selectWeapon('ebony-wand');
       updateStats();
       weaponModal.close();
     });
@@ -368,7 +369,6 @@ const unlock = function(item) {
     break;
   }
 }
-
 
 const weaponModal = new tingle.modal({
   footer: true,
