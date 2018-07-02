@@ -25,11 +25,6 @@ let monsterDamage = Stats.monsterDamage;
 let monsterRage = Stats.monsterRage;
 let monsterName = Stats.monsterName;
 
-let AlzurThunderState = {
-  state: true,
-  turns: 4,
-}
-
 let playerHitChanceModifier = 0;
 
 const goblin = {
@@ -300,6 +295,8 @@ const scorch = function() {
 const alzurs_thunder = function() {
 
   Stats.playerMana = Stats.playerMana - 75;
+
+  
   
 }
 

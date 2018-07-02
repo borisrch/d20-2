@@ -1,4 +1,5 @@
 import { DEV } from './dev';
+import { alzursThunderCondition } from './conditions';
 
 export const roll = function(n) {
   let min = 1;
@@ -17,8 +18,16 @@ export const bonus = function(runic, n) {
 
 export const attack = function(playerDamage, playerHitChanceModifier, playerDamageModifier, playerMultiplier, monsterArmour) {
 
-  if(DEV) {
+  let extra = 0;
+
+  if (alzursThunderCondition.turns > 0) {
+    extra = extra + roll(4);
+    alzursThunderCondition.turns--;
+  }
+
+  if (DEV) {
     console.log('pDamage: ' + playerDamage + ' pHitChance: ' + playerHitChanceModifier + ' pDamageMod ' + playerDamageModifier + ' pMultiplier: ' + playerMultiplier + ' monsterArmour: ' + monsterArmour);
+    console.log('Extra Spell Damage: ' + extra);
   }
 
   let result = 0;
@@ -28,7 +37,7 @@ export const attack = function(playerDamage, playerHitChanceModifier, playerDama
       result += roll(playerDamage);
     }
     result += playerDamageModifier;    
-    return result;
+    return result + extra;
   }
   return result = null;
 }
