@@ -214,7 +214,7 @@ const mageInit = function() {
 
   weaponModal.setContent('<span class="modal-title">Select Weapon</span>');
 
-  weaponModal.addFooterBtn('Oak Wand', 'spell equipment-icon', function() {
+  weaponModal.addFooterBtn('Oak Wand', 'equipment-icon', function() {
     // here goes some logic
     modal.close();
 });

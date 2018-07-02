@@ -230,6 +230,7 @@ body {
 .equipment-icon {
   font-size: 1.25em;
   padding: 15px;
+  background: #03A9F4;
 }
 
 .tingle-modal-box__content {
