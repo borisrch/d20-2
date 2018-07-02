@@ -8,6 +8,7 @@ import { disable, enable } from './disable';
 import { DEV } from './dev';
 import Stats from './stats';
 import { manaCheck } from './mana';
+import { alzursThunderCondition } from './conditions';
 
 if(DEV) {
   log('BUILD ALPHA 0.2.23 - AlzursThunder', 'info');
@@ -37,6 +38,7 @@ const goblin = {
     let result = roll(100);
     
     if(DEV) {
+      console.log('@GoblinTurn');
       console.log('Goblin Abilty Chance ' + result);
     }
 
@@ -199,6 +201,10 @@ const mageInit = function() {
   document.getElementById('q').addEventListener('click', () => {
     manaCheck(75, scorch);
   });
+
+  document.getElementById('w').addEventListener('click', () => {
+    manaCheck(100, alzurs_thunder);
+  });
 }
 
 const updateStats = function () {
@@ -253,7 +259,7 @@ const tippyMage = function() {
   $('.q').prop(title, mageSpellQ);
   tippy('.q');
 
-  const mageSpellW = '<b>Alzur\'s Thunder (100 PP)</b> - Deal 1d8 ' + damageIcon + ' and apply <i>Shocked</i>. Shock deals bonus 1d4 ' + damageIcon + ' for ' + runicIcon + ' turns.';
+  const mageSpellW = '<b>Alzur\'s Thunder (100 PP)</b> - Deal 2d4 ' + damageIcon + ' and apply <i>Shocked</i>. Shock deals bonus 1d4 ' + damageIcon + ' for ' + runicIcon + ' turns.';
   $('.w').prop(title, mageSpellW);
   tippy('.w');
 }
@@ -296,8 +302,23 @@ const alzurs_thunder = function() {
 
   Stats.playerMana = Stats.playerMana - 75;
 
-  
-  
+  if (DEV) {
+    console.log('@AlzursThunder');
+    console.log('Extra turns: ' + alzursThunderCondition.turns)
+  }
+
+  let result = attack(4, 0, 0, 2, Stats.monsterArmour);
+
+  alzursThunderCondition.turns = Stats.playerRunic;
+
+  if(result != null) {
+    log('You summon <i>Alzur\'s Thunder</i> for ' + result + ' damage!', 'ps-scorch');
+    monsterHealthHelper(result);
+    
+  } else {
+    log('You missed Alzur\'s Thunder!', 'miss-player');
+  }
+  endTurn(result);  
 }
 
 $(".character-selection").hide();

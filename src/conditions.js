@@ -1,3 +1,3 @@
 export const alzursThunderCondition = {
-  turns: 4,
+  turns: 0,
 }

@@ -1,6 +1,7 @@
 import { DEV } from './dev';
 import { alzursThunderCondition } from './conditions';
 
+// Returns result of random 1 to n.
 export const roll = function(n) {
   let min = 1;
   let max = Math.floor(n);
@@ -8,6 +9,7 @@ export const roll = function(n) {
   return result;
 }
 
+// Returns bonus of runic d n
 export const bonus = function(runic, n) {
   let b = 0;
   for (let i = 0; i < runic; i++) {
@@ -16,6 +18,7 @@ export const bonus = function(runic, n) {
   return b;
 }
 
+// Returns result of damage or null, considers conditions.
 export const attack = function(playerDamage, playerHitChanceModifier, playerDamageModifier, playerMultiplier, monsterArmour) {
 
   let extra = 0;
@@ -43,6 +46,7 @@ export const attack = function(playerDamage, playerHitChanceModifier, playerDama
   return result = null;
 }
 
+// Returns result of damage or null, does not consider any conditions.
 export const pureAttack = function(playerDamage, playerHitChanceModifier, playerDamageModifier, playerMultiplier, monsterArmour) {
 
   if (DEV) {
@@ -62,6 +66,7 @@ export const pureAttack = function(playerDamage, playerHitChanceModifier, player
   return result = null;
 }
 
+// Returns random int. Utility function.
 export const getRandomInt = function(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
