@@ -28,6 +28,20 @@ let monsterName = Stats.monsterName;
 
 let playerHitChanceModifier = 0;
 
+const chicken = {
+  name: 'Chicken',
+  monsterHealth: 10,
+  monsterArmour: 0,
+  monsterDamage: 2,
+  monsterRage: 0,
+  turn() {
+
+  },
+  basicAttack() {
+    
+  }
+}
+
 const goblin = {
   name: 'Goblin',
   monsterArmour: 15,
@@ -122,9 +136,11 @@ const endTurn = function(result) {
 
 
   setTimeout(() => {
-    currentMonster.turn(); 
-    enable();
-  }, 1900);
+    currentMonster.turn();     
+    setTimeout(() => {
+      enable();
+    }, 200);    
+  }, 1500);
 }
 
 const endTurnMonster = function(result) {

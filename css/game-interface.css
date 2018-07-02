@@ -119,8 +119,6 @@ body {
   margin-top: 20px; 
 }
 
-
-
 .special-attack {
   background: #FFA726;
   font-size: 1em;
@@ -184,8 +182,9 @@ body {
 }
 
 .log-info {
-  border-right: 5px solid #90A4AE;
-  color: #90A4AE;  
+  border-right: 5px solid rgb(173, 190, 201);
+  border-left: 5px solid rgb(173, 190, 201);
+  color: rgb(173, 190, 201);  
 }
 
 .tippy-popper {
