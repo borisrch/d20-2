@@ -31,6 +31,9 @@ const styleHandler = function(style) {
     case 'ps-thunder':
     return 'log log-player-spell animated flash';
 
+    case 'ps-grasp':
+    return 'log log-player-spell animated swing';
+
     default:
     console.log('Error in styleHandler');
     break;

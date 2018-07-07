@@ -311,7 +311,7 @@ const tippyMage = function() {
   $('.w').prop(title, mageSpellW);
   tippy('.w');
 
-  const mageSpellE = '<b>Deathfire Grasp (50 PP)</b> - Deal 1d10 ' + damageIcon + ' . Consecutive Deathfire Grasp casts deal bonus 1d2 ' + damageIcon + ' per ' + runicIcon + ' level.';
+  const mageSpellE = '<b>Malevolence (50 PP)</b> - Deal 1d10 ' + damageIcon + ' . Consecutive Malevolence casts deal bonus 1d2 ' + damageIcon + ' per ' + runicIcon + ' level.';
   $('.e').prop(title, mageSpellE);
   tippy('.e');
 }
@@ -399,11 +399,11 @@ const deathfire_grasp = function() {
   deathfireGraspCondition.active = true;
 
   if(result != null) {
-    log('You invoke <i>Deathfire Grasp</i> for ' + result + ' damage!', 'ps-thunder');
+    log('You invoke <i>Malevolence</i> for ' + result + ' damage!', 'ps-grasp');
     monsterHealthHelper(result);
     
   } else {
-    log('You missed Deathfire Grasp!', 'miss-player');
+    log('You missed Malevolence!', 'miss-player');
   }
   endTurn(result);  
 
