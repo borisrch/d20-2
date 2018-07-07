@@ -14,7 +14,7 @@ import { selectWeapon } from './equipment';
 import MicroModal from 'micromodal';
 
 if(DEV) {
-  log('BUILD ALPHA 0.2.26 - Equipment', 'info');
+  log('BUILD ALPHA 0.2.26 - Enable Source Maps, Debug', 'info');
 }
 
 let playerHealth = Stats.playerHealth;

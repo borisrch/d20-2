@@ -9,11 +9,11 @@ body {
 .game-interface {
   font-family: 'Patua One', 'Verdana', cursive;
   background: rgba(255, 255, 255, 0.96);
-  width: 70vw;
+  width: 80vw;
   min-width: 600px;
   height: 96vh;
   margin-top: 15px;
-  margin-left: 15%;
+  margin-left: 10%;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   transition: all 0.1s cubic-bezier(.25,.8,.25,1);
   -webkit-touch-callout: none;
@@ -26,12 +26,11 @@ body {
 
 .health-interface {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 0.5fr 1fr;
   grid-template-rows: 1fr;
   grid-gap: 5px;
   justify-items: center;  
-  grid-column-gap: 40px;
-  color: #263238;
+  color: #292929;
 }
 
 .health-player {
@@ -112,7 +111,7 @@ body {
 
 .ability-interface {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 0.8fr 0.7fr 1fr;
   grid-template-rows: 1fr;
   grid-gap: 5px;
   justify-items: center; 
@@ -227,10 +226,10 @@ body {
   font-size: 1.25em;
 }
 
-.equipment-icon {
-  font-size: 1.25em;
-  padding: 15px;
-  background: #03A9F4;
+.spell-equipment {
+  background: rgb(152,14,153);
+  background: linear-gradient(120deg, #FF9800 0%, #FF5722 100%);
+  color: #FFF3E0;
 }
 
 .tingle-modal-box__content {
