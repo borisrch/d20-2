@@ -245,6 +245,10 @@ const mageInit = function() {
     manaCheck(100, alzurs_thunder);
   });
 
+  document.getElementById('e').addEventListener('click', () => {
+    manaCheck(50, deathfire_grasp);
+  });
+
   document.getElementById('equipment-weapon').addEventListener('click', () => {
     weaponModal.open();
   });
@@ -321,6 +325,8 @@ const scorch = function() {
 
   Stats.playerMana = Stats.playerMana - 75;
 
+  deathfireGraspCondition.active = false;
+
   let base = roll(2);   
   let bonusRes = bonus(Stats.playerRunic, 2);
   let total = base + bonusRes;
@@ -356,6 +362,7 @@ const alzurs_thunder = function() {
   let result = attack(4, Stats.playerHitChanceModifier, 0, 2, Stats.monsterArmour);
 
   alzursThunderCondition.turns = Stats.playerRunic;
+  deathfireGraspCondition.active = false;
 
   if(result != null) {
     log('You summon <i>Alzur\'s Thunder</i> for ' + result + ' damage!', 'ps-thunder');
@@ -376,14 +383,26 @@ const deathfire_grasp = function() {
     console.log('');
   }
 
+  let result;
+
   if (deathfireGraspCondition.active == true) {
-
     let bonus = bonus(Stats.playerRunic, 2);
+    result = attack(10, Stats.playerHitChanceModifier, bonus, 1, Stats.monsterArmour);
 
-    let result = attack(10, Stats.playerHitChanceModifier, bonus, 1, Stats.monsterArmour);
+  } else {
+    result = attack(10, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour);
   }
+  
+  deathfireGraspCondition.active = true;
 
-  let result = attack(10, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour);
+  if(result != null) {
+    log('You invoke <i>Deathfire Grasp</i> for ' + result + ' damage!', 'ps-thunder');
+    monsterHealthHelper(result);
+    
+  } else {
+    log('You missed Deathfire Grasp!', 'miss-player');
+  }
+  endTurn(result);  
 
 }
 
