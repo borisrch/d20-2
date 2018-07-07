@@ -169,13 +169,19 @@ const endTurn = function(result) {
 const endTurnMonster = function(result) {
   if (result) {
     $('.player-health').addClass('animated jello');
-  }  
+  } 
+
   $('.monster-graphic').addClass('poke-left');
+  $('.player-graphic').addClass('player-flail');
 
   updateStats();
   setTimeout(() => {
     $('.player-health').removeClass('animated jello');
   }, 500);
+  setTimeout(() => {
+    $('.monster-graphic').removeClass('poke-left');
+    $('.player-graphic').removeClass('player-flail');
+  }, 750);
 }
 
 // Must Define After Monster, but before Basic Attack
@@ -418,6 +424,10 @@ const deathfire_grasp = function() {
   }
   endTurn(result);  
 
+}
+
+const runic_echoes = function() {
+  
 }
 
 const unlock = function(item) {

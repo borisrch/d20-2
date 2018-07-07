@@ -8,7 +8,7 @@
 }
 
 .poke-left {
-  animation: poke-left 1s 1;
+  animation: poke-left 1s 1 !important;
 }
 
 .monster-graphic {
@@ -21,6 +21,11 @@
 
 .monster-flail {
   animation: flail-right 0.5s 1;
+  transform-origin: bottom;
+}
+
+.player-flail {
+  animation: flail-left 0.5s 1;
   transform-origin: bottom;
 }
 
@@ -51,12 +56,13 @@
 
 @keyframes poke-left {
   0% {
+    
   }
   30% {
     transform: translateX(-5px);
   }
   100% {
-    transform: translateX(5px);
+    transform: translateX(0);
   }
 }
 
@@ -66,6 +72,19 @@
   }
   50% {
     transform: rotate(15deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes flail-left {
+  0% {
+
+  }
+  50% {
+    transform: rotate(-15deg);
   }
 
   100% {
