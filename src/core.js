@@ -331,6 +331,14 @@ const tippyInit = function () {
   const monsterRageTip = 'Rage is aquired over time, and allows Monsters to have additional spells and effects.';
   $('.monster-rage-tip').prop(title, monsterRageTip);
   tippy('.monster-rage-tip');
+
+  const weaponTip = 'Change your weapon.';
+  $('#equipment-weapon').prop(title, weaponTip);
+  tippy('#equipment-weapon');
+
+  const amuletTip = 'Change your amulet.';
+  $('#equipment-amulet').prop(title, amuletTip);
+  tippy('#equipment-amulet');
 }
 
 const tippyMage = function() {  
