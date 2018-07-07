@@ -34,6 +34,9 @@ const styleHandler = function(style) {
     case 'ps-grasp':
     return 'log log-player-spell animated swing';
 
+    case 'ps-echoes':
+    return 'log log-player-spell animated slideInDown';
+
     default:
     console.log('Error in styleHandler');
     break;

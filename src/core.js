@@ -8,7 +8,7 @@ import { disable, enable } from './disable';
 import { DEV } from './dev';
 import Stats from './stats';
 import { manaCheck } from './mana';
-import { alzursThunderCondition, deathfireGraspCondition } from './conditions';
+import { alzursThunderCondition, deathfireGraspCondition, runicEchoesCondition } from './conditions';
 import { selectWeapon } from './equipment';
 
 import MicroModal from 'micromodal';
@@ -76,7 +76,7 @@ const goblin = {
     }
   },
   basicAttack() {
-    let result = pureAttack(Stats.monsterDamage, 0, 0, 1, playerArmour);
+    let result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
     if (result != null) {
       playerHealthHelper(result);
       log('Goblin hits for ' + result + ' damage!', 'mb');
@@ -86,7 +86,7 @@ const goblin = {
     endTurnMonster(result);
   },
   goblinSpit() {
-    let result = pureAttack(Stats.monsterDamage, 1, 0, 1, playerArmour);
+    let result = pureAttack(Stats.monsterDamage, 1, 0, 1, Stats.playerArmour);
     if (result != null) {
       playerHealthHelper(result);
       log('Goblin uses <i>Goblin Spit</i> for ' + result + ' damage!', 'ms');
@@ -127,6 +127,9 @@ const endTurn = function(result) {
     $('.monster-health').addClass('animated jello');
   }
 
+  if (runicEchoesCondition.active == true) {
+    $('.player-armour').addClass('colour-mana-add');
+  }
   
   $('.player-graphic').addClass('poke-right');
   $('.monster-graphic').addClass('monster-flail');
@@ -155,6 +158,7 @@ const endTurn = function(result) {
 
   setTimeout(() => {
     $('.player-mana').removeClass('colour-mana-add');
+    $('.player-armour').removeClass('colour-mana-add');
   }, 1000);
 
 
@@ -170,6 +174,11 @@ const endTurnMonster = function(result) {
   if (result) {
     $('.player-health').addClass('animated jello');
   } 
+
+  if (runicEchoesCondition.active == true) {
+    Stats.playerArmour = Stats.playerArmour - runicEchoesCondition.bonusArmour;
+    runicEchoesCondition.active = false;
+  }
 
   $('.monster-graphic').addClass('poke-left');
   $('.player-graphic').addClass('player-flail');
@@ -243,11 +252,24 @@ const mageInit = function() {
   $('.ri').addClass('ra ra-fire-shield icon');
 
   weaponModal.setContent('<span class="modal-title">Select Weapon</span>');
-
   weaponModal.addFooterBtn('Oak Wand', 'equipment-icon', function() {
     selectWeapon('oak-wand');
     updateStats();
     weaponModal.close();
+  });
+
+  amuletModal.setContent('<span class="modal-title">Select Amulet</span>');
+  amuletModal.addFooterBtn('None', 'equipment-icon', function() {
+    updateStats();
+    amuletModal.close();
+  });
+
+  document.getElementById('equipment-weapon').addEventListener('click', () => {
+    weaponModal.open();
+  });
+
+  document.getElementById('equipment-amulet').addEventListener('click', () => {
+    amuletModal.open();
   });
 
   document.getElementById('basic-attack').addEventListener('click', () => {
@@ -266,9 +288,11 @@ const mageInit = function() {
     manaCheck(50, deathfire_grasp);
   });
 
-  document.getElementById('equipment-weapon').addEventListener('click', () => {
-    weaponModal.open();
+  document.getElementById('r').addEventListener('click', () => {
+    manaCheck(25, runic_echoes);
   });
+
+
 }
 
 const updateStats = function () {
@@ -331,13 +355,17 @@ const tippyMage = function() {
   const mageSpellE = '<b>Malevolence (50 PP)</b> - Deal 1d10 ' + damageIcon + ' . Consecutive Malevolence casts deal bonus 1d2 ' + damageIcon + ' per ' + runicIcon + ' level.';
   $('.e').prop(title, mageSpellE);
   tippy('.e');
+
+  const mageSpellR = '<b>Runic Echoes (25 PP)</b> - Increase ' + armourIcon + ' by 1d2 per ' + runicIcon + ' level for the next turn.';
+  $('.r').prop(title, mageSpellR);
+  tippy('.r');
 }
 
 const monsterInit = function() {
   Stats.monsterArmour = 4;
   Stats.monsterDamage = 4;
   Stats.monsterHealth = 20;  
-  Stats.monsterRage = 69;
+  Stats.monsterRage = 0;
   Stats.monsterName = goblin.name;
 }
 
@@ -427,21 +455,19 @@ const deathfire_grasp = function() {
 }
 
 const runic_echoes = function() {
-  
-}
 
-const unlock = function(item) {
-  switch(item) {
-    case 'ebony':
-    weaponModal.addFooterBtn('Ebony Wand', 'equipment-icon', function() {
-      selectWeapon('ebony-wand');
-      updateStats();
-      weaponModal.close();
-    });
+  Stats.playerMana = Stats.playerMana - 25;
 
-    default:
-    break;
-  }
+  let bonusRes = bonus(Stats.playerRunic, 2);
+
+  runicEchoesCondition.active = true;
+  runicEchoesCondition.bonusArmour = bonusRes;
+
+  Stats.playerArmour = Stats.playerArmour + bonusRes;
+
+  log('You cast <i>Runic Echoes</i> and boost armour by ' + bonusRes + '!', 'ps-echoes');
+
+  endTurn();
 }
 
 const weaponModal = new tingle.modal({
@@ -460,6 +486,23 @@ const weaponModal = new tingle.modal({
       // here's goes some logic
       // e.g. save content before closing the modal
       return true; // close the modal
+  }
+});
+
+const amuletModal = new tingle.modal({
+  footer: true,
+  stickyFooter: false,
+  closeMethods: ['button', 'escape'],
+  closeLabel: "Close",
+  cssClass: ['custom-class-1', 'custom-class-2'],
+  onOpen: function() {
+      
+  },
+  onClose: function() {
+      
+  },
+  beforeClose: function() {
+      return true;
   }
 });
 
