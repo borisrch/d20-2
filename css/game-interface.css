@@ -260,6 +260,10 @@ body {
   cursor: pointer;
 }
 
+.tingle-enabled {
+  position: inherit;
+}
+
 /*
     SPELLS 
 */
