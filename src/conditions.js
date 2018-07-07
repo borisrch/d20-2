@@ -3,5 +3,5 @@ export const alzursThunderCondition = {
 }
 
 export const deathfireGraspCondition = {
-  active: false;
+  active: false,
 }

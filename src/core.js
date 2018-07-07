@@ -311,6 +311,9 @@ const tippyMage = function() {
   $('.w').prop(title, mageSpellW);
   tippy('.w');
 
+  const mageSpellE = '<b>Deathfire Grasp (50 PP)</b> - Deal 1d10 ' + damageIcon + ' . Consecutive Deathfire Grasp casts deal bonus 1d2 ' + damageIcon + ' per ' + runicIcon + ' level.';
+  $('.e').prop(title, mageSpellE);
+  tippy('.e');
 }
 
 const monsterInit = function() {
@@ -380,14 +383,14 @@ const deathfire_grasp = function() {
 
   if (DEV) {
     console.log('@DeathfireGrasp');
-    console.log('');
+    console.log('Active: ' + deathfireGraspCondition.active);
   }
 
   let result;
 
   if (deathfireGraspCondition.active == true) {
-    let bonus = bonus(Stats.playerRunic, 2);
-    result = attack(10, Stats.playerHitChanceModifier, bonus, 1, Stats.monsterArmour);
+    let bonusRes = bonus(Stats.playerRunic, 2);
+    result = attack(10, Stats.playerHitChanceModifier, bonusRes, 1, Stats.monsterArmour);
 
   } else {
     result = attack(10, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour);
