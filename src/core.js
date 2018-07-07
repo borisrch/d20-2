@@ -8,7 +8,7 @@ import { disable, enable } from './disable';
 import { DEV } from './dev';
 import Stats from './stats';
 import { manaCheck } from './mana';
-import { alzursThunderCondition } from './conditions';
+import { alzursThunderCondition, deathfireGraspCondition } from './conditions';
 import { selectWeapon } from './equipment';
 
 import MicroModal from 'micromodal';
@@ -330,7 +330,7 @@ const scorch = function() {
     console.log('Scorch bonus AC-ignore roll: ' + bonusRes);
   }
 
-  let result = attack(10, 0, 0, 1, Stats.monsterArmour - total);
+  let result = attack(10, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour - total);
 
   if(result != null) {
     log('You <i>Scorch</i> for ' + result + ' damage!', 'ps-scorch');
@@ -353,7 +353,7 @@ const alzurs_thunder = function() {
     console.log('Extra turns: ' + alzursThunderCondition.turns)
   }
 
-  let result = attack(4, 0, 0, 2, Stats.monsterArmour);
+  let result = attack(4, Stats.playerHitChanceModifier, 0, 2, Stats.monsterArmour);
 
   alzursThunderCondition.turns = Stats.playerRunic;
 
@@ -365,6 +365,26 @@ const alzurs_thunder = function() {
     log('You missed Alzur\'s Thunder!', 'miss-player');
   }
   endTurn(result);  
+}
+
+const deathfire_grasp = function() {
+
+  Stats.playerMana = Stats.playerMana - 50;
+
+  if (DEV) {
+    console.log('@DeathfireGrasp');
+    console.log('');
+  }
+
+  if (deathfireGraspCondition.active == true) {
+
+    let bonus = bonus(Stats.playerRunic, 2);
+
+    let result = attack(10, Stats.playerHitChanceModifier, bonus, 1, Stats.monsterArmour);
+  }
+
+  let result = attack(10, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour);
+
 }
 
 const unlock = function(item) {
@@ -410,6 +430,10 @@ const advance = function() {
   Stats.playerLevel = Stats.playerLevel + 1;
 
   // NEED TO ADD CHECK FOR LAST MONSTERS !! if (Stats.playerLevel > 10) or whatever.
+
+  if (Stats.playerLevel > 10) {
+    throw new Error('playerLevel exceeds 10. No more monsters');
+  }
 
   let item = mageItem[Stats.playerLevel];
 

@@ -118,6 +118,12 @@ body {
   margin-top: 20px; 
 }
 
+.graphics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
 .equipment-button {
   background: #FFA726;
   font-size: 1em;
