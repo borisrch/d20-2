@@ -126,6 +126,10 @@ const endTurn = function(result) {
   if (result) {
     $('.monster-health').addClass('animated jello');
   }
+
+  
+  $('.player-graphic').addClass('poke-right');
+  $('.monster-graphic').addClass('monster-flail');
   
   if (Stats.playerMana + 25 >= 100) {
     Stats.playerMana = 100;
@@ -145,6 +149,11 @@ const endTurn = function(result) {
   }, 500);
 
   setTimeout(() => {
+    $('.player-graphic').removeClass('poke-right');
+    $('.monster-graphic').removeClass('monster-flail');
+  }, 500);
+
+  setTimeout(() => {
     $('.player-mana').removeClass('colour-mana-add');
   }, 1000);
 
@@ -154,13 +163,15 @@ const endTurn = function(result) {
     setTimeout(() => {
       enable();
     }, 200);    
-  }, 1500);
+  }, 2000);
 }
 
 const endTurnMonster = function(result) {
   if (result) {
     $('.player-health').addClass('animated jello');
   }  
+  $('.monster-graphic').addClass('poke-left');
+
   updateStats();
   setTimeout(() => {
     $('.player-health').removeClass('animated jello');
@@ -462,11 +473,10 @@ const advance = function() {
   if (item.type === 'weapon') {
       weaponModal.addFooterBtn(item.name, 'equipment-icon', function() {
       selectWeapon(item.name);
-      updateStats();
-      log(Stats.monsterName + ' dropped: ' + item.name +'!', 'victory');
-
+      updateStats();      
       weaponModal.close();
     });
+    log(Stats.monsterName + ' dropped: ' + item.name +'!', 'victory');
   }
 
   if (item.type === 'amulet') {

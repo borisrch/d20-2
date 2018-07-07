@@ -3,9 +3,25 @@
   -webkit-user-drag: none;
 }
 
-.monster-graphic-fast {
-  animation: bob 1s infinite;
+.poke-right {
+  animation: poke-right 1s 1;
+}
+
+.poke-left {
+  animation: poke-left 1s 1;
+}
+
+.monster-graphic {
   -webkit-user-drag: none;
+}
+
+.mob-fast {
+  animation: bob 1s infinite;
+}
+
+.monster-flail {
+  animation: flail-right 0.5s 1;
+  transform-origin: bottom;
 }
 
 @keyframes bob {
@@ -19,5 +35,40 @@
   }
   100% {
     transform: translate(0)
+  }
+}
+
+@keyframes poke-right {
+  0% {
+  }
+  30% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(-5px);
+  }
+}
+
+@keyframes poke-left {
+  0% {
+  }
+  30% {
+    transform: translateX(-5px);
+  }
+  100% {
+    transform: translateX(5px);
+  }
+}
+
+@keyframes flail-right {
+  0% {
+
+  }
+  50% {
+    transform: rotate(15deg);
+  }
+
+  100% {
+    transform: rotate(0);
   }
 }
