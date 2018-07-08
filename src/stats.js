@@ -7,6 +7,7 @@ export default {
   playerHitChanceModifier: 0,
   playerLevel: 0,
   playerClass: 'null',
+  playerMaxMana: 100,
   monsterHealth: 0,
   monsterArmour: 0,
   monsterDamage: 0,

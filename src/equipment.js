@@ -1,4 +1,5 @@
 import Stats from './stats';
+import { sapphireAmuletCondition } from './conditions';
 
 export const selectWeapon = function(weapon) {
   switch(weapon) {
@@ -33,6 +34,26 @@ const ebony_wand_desc = '<b>Ebony Wand</b>: +2 to hit chance,  +3 to ' + runicIc
 const elder_wand_desc = '<b>Elder Wand</b>: +3 to hit chance,  +4 to ' + runicIcon + ' . <br>';
 
 export const wand_desc = [oak_wand_desc, oak_wand_desc + ebony_wand_desc, oak_wand_desc + ebony_wand_desc + elder_wand_desc];
+
+export const selectAmulet = function(amulet) {
+  switch(amulet) {
+    case 'Sapphire Amulet':
+    sapphireAmuletCondition.active = true;
+    break;
+
+    case 'Emerald Amulet':
+    sapphireAmuletCondition.active = false;
+    Stats.playerArmour = Stats.playerArmour + 2;
+    break;
+
+    case 'Ruby Amulet':
+    break;
+
+    default:
+    throw new Error('Error at selectAmulet');
+    break;
+  }
+}
 
 const sapphire_amulet_desc = '<h2>Equip Amulet</h2> <b>Sapphire Amulet</b>: +25 to ' + manaIcon + '.<br>';
 const emerald_amulet_desc = '<b>Emerald Amulet</b>: +2 to ' + armourIcon + '.<br>';

@@ -8,8 +8,8 @@ import { disable, enable } from './disable';
 import { DEV } from './dev';
 import Stats from './stats';
 import { manaCheck } from './mana';
-import { alzursThunderCondition, deathfireGraspCondition, runicEchoesCondition } from './conditions';
-import { selectWeapon, wand_desc } from './equipment';
+import { alzursThunderCondition, deathfireGraspCondition, runicEchoesCondition, sapphireAmuletCondition } from './conditions';
+import { selectWeapon, selectAmulet, wand_desc } from './equipment';
 
 import MicroModal from 'micromodal';
 
@@ -34,8 +34,15 @@ let playerHitChanceModifier = 0;
 // Add items for other classes. Desc refers to array in equipment.js
 let mageItem = [
   { name: 'Oak Wand', type: 'weapon', desc: 0 },
+  { name: 'Sapphire Amulet', type: 'amulet', desc: 0 },
+  { name: 'Magical Stick', type: 'trinket', desc: 0 },
   { name: 'Ebony Wand', type: 'weapon', desc: 1 },
+  { name: 'Emerald Amulet', type: 'amulet', desc: 1 },
+  { name: 'Cursed Locket', type: 'trinket', desc: 1 },
   { name: 'Elder Wand', type: 'weapon', desc: 2 },
+  { name: 'Ruby Amulet', type: 'amulet', desc: 2 },
+  { name: 'Ancient Coin', type: 'trinket', desc: 2 },
+  { name: 'Null Sphere', type: 'trinket', desc: 3 },
 ]
 
 
@@ -132,9 +139,15 @@ const endTurn = function(result) {
   
   $('.player-graphic').addClass('poke-right');
   $('.monster-graphic').addClass('monster-flail');
+
+  if (sapphireAmuletCondition.active == true) {
+    Stats.playerMaxMana = 125;
+  } else {
+    Stats.playerMaxMana = 100;
+  }
   
-  if (Stats.playerMana + 25 >= 100) {
-    Stats.playerMana = 100;
+  if (Stats.playerMana + 25 >= Stats.playerMaxMana) {
+    Stats.playerMana = Stats.playerMaxMana;
   } else {
     Stats.playerMana = Stats.playerMana + 25;
     $('.player-mana').addClass('colour-mana-add');
@@ -166,7 +179,7 @@ const endTurn = function(result) {
     setTimeout(() => {
       enable();
     }, 200);    
-  }, 2000);
+  }, 1800);
 }
 
 const endTurnMonster = function(result) {
@@ -569,7 +582,7 @@ const advance = function() {
   let item = mageItem[Stats.playerLevel];
 
   if (item.type === 'weapon') {
-    weaponModal.addFooterBtn(item.name, 'spell-equipment wand-button', function() {
+    weaponModal.addFooterBtn(item.name, 'spell-equipment wand-button', () => {
       selectWeapon(item.name);
       updateStats();      
       weaponModal.close();
@@ -580,7 +593,11 @@ const advance = function() {
   }
 
   if (item.type === 'amulet') {
-
+    amuletModal.addFooterBtn(item.name, 'spell-amulet wand-button', () => {
+      selectAmulet(item.name);
+      updateStats();      
+      amuletModal.close();
+    })
   }
 
   if (item.type === 'trinket') {

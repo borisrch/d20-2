@@ -10,3 +10,7 @@ export const runicEchoesCondition = {
   active: false,
   bonusArmour: 0,
 }
+
+export const sapphireAmuletCondition = {
+  active: false
+}
