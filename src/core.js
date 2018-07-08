@@ -35,8 +35,7 @@ let playerHitChanceModifier = 0;
 let mageItem = [
   { name: 'Oak Wand', type: 'weapon', desc: 0 },
   { name: 'Ebony Wand', type: 'weapon', desc: 1 },
-  { name: 'Seismic Wand', type: 'weapon', desc: 2 },
-  { name: 'Elder Wand', type: 'weapon' }
+  { name: 'Elder Wand', type: 'weapon', desc: 2 },
 ]
 
 

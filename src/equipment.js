@@ -2,16 +2,23 @@ import Stats from './stats';
 
 export const selectWeapon = function(weapon) {
   switch(weapon) {
-    case 'oak-wand':
+    case 'Oak Wand':
     Stats.playerRunic = 2;
+    Stats.playerHitChanceModifier = 0;
     break;
 
     case 'Ebony Wand':
     Stats.playerRunic = 3;
+    Stats.playerHitChanceModifier = 2;
+    break;
+
+    case 'Elder Wand':
+    Stats.playerRunic = 4;
+    Stats.playerHitChanceModifier = 3;
     break;
 
     default:
-    Stats.playerRunic = 2;
+    throw new Error('Error at selectWeapon');
     break;
   }
 }
