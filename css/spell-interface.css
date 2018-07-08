@@ -31,10 +31,6 @@ button:disabled {
   color: #ffebee;
 }
 
-.basic-attack-icon {  
-
-}
-
 .spells-interface {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -42,7 +38,7 @@ button:disabled {
   justify-items: center;  
 }
 
-.spells-interface > button {
+.spells-interface > button, .basic-container > button {
   border: none;
   box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.10);
   border-radius: 4px;
@@ -52,7 +48,7 @@ button:disabled {
   transition:all 0.3s ease;
 }
 
-.spells-interface > button:hover {
+.spells-interface > button:hover, .basic-container > button:hover {
   box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
   -webkit-transform: scale(1.3);
   -ms-transform: scale(1.3);
@@ -77,6 +73,8 @@ button:disabled {
   transform: scale(1.3);
   cursor: pointer;
 }
+
+
 
 .spell {
   background-color: #42A5F5;

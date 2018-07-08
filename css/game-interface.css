@@ -115,9 +115,11 @@ body {
 
 .ability-interface {
   display: grid;
-  grid-template-columns: 0.8fr 0.7fr 1fr;
+  max-width: 520px;
+  margin: auto;
+  grid-template-columns: auto 1fr 1fr;
   grid-template-rows: 1fr;
-  grid-gap: 5px;
+  grid-gap: 20px;
   justify-items: center; 
   margin-top: 20px; 
 }
@@ -250,6 +252,11 @@ body {
 .spell-trinket {
   background: linear-gradient(120deg, #81D4FA 0%, #5C6BC0 100%);
   color: #E3F2FD;
+}
+
+.spell-potion {
+  background: linear-gradient(120deg, #CE93D8 0%, #7E57C2 100%);
+  color: #F3E5F5;
 }
 
 

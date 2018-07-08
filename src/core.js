@@ -256,6 +256,10 @@ const endTurnMonster = function(result) {
   if (result) {
     $('.player-health').addClass('animated jello');
   }
+
+  if(Stats.monsterRage > 0) {
+    $('.monster-rage').addClass('colour-rage-add');
+  }
   
   if (dwarfTankCondition.active == true) {
     $('.monster-armour').addClass('colour-rage-add');
@@ -273,6 +277,7 @@ const endTurnMonster = function(result) {
   setTimeout(() => {
     $('.player-health').removeClass('animated jello');
     $('.monster-armour').removeClass('colour-rage-add');
+    $('.monster-rage').removeClass('colour-rage-add');
   }, 500);
   setTimeout(() => {
     $('.monster-graphic').removeClass('poke-left');
@@ -734,7 +739,12 @@ $(".character-selection").hide();
 
 init('mage');
 
-
-for (let i = 0 ; i < 100 ; i++ ) {
-  // console.log(getRandomInt(5));
-}
+// let turnCount = 0;
+// const sim = setInterval(function(){  
+//   if(turnCount < 10) {
+//     turnCount++;
+//     playerTurnBasicAttack();
+//   } else {
+//     clearInterval(sim);
+//   }  
+// }, 2500);
