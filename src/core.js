@@ -124,7 +124,7 @@ const dwarf = {
         console.log('@Dwarf Rage')
       }
       Stats.monsterRage = 0;
-      dwarfSmash();
+      this.dwarfSmash();
     } else {
       Stats.monsterRage = Stats.monsterRage + 10;
       let result = roll(100);
@@ -258,7 +258,7 @@ const endTurnMonster = function(result) {
   }
   
   if (dwarfTankCondition.active == true) {
-    $('.monster-armour').addClass('colour-mana-add');
+    $('.monster-armour').addClass('colour-rage-add');
   }
 
   if (runicEchoesCondition.active == true) {
@@ -272,7 +272,7 @@ const endTurnMonster = function(result) {
   updateStats();
   setTimeout(() => {
     $('.player-health').removeClass('animated jello');
-    $('.monster-armour').removeClass('colour-mana-add');
+    $('.monster-armour').removeClass('colour-rage-add');
   }, 500);
   setTimeout(() => {
     $('.monster-graphic').removeClass('poke-left');

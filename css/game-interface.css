@@ -109,6 +109,10 @@ body {
   color: #00BCD4;
 }
 
+.colour-rage-add {
+  color: #d32f2f;
+}
+
 .ability-interface {
   display: grid;
   grid-template-columns: 0.8fr 0.7fr 1fr;
