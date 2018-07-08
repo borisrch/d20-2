@@ -9,7 +9,7 @@ import { DEV } from './dev';
 import Stats from './stats';
 import { manaCheck } from './mana';
 import { alzursThunderCondition, deathfireGraspCondition, runicEchoesCondition, sapphireAmuletCondition, dwarfTankCondition } from './conditions';
-import { selectWeapon, selectAmulet, wand_desc, amulet_desc } from './equipment';
+import { selectWeapon, selectAmulet, selectTrinket, wand_desc, amulet_desc, trinket_desc } from './equipment';
 
 import MicroModal from 'micromodal';
 
@@ -119,13 +119,14 @@ const dwarf = {
   monsterRage: 0,
   src: 'res/mobs/dwarf.png',
   turn() {
-    if (this.monsterRage > 40) {
+    if (Stats.monsterRage > 40) {
       if(DEV) {
         console.log('@Dwarf Rage')
       }
-      this.monsterRage = 0;
+      Stats.monsterRage = 0;
       dwarfSmash();
     } else {
+      Stats.monsterRage = Stats.monsterRage + 10;
       let result = roll(100);
       if (DEV) {
         console.log('@DwarfTurn');
@@ -153,7 +154,7 @@ const dwarf = {
     dwarfTankCondition.active = true;
     Stats.monsterArmour = Stats.monsterArmour + dwarfTankCondition.bonusArmour;
 
-    log('Dwarf activates Tank and buffs AC by 4 for next turn!', 'ms');
+    log('Dwarf uses <i>Dwarven Resilience</i> and buffs AC by 4!', 'ms');
     endTurnMonster();
   },
   dwarfSmash() {
@@ -189,8 +190,7 @@ const playerHealthHelper = function(result) {
     log('You died to ' + currentMonster.name + '!', 'ms');
   } else {
     Stats.playerHealth = Stats.playerHealth - result;
-  }
-  
+  } 
 }
 
 const endTurn = function(result) {
@@ -681,7 +681,14 @@ const advance = function() {
   }
 
   if (item.type === 'trinket') {
-    
+    trinketModal.addFooterBtn(item.name, 'spell-trinket wand-button', () => {
+      selectTrinket(item.name);
+      updateStats();      
+      trinketModal.close();
+    });
+
+    trinketModal.setContent(trinket_desc[item.desc]);
+    log(Stats.monsterName + ' dropped: ' + item.name +'!', 'victory');
   }
 
   currentMonster = getNextMonster(Stats.playerLevel);
@@ -709,6 +716,10 @@ const getNextMonster = function(level) {
 
     case 1:
     return goblin;
+    break;
+
+    case 2:
+    return dwarf;
     break;
 
     default:
