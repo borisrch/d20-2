@@ -73,7 +73,7 @@ body {
   justify-items: center;   
 }
 
-.player-mana, .player-armour {
+.player-mana, .player-armour, .monster-armour {
   transition: all 0.5s ease;
 }
 

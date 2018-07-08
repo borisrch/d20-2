@@ -14,3 +14,8 @@ export const runicEchoesCondition = {
 export const sapphireAmuletCondition = {
   active: false
 }
+
+export const dwarfTankCondition = {
+  active: false,
+  bonusArmour: 0,
+}

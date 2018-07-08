@@ -8,7 +8,7 @@ import { disable, enable } from './disable';
 import { DEV } from './dev';
 import Stats from './stats';
 import { manaCheck } from './mana';
-import { alzursThunderCondition, deathfireGraspCondition, runicEchoesCondition, sapphireAmuletCondition } from './conditions';
+import { alzursThunderCondition, deathfireGraspCondition, runicEchoesCondition, sapphireAmuletCondition, dwarfTankCondition } from './conditions';
 import { selectWeapon, selectAmulet, wand_desc, amulet_desc } from './equipment';
 
 import MicroModal from 'micromodal';
@@ -114,8 +114,8 @@ const goblin = {
 const dwarf = {
   name: 'Gimli, the Dwarf',
   monsterHealth: 30,
-  monsterArmour: 15,
-  monsterDamage: 4,
+  monsterArmour: 10,
+  monsterDamage: 6,
   monsterRage: 0,
   src: 'res/mobs/dwarf.png',
   turn() {
@@ -139,13 +139,32 @@ const dwarf = {
     }
   },
   basicAttack() {
-
+    let result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
+    if (result != null) {
+      playerHealthHelper(result);
+      log('Dwarf hits for ' + result + ' damage!', 'mb');
+    } else {
+      log('Dwarf missed.', 'miss');
+    }
+    endTurnMonster(result);
   },
   dwarfTank() {
+    dwarfTankCondition.bonusArmour = 4;
+    dwarfTankCondition.active = true;
+    Stats.monsterArmour = Stats.monsterArmour + dwarfTankCondition.bonusArmour;
 
+    log('Dwarf activates Tank and buffs AC by 4 for next turn!', 'ms');
+    endTurnMonster();
   },
   dwarfSmash() {
-
+    let result = pureAttack(Stats.monsterDamage + 4, 0, 0, 1, Stats.playerArmour);
+    if (result != null) {
+      playerHealthHelper(result);
+      log('Dwarf uses <i>Dwarven Smash</i> for ' + result + ' damage!', 'ms');
+    } else {
+      log('Dwarf missed.', 'miss');
+    }
+    endTurnMonster(result);
   }
 }
 
@@ -181,6 +200,11 @@ const endTurn = function(result) {
 
   if (runicEchoesCondition.active == true) {
     $('.player-armour').addClass('colour-mana-add');
+  }
+
+  if (dwarfTankCondition.active == true) {
+    dwarfTankCondition.active = false;
+    Stats.monsterArmour = Stats.monsterArmour - dwarfTankCondition.bonusArmour;
   }
   
   $('.player-graphic').addClass('poke-right');
@@ -231,7 +255,11 @@ const endTurn = function(result) {
 const endTurnMonster = function(result) {
   if (result) {
     $('.player-health').addClass('animated jello');
-  } 
+  }
+  
+  if (dwarfTankCondition.active == true) {
+    $('.monster-armour').addClass('colour-mana-add');
+  }
 
   if (runicEchoesCondition.active == true) {
     Stats.playerArmour = Stats.playerArmour - runicEchoesCondition.bonusArmour;
@@ -244,6 +272,7 @@ const endTurnMonster = function(result) {
   updateStats();
   setTimeout(() => {
     $('.player-health').removeClass('animated jello');
+    $('.monster-armour').removeClass('colour-mana-add');
   }, 500);
   setTimeout(() => {
     $('.monster-graphic').removeClass('poke-left');
