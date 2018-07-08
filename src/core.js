@@ -9,12 +9,12 @@ import { DEV } from './dev';
 import Stats from './stats';
 import { manaCheck } from './mana';
 import { alzursThunderCondition, deathfireGraspCondition, runicEchoesCondition, sapphireAmuletCondition } from './conditions';
-import { selectWeapon, selectAmulet, wand_desc } from './equipment';
+import { selectWeapon, selectAmulet, wand_desc, amulet_desc } from './equipment';
 
 import MicroModal from 'micromodal';
 
 if(DEV) {
-  log('BUILD ALPHA 0.2.26 - Enable Source Maps, Debug', 'info');
+  log('BUILD ALPHA 0.2.26 - Amulet, Trinket, Wand', 'info');
 }
 
 let playerHealth = Stats.playerHealth;
@@ -45,18 +45,25 @@ let mageItem = [
   { name: 'Null Sphere', type: 'trinket', desc: 3 },
 ]
 
-
 const chicken = {
   name: 'Chicken',
   monsterHealth: 10,
   monsterArmour: 0,
   monsterDamage: 2,
   monsterRage: 0,
+  src: 'res/mobs/chicken.png',
   turn() {
-
+    this.basicAttack();
   },
   basicAttack() {
-
+    let result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
+    if (result != null) {
+      playerHealthHelper(result);
+      log('Chicken hits for ' + result + ' damage!', 'mb');
+    } else {
+      log('Chicken missed.', 'miss');
+    }
+    endTurnMonster(result);
   }
 }
 
@@ -66,6 +73,7 @@ const goblin = {
   monsterArmour: 15,
   monsterDamage: 4,
   monsterRage: 0,
+  src: 'res/mobs/goblin.png',
   names: ['Wormface', 'Grubhead', 'Fartbreath', 'Poopnose', 'Wormhair'],
   turn() {
     let result = roll(100);
@@ -108,7 +116,7 @@ const monsterHealthHelper = function(result) {
     console.log('@monsterHealthHelper result:' + result);
   }
 
-  if(Stats.monsterHealth - result < 0) {
+  if(Stats.monsterHealth - result <= 0) {
     Stats.monsterHealth = 0;
     log('You have slain ' + Stats.monsterName + '!', 'victory');
     advance();
@@ -207,7 +215,7 @@ const endTurnMonster = function(result) {
 
 // Must Define After Monster, but before Basic Attack
 
-let currentMonster = goblin;
+let currentMonster;
 
 const playerTurnBasicAttack = function() {
 
@@ -268,13 +276,14 @@ const mageInit = function() {
 
   weaponModal.setContent(wand_desc[0]);
   weaponModal.addFooterBtn('Oak Wand', 'spell-equipment wand-button', function() {
-    selectWeapon('oak-wand');
+    selectWeapon('Oak Wand');
     updateStats();
     weaponModal.close();
   });
 
   amuletModal.setContent('<h2>Select Amulet</h2><p>You don\'t have any amulets yet.');
   amuletModal.addFooterBtn('None', 'spell-amulet', function() {
+    selectAmulet('None');
     updateStats();
     amuletModal.close();
   });
@@ -403,11 +412,12 @@ const tippyMage = function() {
 }
 
 const monsterInit = function() {
-  Stats.monsterArmour = 4;
-  Stats.monsterDamage = 4;
-  Stats.monsterHealth = 20;  
+  Stats.monsterArmour = chicken.monsterArmour;
+  Stats.monsterDamage = chicken.monsterDamage;
+  Stats.monsterHealth = chicken.monsterHealth;  
   Stats.monsterRage = 0;
-  Stats.monsterName = goblin.name;
+  Stats.monsterName = chicken.name;
+  currentMonster = chicken;
 }
 
 const scorch = function() {
@@ -597,7 +607,10 @@ const advance = function() {
       selectAmulet(item.name);
       updateStats();      
       amuletModal.close();
-    })
+    });
+
+    amuletModal.setContent(amulet_desc[item.desc]);
+    log(Stats.monsterName + ' dropped: ' + item.name +'!', 'victory');
   }
 
   if (item.type === 'trinket') {
@@ -610,6 +623,11 @@ const advance = function() {
   Stats.monsterDamage = currentMonster.monsterDamage;
   Stats.monsterName = currentMonster.name;
   Stats.monsterRage = 0;
+  $('#monster-graphic').addClass('animated zoomOut');
+  $('#monster-graphic').attr('src', currentMonster.src);
+  setTimeout(() => {
+    $('#monster-graphic').removeClass('animated zoomOut');
+  }, 750);
 
   updateStats();
   
@@ -618,7 +636,7 @@ const advance = function() {
 const getNextMonster = function(level) {
   switch(level) {
     case 0:
-    return goblin;
+    return chicken;
     break;
 
     case 1:

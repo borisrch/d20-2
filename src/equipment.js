@@ -37,6 +37,10 @@ export const wand_desc = [oak_wand_desc, oak_wand_desc + ebony_wand_desc, oak_wa
 
 export const selectAmulet = function(amulet) {
   switch(amulet) {
+    case 'None':
+    sapphireAmuletCondition.active = false;
+    break;
+
     case 'Sapphire Amulet':
     sapphireAmuletCondition.active = true;
     break;
@@ -55,7 +59,7 @@ export const selectAmulet = function(amulet) {
   }
 }
 
-const sapphire_amulet_desc = '<h2>Equip Amulet</h2> <b>Sapphire Amulet</b>: +25 to ' + manaIcon + '.<br>';
+const sapphire_amulet_desc = '<h2>Equip Amulet</h2> <b>Sapphire Amulet</b>: +25 to maximum ' + manaIcon + '.<br>';
 const emerald_amulet_desc = '<b>Emerald Amulet</b>: +2 to ' + armourIcon + '.<br>';
 const ruby_amulet_desc = '<b>Ruby Amulet</b>: +15% lifesteal. <br>';
 
