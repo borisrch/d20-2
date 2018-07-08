@@ -261,14 +261,14 @@ const mageInit = function() {
     weaponModal.close();
   });
 
-  amuletModal.setContent('<span class="modal-title">Select Amulet</span>');
-  amuletModal.addFooterBtn('None', 'equipment-icon', function() {
+  amuletModal.setContent('<h2>Select Amulet</h2><p>You don\'t have any amulets yet.');
+  amuletModal.addFooterBtn('None', 'spell-amulet', function() {
     updateStats();
     amuletModal.close();
   });
 
-  trinketModal.setContent('<span class="modal-title">Select Trinket</span>');
-  trinketModal.addFooterBtn('None', 'equipment-icon', function() {
+  trinketModal.setContent('<h2>Select Trinket</h2><p>You don\'t have any trinkets yet.');
+  trinketModal.addFooterBtn('None', 'spell-trinket', function() {
     updateStats();
     trinketModal.close();
   });
