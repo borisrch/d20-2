@@ -46,7 +46,7 @@ let mageItem = [
 ]
 
 const chicken = {
-  name: 'Chicken',
+  name: 'Cuck, the Chicken',
   monsterHealth: 10,
   monsterArmour: 0,
   monsterDamage: 2,
@@ -70,7 +70,7 @@ const chicken = {
 const goblin = {
   name: 'Wormface, the Goblin',
   monsterHealth: 20,
-  monsterArmour: 15,
+  monsterArmour: 4,
   monsterDamage: 4,
   monsterRage: 0,
   src: 'res/mobs/goblin.png',
@@ -108,6 +108,44 @@ const goblin = {
       log('Goblin missed.', 'miss');
     }
     endTurnMonster(result);
+  }
+}
+
+const dwarf = {
+  name: 'Gimli, the Dwarf',
+  monsterHealth: 30,
+  monsterArmour: 15,
+  monsterDamage: 4,
+  monsterRage: 0,
+  src: 'res/mobs/dwarf.png',
+  turn() {
+    if (this.monsterRage > 40) {
+      if(DEV) {
+        console.log('@Dwarf Rage')
+      }
+      this.monsterRage = 0;
+      dwarfSmash();
+    } else {
+      let result = roll(100);
+      if (DEV) {
+        console.log('@DwarfTurn');
+        console.log('Dwarf ability chance ' + result);
+      }
+      if (result > 75) { 
+        this.dwarfTank();
+      } else {
+        this.basicAttack();
+      }    
+    }
+  },
+  basicAttack() {
+
+  },
+  dwarfTank() {
+
+  },
+  dwarfSmash() {
+
   }
 }
 
@@ -621,6 +659,7 @@ const advance = function() {
 
   Stats.monsterHealth = currentMonster.monsterHealth;
   Stats.monsterDamage = currentMonster.monsterDamage;
+  Stats.monsterArmour = currentMonster.monsterArmour;
   Stats.monsterName = currentMonster.name;
   Stats.monsterRage = 0;
   $('#monster-graphic').addClass('animated zoomOut');
