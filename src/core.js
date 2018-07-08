@@ -9,7 +9,7 @@ import { DEV } from './dev';
 import Stats from './stats';
 import { manaCheck } from './mana';
 import { alzursThunderCondition, deathfireGraspCondition, runicEchoesCondition } from './conditions';
-import { selectWeapon } from './equipment';
+import { selectWeapon, wand_desc } from './equipment';
 
 import MicroModal from 'micromodal';
 
@@ -31,11 +31,11 @@ let monsterName = Stats.monsterName;
 
 let playerHitChanceModifier = 0;
 
-// Add items for other classes
+// Add items for other classes. Desc refers to array in equipment.js
 let mageItem = [
-  { name: 'Oak Wand', type: 'weapon' },
-  { name: 'Ebony Wand', type: 'weapon' },
-  { name: 'Seismic Wand', type: 'weapon' },
+  { name: 'Oak Wand', type: 'weapon', desc: 0 },
+  { name: 'Ebony Wand', type: 'weapon', desc: 1 },
+  { name: 'Seismic Wand', type: 'weapon', desc: 2 },
   { name: 'Elder Wand', type: 'weapon' }
 ]
 
@@ -254,8 +254,8 @@ const mageInit = function() {
   $('.r').addClass('spell spell-fire-shield');
   $('.ri').addClass('ra ra-fire-shield icon');
 
-  weaponModal.setContent('<span class="modal-title">Select Weapon</span>');
-  weaponModal.addFooterBtn('Oak Wand', 'equipment-icon', function() {
+  weaponModal.setContent(wand_desc[0]);
+  weaponModal.addFooterBtn('Oak Wand', 'spell-equipment wand-button', function() {
     selectWeapon('oak-wand');
     updateStats();
     weaponModal.close();
@@ -570,11 +570,13 @@ const advance = function() {
   let item = mageItem[Stats.playerLevel];
 
   if (item.type === 'weapon') {
-      weaponModal.addFooterBtn(item.name, 'equipment-icon', function() {
+    weaponModal.addFooterBtn(item.name, 'spell-equipment wand-button', function() {
       selectWeapon(item.name);
       updateStats();      
       weaponModal.close();
     });
+    
+    weaponModal.setContent(wand_desc[item.desc]);
     log(Stats.monsterName + ' dropped: ' + item.name +'!', 'victory');
   }
 
