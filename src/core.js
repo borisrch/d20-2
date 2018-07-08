@@ -198,6 +198,9 @@ const endTurnMonster = function(result) {
 let currentMonster = goblin;
 
 const playerTurnBasicAttack = function() {
+
+  deathfireGraspCondition.active = false;
+
   let result = attack(Stats.playerDamage, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour);
   if (result != null) {
     log('You hit for ' + result + ' damage!', 'pb');
@@ -264,12 +267,22 @@ const mageInit = function() {
     amuletModal.close();
   });
 
+  trinketModal.setContent('<span class="modal-title">Select Trinket</span>');
+  trinketModal.addFooterBtn('None', 'equipment-icon', function() {
+    updateStats();
+    trinketModal.close();
+  });
+
   document.getElementById('equipment-weapon').addEventListener('click', () => {
     weaponModal.open();
   });
 
   document.getElementById('equipment-amulet').addEventListener('click', () => {
     amuletModal.open();
+  });
+
+  document.getElementById('equipment-trinket').addEventListener('click', () => {
+    trinketModal.open();
   });
 
   document.getElementById('basic-attack').addEventListener('click', () => {
@@ -312,6 +325,10 @@ const updateStats = function () {
 const tippyInit = function () {
   const title = 'title';
 
+  const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
+  const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
+  const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
+
   const playerDamageTip = 'Damage attribute affects basic attack and spell damage.';
   $('.player-damage-tip').prop(title, playerDamageTip);
   tippy('.player-damage-tip');  
@@ -332,13 +349,17 @@ const tippyInit = function () {
   $('.monster-rage-tip').prop(title, monsterRageTip);
   tippy('.monster-rage-tip');
 
-  const weaponTip = 'Change your weapon.';
+  const weaponTip = 'Switch Weapon - Weapons affect your hit chance.';
   $('#equipment-weapon').prop(title, weaponTip);
   tippy('#equipment-weapon');
 
-  const amuletTip = 'Change your amulet.';
+  const amuletTip = 'Switch Amulet - Amulets can affect ' + damageIcon + ' and ' + armourIcon + ' .';
   $('#equipment-amulet').prop(title, amuletTip);
   tippy('#equipment-amulet');
+
+  const trinketTip = 'Switch Trinket - Trinkets affect all attributes.';
+  $('#equipment-trinket').prop(title, trinketTip);
+  tippy('#equipment-trinket');
 }
 
 const tippyMage = function() {  
@@ -498,6 +519,23 @@ const weaponModal = new tingle.modal({
 });
 
 const amuletModal = new tingle.modal({
+  footer: true,
+  stickyFooter: false,
+  closeMethods: ['button', 'escape'],
+  closeLabel: "Close",
+  cssClass: ['custom-class-1', 'custom-class-2'],
+  onOpen: function() {
+      
+  },
+  onClose: function() {
+      
+  },
+  beforeClose: function() {
+      return true;
+  }
+});
+
+const trinketModal = new tingle.modal({
   footer: true,
   stickyFooter: false,
   closeMethods: ['button', 'escape'],

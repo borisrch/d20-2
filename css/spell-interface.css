@@ -25,13 +25,14 @@ button:disabled {
 
 .basic-attack {
   background: rgb(255,91,23);
-  background: linear-gradient(90deg, rgba(255,91,23,1) 0%, rgba(255,124,0,1) 100%);
+  background: linear-gradient(120deg, #F48FB1 0%, #ef5350 100%);
+  width: 50px;
+  height: 50px;
+  color: #ffebee;
 }
 
 .basic-attack-icon {  
-  background-image: linear-gradient(45deg, rgb(63, 1, 1) 0%, rgb(0, 0, 0) 100%);
-  color:transparent; -webkit-background-clip: text;
-  background-clip: text;
+
 }
 
 .spells-interface {

@@ -48,7 +48,7 @@ export const log = function(message, style) {
   let logSize = $('.list').children().length;
   let logMessage = '<li>' + message + '</li>';
   let prepared = $(logMessage).addClass(logStyle);  
-  if (logSize < 7) {    
+  if (logSize < 8) {    
     $('ul.list').prepend(prepared);
   }
   else {
