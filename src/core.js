@@ -8,8 +8,16 @@ import { disable, enable } from './disable';
 import { DEV } from './dev';
 import Stats from './stats';
 import { manaCheck } from './mana';
-import { alzursThunderCondition, deathfireGraspCondition, runicEchoesCondition, sapphireAmuletCondition, dwarfTankCondition } from './conditions';
 import { selectWeapon, selectAmulet, selectTrinket, wand_desc, amulet_desc, trinket_desc } from './equipment';
+import { 
+  alzursThunderCondition, 
+  deathfireGraspCondition, 
+  runicEchoesCondition, 
+  sapphireAmuletCondition, 
+  dwarfTankCondition,
+  monsterDead
+} from './conditions';
+
 
 import MicroModal from 'micromodal';
 
@@ -178,9 +186,11 @@ const monsterHealthHelper = function(result) {
     Stats.monsterHealth = 0;
     log('You have slain ' + Stats.monsterName + '!', 'victory');
     advance();
+
+    monsterDead.active = true;    
+
   } else {    
     Stats.monsterHealth = Stats.monsterHealth - result;
-    
   }  
 }
 
@@ -208,7 +218,13 @@ const endTurn = function(result) {
   }
   
   $('.player-graphic').addClass('poke-right');
-  $('.monster-graphic').addClass('monster-flail');
+
+  if (monsterDead.active == true) {
+    $('.monster-graphic').addClass('spawn');
+    monsterDead.active = false;
+  } else {
+    $('.monster-graphic').addClass('monster-flail');
+  }  
 
   if (sapphireAmuletCondition.active == true) {
     Stats.playerMaxMana = 125;
@@ -236,6 +252,7 @@ const endTurn = function(result) {
   setTimeout(() => {
     $('.player-graphic').removeClass('poke-right');
     $('.monster-graphic').removeClass('monster-flail');
+    $('.monster-graphic').removeClass('spawn');
   }, 500);
 
   setTimeout(() => {
@@ -671,7 +688,7 @@ const advance = function() {
     });
     
     weaponModal.setContent(wand_desc[item.desc]);
-    log(Stats.monsterName + ' dropped: ' + item.name +'!', 'victory');
+    
   }
 
   if (item.type === 'amulet') {
@@ -681,8 +698,7 @@ const advance = function() {
       amuletModal.close();
     });
 
-    amuletModal.setContent(amulet_desc[item.desc]);
-    log(Stats.monsterName + ' dropped: ' + item.name +'!', 'victory');
+    amuletModal.setContent(amulet_desc[item.desc]);  
   }
 
   if (item.type === 'trinket') {
@@ -691,10 +707,10 @@ const advance = function() {
       updateStats();      
       trinketModal.close();
     });
-
     trinketModal.setContent(trinket_desc[item.desc]);
-    log(Stats.monsterName + ' dropped: ' + item.name +'!', 'victory');
   }
+
+  log('Loot: ' + item.name + ' (' + item.type + ')', 'victory');
 
   currentMonster = getNextMonster(Stats.playerLevel);
 

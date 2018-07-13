@@ -19,3 +19,7 @@ export const dwarfTankCondition = {
   active: false,
   bonusArmour: 0,
 }
+
+export const monsterDead = {
+  active: false,
+}

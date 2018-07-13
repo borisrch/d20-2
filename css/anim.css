@@ -8,7 +8,7 @@
 }
 
 .poke-left {
-  animation: poke-left 1s 1 !important;
+  animation: poke-left 0.5s 1 !important;
 }
 
 .monster-graphic {
@@ -27,6 +27,10 @@
 .player-flail {
   animation: flail-left 0.5s 1;
   transform-origin: bottom;
+}
+
+.spawn {
+  animation: spawn 1s 1 !important;
 }
 
 @keyframes bob {
@@ -89,5 +93,16 @@
 
   100% {
     transform: rotate(0);
+  }
+}
+
+@keyframes spawn {
+  0% {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0);
   }
 }
