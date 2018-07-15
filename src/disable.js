@@ -1,4 +1,4 @@
-export const disable = function() {
+export const disable = function () {
   $('.basic-attack').prop('disabled', true);
   $('.q').prop('disabled', true);
   $('.w').prop('disabled', true);
@@ -8,9 +8,9 @@ export const disable = function() {
   $('#equipment-amulet').prop('disabled', true);
   $('#equipment-trinket').prop('disabled', true);
   $('#equipment-potion').prop('disabled', true);
-}
+};
 
-export const enable = function() {
+export const enable = function () {
   $('.basic-attack').prop('disabled', false);
   $('.q').prop('disabled', false);
   $('.w').prop('disabled', false);
@@ -20,4 +20,4 @@ export const enable = function() {
   $('#equipment-amulet').prop('disabled', false);
   $('#equipment-trinket').prop('disabled', false);
   $('#equipment-potion').prop('disabled', false);
-}
+};

@@ -3,7 +3,11 @@ html {
 }
 
 body {
-  background-image: url(../res/drop.jpg);  
+  background-color: rgb(5, 5, 7);
+  background-image: url(../res/drop-3.png);
+  background-size:     cover;                      /* <------ */
+  background-repeat:   no-repeat;
+  background-position: center center;  
 }
 
 .game-interface {

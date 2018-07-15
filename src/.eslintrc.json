@@ -1,0 +1,9 @@
+{
+  "env": {
+    "jquery": true
+  },
+  "extends": "airbnb",
+  "rules": {
+    "func-names": ["error", "never"]
+  }
+}

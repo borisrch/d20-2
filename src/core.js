@@ -2,45 +2,36 @@
 // Webpack - load in modules when needed.
 // Refactor html
 
-import { roll, attack, pureAttack, bonus, getRandomInt } from './rollattack';
+import { roll, attack, pureAttack } from './rollattack';
 import { log } from './log';
 import { disable, enable } from './disable';
 import { DEV } from './dev';
 import Stats from './stats';
 import { manaCheck } from './mana';
-import { selectWeapon, selectAmulet, selectTrinket, wand_desc, amulet_desc, trinket_desc } from './equipment';
-import { 
-  alzursThunderCondition, 
-  deathfireGraspCondition, 
-  runicEchoesCondition, 
-  sapphireAmuletCondition, 
+import {
+  selectWeapon,
+  selectAmulet,
+  selectTrinket,
+  wand_desc,
+  amulet_desc,
+  trinket_desc
+} from './equipment';
+import {
+  alzursThunderCondition,
+  deathfireGraspCondition,
+  runicEchoesCondition,
+  sapphireAmuletCondition,
   dwarfTankCondition,
-  monsterDead
+  monsterDead,
 } from './conditions';
 
 
-import MicroModal from 'micromodal';
-
-if(DEV) {
+if (DEV) {
   log('BUILD ALPHA 0.2.26 - Amulet, Trinket, Wand', 'info');
 }
 
-let playerHealth = Stats.playerHealth;
-let playerArmour = Stats.playerArmour;
-let playerDamage = Stats.playerDamage;
-let playerRunic = Stats.playerRunic;
-let playerMana = Stats.playerMana;
-
-let monsterHealth = Stats.monsterHealth;
-let monsterArmour = Stats.monsterArmour;
-let monsterDamage = Stats.monsterDamage;
-let monsterRage = Stats.monsterRage;
-let monsterName = Stats.monsterName;
-
-let playerHitChanceModifier = 0;
-
 // Add items for other classes. Desc refers to array in equipment.js
-let mageItem = [
+const mageItem = [
   { name: 'Oak Wand', type: 'weapon', desc: 0 },
   { name: 'Sapphire Amulet', type: 'amulet', desc: 0 },
   { name: 'Magical Stick', type: 'trinket', desc: 0 },
@@ -51,7 +42,7 @@ let mageItem = [
   { name: 'Ruby Amulet', type: 'amulet', desc: 2 },
   { name: 'Ancient Coin', type: 'trinket', desc: 2 },
   { name: 'Null Sphere', type: 'trinket', desc: 3 },
-]
+];
 
 const chicken = {
   name: 'Cuck, the Chicken',
@@ -64,16 +55,16 @@ const chicken = {
     this.basicAttack();
   },
   basicAttack() {
-    let result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
+    const result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
     if (result != null) {
       playerHealthHelper(result);
-      log('Chicken hits for ' + result + ' damage!', 'mb');
+      log(`Chicken hits for ${result} damage!`, 'mb');
     } else {
       log('Chicken missed.', 'miss');
     }
     endTurnMonster(result);
-  }
-}
+  },
+};
 
 const goblin = {
   name: 'Wormface, the Goblin',
@@ -84,9 +75,8 @@ const goblin = {
   src: 'res/mobs/goblin.png',
   names: ['Wormface', 'Grubhead', 'Fartbreath', 'Poopnose', 'Wormhair'],
   turn() {
-    let result = roll(100);
-    
-    if(DEV) {
+    const result = roll(100);       
+    if (DEV) {
       console.log('@GoblinTurn');
       console.log('Goblin Abilty Chance ' + result);
     }
@@ -98,7 +88,7 @@ const goblin = {
     }
   },
   basicAttack() {
-    let result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
+    const result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
     if (result != null) {
       playerHealthHelper(result);
       log('Goblin hits for ' + result + ' damage!', 'mb');
@@ -192,7 +182,7 @@ const monsterHealthHelper = function(result) {
   } else {    
     Stats.monsterHealth = Stats.monsterHealth - result;
   }  
-}
+};
 
 const playerHealthHelper = function(result) {
   if(Stats.playerHealth - result <= 0) {
@@ -320,8 +310,8 @@ const playerTurnBasicAttack = function() {
   endTurn(result);
 }
 
-const init = function(mode) {
-  
+const init = function (mode) {
+
   tippyInit();
   monsterInit();
 
@@ -341,10 +331,10 @@ const init = function(mode) {
     default:
     console.log('Error in init');
   }
-  updateStats();  
+  updateStats();
 }
 
-const mageInit = function() {
+const mageInit = function () {
   Stats.playerHealth = 100;
   Stats.playerDamage = 10;
   Stats.playerArmour = 8;
@@ -503,7 +493,7 @@ const tippyMage = function() {
 const monsterInit = function() {
   Stats.monsterArmour = chicken.monsterArmour;
   Stats.monsterDamage = chicken.monsterDamage;
-  Stats.monsterHealth = chicken.monsterHealth;  
+  Stats.monsterHealth = chicken.monsterHealth;
   Stats.monsterRage = 0;
   Stats.monsterName = chicken.name;
   currentMonster = chicken;
@@ -586,13 +576,11 @@ const deathfire_grasp = function() {
   if(result != null) {
     log('You invoke <i>Malevolence</i> for ' + result + ' damage!', 'ps-grasp');
     monsterHealthHelper(result);
-    
   } else {
     log('You missed Malevolence!', 'miss-player');
   }
-  endTurn(result);  
-
-}
+  endTurn(result);
+};
 
 const runic_echoes = function() {
 
@@ -750,6 +738,7 @@ const getNextMonster = function(level) {
   }
 }
 
+let test;
 
 $(".character-selection").hide();
 

@@ -1,6 +1,8 @@
 import { DEV } from './dev';
 import { alzursThunderCondition } from './conditions';
 
+const throwIfMissing = () => { throw new Error('Missing Paramater') };
+
 // Returns result of random 1 to n.
 export const roll = function(n) {
   let min = 1;
@@ -19,7 +21,7 @@ export const bonus = function(runic, n) {
 }
 
 // Returns result of damage or null, considers conditions.
-export const attack = function(playerDamage, playerHitChanceModifier, playerDamageModifier, playerMultiplier, monsterArmour) {
+export const attack = function(playerDamage = throwIfMissing(), playerHitChanceModifier = throwIfMissing(), playerDamageModifier = throwIfMissing(), playerMultiplier = throwIfMissing(), monsterArmour = throwIfMissing()) {
 
   let extra = 0;
 
