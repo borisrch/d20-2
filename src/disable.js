@@ -7,7 +7,7 @@ export const disable = function () {
   $('#equipment-weapon').prop('disabled', true);
   $('#equipment-amulet').prop('disabled', true);
   $('#equipment-trinket').prop('disabled', true);
-  $('#equipment-potion').prop('disabled', true);
+  $('#equipment-shop').prop('disabled', true);
 };
 
 export const enable = function () {
@@ -19,5 +19,5 @@ export const enable = function () {
   $('#equipment-weapon').prop('disabled', false);
   $('#equipment-amulet').prop('disabled', false);
   $('#equipment-trinket').prop('disabled', false);
-  $('#equipment-potion').prop('disabled', false);
+  $('#equipment-shop').prop('disabled', false);
 };

@@ -2,7 +2,7 @@
 // Webpack - load in modules when needed.
 // Refactor html
 
-import { roll, attack, pureAttack } from './rollattack';
+import { roll, attack, pureAttack, bonus } from './rollattack';
 import { log } from './log';
 import { disable, enable } from './disable';
 import { DEV } from './dev';
@@ -14,7 +14,10 @@ import {
   selectTrinket,
   wand_desc,
   amulet_desc,
-  trinket_desc
+  trinket_desc,
+  shop,
+  setShopItem,
+  getGold,
 } from './equipment';
 import {
   alzursThunderCondition,
@@ -32,16 +35,16 @@ if (DEV) {
 
 // Add items for other classes. Desc refers to array in equipment.js
 const mageItem = [
-  { name: 'Oak Wand', type: 'weapon', desc: 0 },
-  { name: 'Sapphire Amulet', type: 'amulet', desc: 0 },
-  { name: 'Magical Stick', type: 'trinket', desc: 0 },
-  { name: 'Ebony Wand', type: 'weapon', desc: 1 },
-  { name: 'Emerald Amulet', type: 'amulet', desc: 1 },
-  { name: 'Cursed Locket', type: 'trinket', desc: 1 },
-  { name: 'Elder Wand', type: 'weapon', desc: 2 },
-  { name: 'Ruby Amulet', type: 'amulet', desc: 2 },
-  { name: 'Ancient Coin', type: 'trinket', desc: 2 },
-  { name: 'Null Sphere', type: 'trinket', desc: 3 },
+  { name: 'Oak Wand', type: 'weapon', gold: 5, desc: 0 },
+  { name: 'Sapphire Amulet', type: 'amulet', gold: 1, desc: 0 },
+  { name: 'Magical Stick', type: 'trinket', gold: 1, desc: 0 },
+  { name: 'Ebony Wand', type: 'weapon', gold: 1, desc: 1 },
+  { name: 'Emerald Amulet', type: 'amulet', gold: 1, desc: 1 },
+  { name: 'Cursed Locket', type: 'trinket', gold: 1, desc: 1 },
+  { name: 'Elder Wand', type: 'weapon', gold: 1, desc: 2 },
+  { name: 'Ruby Amulet', type: 'amulet', gold: 1, desc: 2 },
+  { name: 'Ancient Coin', type: 'trinket', gold: 1, desc: 2 },
+  { name: 'Null Sphere', type: 'trinket', gold: 1, desc: 3 },
 ];
 
 const chicken = {
@@ -112,7 +115,7 @@ const goblin = {
 const dwarf = {
   name: 'Gimli, the Dwarf',
   monsterHealth: 30,
-  monsterArmour: 10,
+  monsterArmour: 8,
   monsterDamage: 6,
   monsterRage: 0,
   src: 'res/mobs/dwarf.png',
@@ -165,6 +168,43 @@ const dwarf = {
     }
     endTurnMonster(result);
   }
+}
+
+const ent = {
+  name: 'Radagast, the Ent',
+  monsterHealth: 40,
+  monsterArmour: 6,
+  monsterDamage: 10,
+  monsterRage: 0,
+  src: 'res/mobs/ent.png',
+  turn() {
+    if (Stats.monsterRage >= 20) {
+      if(DEV) {
+        console.log('@Ent Rage')
+      }
+      Stats.monsterRage = 0;
+
+      let result = roll(100);
+      if (result > 75) { 
+        this.basicAttack();
+      } else {
+        this.basicAttack();
+      }
+    } else {
+      Stats.monsterRage = Stats.monsterRage + 20;
+      this.basicAttack();
+    }
+  },
+  basicAttack() {
+    let result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
+    if (result != null) {
+      playerHealthHelper(result);
+      log('Ent hits for ' + result + ' damage!', 'mb');
+    } else {
+      log('Ent missed.', 'miss');
+    }
+    endTurnMonster(result);
+  },  
 }
 
 const monsterHealthHelper = function(result) {
@@ -373,6 +413,15 @@ const mageInit = function () {
     trinketModal.close();
   });
 
+  shopModal.setContent('<div class="shop-interface" id="shop"></div>');
+  setShopItem('Healing Potion', 'Heals for 1d10 + 10 HP.', 'ra-heart-bottle', 'potion-health', '15', 'buy-health');
+  setShopItem('Healing Potion', 'Heals for 1d10 + 10 HP.', 'ra-heart-bottle', 'potion-health', '15', 'buy-health');
+  setShopItem('Healing Potion', 'Heals for 1d10 + 10 HP.', 'ra-heart-bottle', 'potion-health', '15', 'buy-health');
+  setShopItem('Healing Potion', 'Heals for 1d10 + 10 HP.', 'ra-heart-bottle', 'potion-health', '15', 'buy-health');
+  setShopItem('Healing Potion', 'Heals for 1d10 + 10 HP.', 'ra-heart-bottle', 'potion-health', '15', 'buy-health');
+
+  shopModal.setFooterContent(getGold());
+
   document.getElementById('equipment-weapon').addEventListener('click', () => {
     weaponModal.open();
   });
@@ -383,6 +432,11 @@ const mageInit = function () {
 
   document.getElementById('equipment-trinket').addEventListener('click', () => {
     trinketModal.open();
+  });
+
+  document.getElementById('equipment-shop').addEventListener('click', () => {
+    shopModal.setFooterContent(getGold());
+    shopModal.open();
   });
 
   document.getElementById('basic-attack').addEventListener('click', () => {
@@ -460,6 +514,10 @@ const tippyInit = function () {
   const trinketTip = 'Switch Trinket - Trinkets affect all attributes.';
   $('#equipment-trinket').prop(title, trinketTip);
   tippy('#equipment-trinket');
+
+  const shopTip = 'Browse Shop - Buy potions with gold.';
+  $('#equipment-shop').prop(title, shopTip);
+  tippy('#equipment-shop');
 }
 
 const tippyMage = function() {  
@@ -651,6 +709,23 @@ const trinketModal = new tingle.modal({
   }
 });
 
+const shopModal = new tingle.modal({
+  footer: true,
+  stickyFooter: false,
+  closeMethods: ['button', 'escape'],
+  closeLabel: "Close",
+  cssClass: ['custom-class-1', 'custom-class-2'],
+  onOpen: function() {
+      
+  },
+  onClose: function() {
+      
+  },
+  beforeClose: function() {
+      return true;
+  }
+});
+
 // Incomplete function. Add item types to this.
 const advance = function() {
   
@@ -698,7 +773,15 @@ const advance = function() {
     trinketModal.setContent(trinket_desc[item.desc]);
   }
 
-  log('Loot: ' + item.name + ' (' + item.type + ')', 'victory');
+  // Handles gold income and logging. 
+  if (item.gold > 0) {
+    Stats.gold += item.gold;
+    log('Loot: ' + item.name + ' (' + item.type + ') and ' + item.gold + ' gold.', 'victory');
+  } else {
+    log('Loot: ' + item.name + ' (' + item.type + ').', 'victory');
+  }
+
+  
 
   currentMonster = getNextMonster(Stats.playerLevel);
 
@@ -731,14 +814,16 @@ const getNextMonster = function(level) {
     return dwarf;
     break;
 
+    case 3:
+    return ent;
+    break;
+
     default:
     console.log('@Error at getNextMonster');
     return goblin;
     break;
   }
 }
-
-let test;
 
 $(".character-selection").hide();
 

@@ -98,3 +98,85 @@ const ancient_coin_desc = '<b>Ancient Coin</b>: +3 to ' + runicIcon + ' and ' + 
 const null_sphere_desc = '<b>Null Sphere</b>: -25 % to ' + manaIcon + ' cost. <br>';
 
 export const trinket_desc = [magical_stick_desc, magical_stick_desc + cursed_locket_desc, magical_stick_desc + cursed_locket_desc + ancient_coin_desc, magical_stick_desc + cursed_locket_desc + ancient_coin_desc + null_sphere_desc];
+
+// Shop logic here.
+
+// Need to add id to buttons => buy options.
+
+const shopButton = '<button class="spell-potion">Buy</button>';
+
+const health_potion_desc = '<div class="shop-descs"><p>Healing Potion: <p>Heals for 1d10 + 10 HP.</p></p></div>'
+const healthPotionIcon = '<span class="ra ra-heart-bottle shop-icon potion-health"></span>';
+const healthCost = '<p>15 gold.</p>'
+const healthButton = '<button class="spell-potion" id="buy-health">Buy</button>';
+const healthPotion = '<div class="shop-item">' + healthPotionIcon + health_potion_desc + healthCost + healthButton + '</div>';
+
+
+const defense_potion_desc = '<div class="shop-desc"><p>Defense Potion: <p>Increases AC by 1d6 for next 4 turns.</p></p></div>';
+const defensePotionIcon = '<span class="ra ra-round-bottom-flask shop-icon potion-defense"></span>';
+const defenseCost = '<p>15 gold.</p>'
+const defenseButton = '<button class="spell-potion">Buy</button>';
+const defensePotion = '<div class="shop-item">' + defensePotionIcon + defense_potion_desc + defenseCost + defenseButton + '</div>';
+
+const accuracy_potion_desc = '<div class="shop-desc"><p>Accuracy Potion: <p>Increases hit chance by 1d4 for next 4 turns.</p></p></div>';
+const accuracyPotionIcon = '<span class="ra ra-corked-tube shop-icon potion-accuracy"></span>';
+const accuracyCost = '<p>25 gold.</p>';
+const accuracyButton = '<button class="spell-potion ">Buy</button>';
+const accuracyPotion = '<div class="shop-item">' + accuracyPotionIcon + accuracy_potion_desc + accuracyCost + accuracyButton + '</div>';
+
+const pp_potion_desc = '<div class="shop-desc"><p>PP Potion: <p>Restores 50 PP.</p></p></div>';
+const ppPotionIcon = '<span class="ra  ra-bubbling-potion shop-icon potion-pp"></span>';
+const ppCost = '<p>50 gold.</p>';
+const ppButton = '<button class="spell-potion">Buy</button>';
+const ppPotion = '<div class="shop-item">' + ppPotionIcon + pp_potion_desc + ppCost + ppButton + '</div>';
+
+const runic_potion_desc = '<div class="shop-desc"><p>Runic Potion: <p>Grants 1d4 bonus Runic for next 4 turns.</p></p></div>';
+const runicPotionIcon = '<span class="ra ra-fizzing-flask shop-icon potion-runic"></span>';
+const runicCost = '<p>75 gold.</p>';
+const runicButton = '<button class="spell-potion">Buy</button>';
+const runicPotion = '<div class="shop-item">' + runicPotionIcon + runic_potion_desc + runicCost + runicButton + '</div>';
+
+export const shop = '<div class="shop-interface">' + healthPotion + defensePotion + accuracyPotion + ppPotion + runicPotion + '</div>';
+
+export const getGold = () => {
+  return '<div>Current gold: ' + Stats.gold +'</div>';
+}
+
+export const setShopItem = (potionName, potionDescription, ra, style, potionCost, id) => {
+  let shopDesc = document.createElement('div');
+  shopDesc.classList.add('shop-desc');
+  
+  let potion = document.createElement('p');
+  potion.innerText = potionName + ': ';
+  
+  let description = document.createElement('p');
+  description.innerText = potionDescription
+
+  let icon = document.createElement('span');
+  icon.classList.add('ra');
+  icon.classList.add(ra);
+  icon.classList.add(style);
+  icon.classList.add('shop-icon');
+  
+  let cost = document.createElement('p');
+  cost.innerText = potionCost + ' gold.';
+
+  let button = document.createElement('button');
+  button.innerText = 'Buy';
+  button.classList.add('spell-potion');
+  button.setAttribute('id', id);
+
+  let shopItem = document.createElement('div');
+  shopItem.classList.add('shop-item');
+
+  potion.appendChild(description);
+  shopDesc.appendChild(potion);
+
+  shopItem.appendChild(icon);
+  shopItem.appendChild(shopDesc);
+  shopItem.appendChild(cost);
+  shopItem.appendChild(button);
+
+  const shop = document.getElementById('shop');
+  shop.appendChild(shopItem);
+}
