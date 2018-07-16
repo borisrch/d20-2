@@ -99,44 +99,48 @@ const null_sphere_desc = '<b>Null Sphere</b>: -25 % to ' + manaIcon + ' cost. <b
 
 export const trinket_desc = [magical_stick_desc, magical_stick_desc + cursed_locket_desc, magical_stick_desc + cursed_locket_desc + ancient_coin_desc, magical_stick_desc + cursed_locket_desc + ancient_coin_desc + null_sphere_desc];
 
-// Shop logic here.
-
-// Need to add id to buttons => buy options.
-
-const shopButton = '<button class="spell-potion">Buy</button>';
-
-const health_potion_desc = '<div class="shop-descs"><p>Healing Potion: <p>Heals for 1d10 + 10 HP.</p></p></div>'
-const healthPotionIcon = '<span class="ra ra-heart-bottle shop-icon potion-health"></span>';
-const healthCost = '<p>15 gold.</p>'
-const healthButton = '<button class="spell-potion" id="buy-health">Buy</button>';
-const healthPotion = '<div class="shop-item">' + healthPotionIcon + health_potion_desc + healthCost + healthButton + '</div>';
-
-
-const defense_potion_desc = '<div class="shop-desc"><p>Defense Potion: <p>Increases AC by 1d6 for next 4 turns.</p></p></div>';
-const defensePotionIcon = '<span class="ra ra-round-bottom-flask shop-icon potion-defense"></span>';
-const defenseCost = '<p>15 gold.</p>'
-const defenseButton = '<button class="spell-potion">Buy</button>';
-const defensePotion = '<div class="shop-item">' + defensePotionIcon + defense_potion_desc + defenseCost + defenseButton + '</div>';
-
-const accuracy_potion_desc = '<div class="shop-desc"><p>Accuracy Potion: <p>Increases hit chance by 1d4 for next 4 turns.</p></p></div>';
-const accuracyPotionIcon = '<span class="ra ra-corked-tube shop-icon potion-accuracy"></span>';
-const accuracyCost = '<p>25 gold.</p>';
-const accuracyButton = '<button class="spell-potion ">Buy</button>';
-const accuracyPotion = '<div class="shop-item">' + accuracyPotionIcon + accuracy_potion_desc + accuracyCost + accuracyButton + '</div>';
-
-const pp_potion_desc = '<div class="shop-desc"><p>PP Potion: <p>Restores 50 PP.</p></p></div>';
-const ppPotionIcon = '<span class="ra  ra-bubbling-potion shop-icon potion-pp"></span>';
-const ppCost = '<p>50 gold.</p>';
-const ppButton = '<button class="spell-potion">Buy</button>';
-const ppPotion = '<div class="shop-item">' + ppPotionIcon + pp_potion_desc + ppCost + ppButton + '</div>';
-
-const runic_potion_desc = '<div class="shop-desc"><p>Runic Potion: <p>Grants 1d4 bonus Runic for next 4 turns.</p></p></div>';
-const runicPotionIcon = '<span class="ra ra-fizzing-flask shop-icon potion-runic"></span>';
-const runicCost = '<p>75 gold.</p>';
-const runicButton = '<button class="spell-potion">Buy</button>';
-const runicPotion = '<div class="shop-item">' + runicPotionIcon + runic_potion_desc + runicCost + runicButton + '</div>';
-
-export const shop = '<div class="shop-interface">' + healthPotion + defensePotion + accuracyPotion + ppPotion + runicPotion + '</div>';
+export const potions = [
+  { 
+    name: 'Healing Potion',
+    desc: 'Heals for 1d10 + 10 HP.',
+    icon: 'ra-heart-bottle',
+    style: 'potion-health',
+    cost: '15',
+    id: 'buy-health'
+  },
+  { 
+    name: 'Defense Potion',
+    desc: 'Increases AC by 1d6 for next 4 turns.',
+    icon: 'ra-round-bottom-flask',
+    style: 'potion-defense',
+    cost: '15',
+    id: 'buy-defense',
+  },
+  { 
+    name: 'Accuracy Potion',
+    desc: 'Increases hit chance by 1d4 for next 4 turns.',
+    icon: 'ra-corked-tube',
+    style: 'potion-accuracy',
+    cost: '25',
+    id: 'buy-accuracy',
+  },
+  { 
+    name: 'PP Potion',
+    desc: 'Restores 50 PP.',
+    icon: 'ra-bubbling-potion',
+    style: 'potion-pp',
+    cost: '50',
+    id: 'buy-pp',
+  },
+  { 
+    name: 'Runic Potion',
+    desc: 'Grants 1d4 bonus Runic for next 4 turns.',
+    icon: 'ra-fizzing-flask',
+    style: 'potion-runic',
+    cost: '75',
+    id: 'buy-runic',
+  },
+];
 
 export const getGold = () => {
   return '<div>Current gold: ' + Stats.gold +'</div>';

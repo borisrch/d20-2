@@ -16,6 +16,7 @@ import {
   amulet_desc,
   trinket_desc,
   shop,
+  potions,
   setShopItem,
   getGold,
 } from './equipment';
@@ -414,11 +415,12 @@ const mageInit = function () {
   });
 
   shopModal.setContent('<div class="shop-interface" id="shop"></div>');
-  setShopItem('Healing Potion', 'Heals for 1d10 + 10 HP.', 'ra-heart-bottle', 'potion-health', '15', 'buy-health');
-  setShopItem('Healing Potion', 'Heals for 1d10 + 10 HP.', 'ra-heart-bottle', 'potion-health', '15', 'buy-health');
-  setShopItem('Healing Potion', 'Heals for 1d10 + 10 HP.', 'ra-heart-bottle', 'potion-health', '15', 'buy-health');
-  setShopItem('Healing Potion', 'Heals for 1d10 + 10 HP.', 'ra-heart-bottle', 'potion-health', '15', 'buy-health');
-  setShopItem('Healing Potion', 'Heals for 1d10 + 10 HP.', 'ra-heart-bottle', 'potion-health', '15', 'buy-health');
+
+ 
+
+  potions.forEach((potion) => {
+    setShopItem(potion.name, potion.desc, potion.icon, potion.style, potion.cost, potion.id);
+  });
 
   shopModal.setFooterContent(getGold());
 
