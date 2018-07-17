@@ -85,11 +85,7 @@ const goblin = {
       console.log('Goblin Abilty Chance ' + result);
     }
 
-    if (result > 75) {      
-      this.goblinSpit();
-    } else {
-      this.basicAttack();
-    }
+    result > 75 ? this.goblinSpit() : this.basicAttack();
   },
   basicAttack() {
     const result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
@@ -179,22 +175,8 @@ const ent = {
   monsterRage: 0,
   src: 'res/mobs/ent.png',
   turn() {
-    if (Stats.monsterRage >= 20) {
-      if(DEV) {
-        console.log('@Ent Rage')
-      }
-      Stats.monsterRage = 0;
+    this.basicAttack();
 
-      let result = roll(100);
-      if (result > 75) { 
-        this.basicAttack();
-      } else {
-        this.basicAttack();
-      }
-    } else {
-      Stats.monsterRage = Stats.monsterRage + 20;
-      this.basicAttack();
-    }
   },
   basicAttack() {
     let result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
@@ -205,7 +187,7 @@ const ent = {
       log('Ent missed.', 'miss');
     }
     endTurnMonster(result);
-  },  
+  },
 }
 
 const monsterHealthHelper = function(result) {
@@ -509,7 +491,7 @@ const tippyInit = function () {
   $('#equipment-weapon').prop(title, weaponTip);
   tippy('#equipment-weapon');
 
-  const amuletTip = 'Switch Amulet - Amulets can affect ' + damageIcon + ' and ' + armourIcon + ' .';
+  const amuletTip = `Switch Amulet - Amulets can affect ${damageIcon} and ${armourIcon} .`;
   $('#equipment-amulet').prop(title, amuletTip);
   tippy('#equipment-amulet');
 
@@ -831,6 +813,8 @@ $(".character-selection").hide();
 
 init('mage');
 
+// Turn simulator
+
 // let turnCount = 0;
 // const sim = setInterval(function(){  
 //   if(turnCount < 10) {
@@ -840,3 +824,7 @@ init('mage');
 //     clearInterval(sim);
 //   }  
 // }, 2500);
+
+// Skip to monsters. Function still +1 to level 
+// Stats.playerLevel = 2;
+// advance();
