@@ -13,3 +13,13 @@ export const manaCheck = function(cost, spellCallback) {
     spellCallback();
   }
 }
+
+export const costCheck = (cost, buyPotion, potionName) => {
+  if (Stats.gold < cost) {
+    log (`Not enough gold to buy ${potionName}`);
+  }
+  else {
+    Stats.gold = Stats.gold - cost;
+    buyPotion();
+  }
+}

@@ -1,5 +1,6 @@
 import Stats from './stats';
 import { sapphireAmuletCondition } from './conditions';
+import { roll } from './rollattack';
 
 const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
 const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
@@ -184,3 +185,4 @@ export const setShopItem = (potionName, potionDescription, ra, style, potionCost
   const shop = document.getElementById('shop');
   shop.appendChild(shopItem);
 }
+

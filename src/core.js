@@ -7,7 +7,7 @@ import { log } from './log';
 import { disable, enable } from './disable';
 import { DEV } from './dev';
 import Stats from './stats';
-import { manaCheck } from './mana';
+import { manaCheck } from './check';
 import {
   selectWeapon,
   selectAmulet,
@@ -37,9 +37,9 @@ if (DEV) {
 
 // Add items for other classes. Desc refers to array in equipment.js
 const mageItem = [
-  { name: 'Oak Wand', type: 'weapon', gold: 5, desc: 0 },
-  { name: 'Sapphire Amulet', type: 'amulet', gold: 1, desc: 0 },
-  { name: 'Magical Stick', type: 'trinket', gold: 1, desc: 0 },
+  { name: 'Oak Wand', type: 'weapon', gold: 1, desc: 0 },
+  { name: 'Sapphire Amulet', type: 'amulet', gold: 15, desc: 0 },
+  { name: 'Magical Stick', type: 'trinket', gold: 50, desc: 0 },
   { name: 'Ebony Wand', type: 'weapon', gold: 1, desc: 1 },
   { name: 'Emerald Amulet', type: 'amulet', gold: 1, desc: 1 },
   { name: 'Cursed Locket', type: 'trinket', gold: 1, desc: 1 },
@@ -354,7 +354,7 @@ const endTurnMonster = function(result) {
 
   setTimeout(() => {
     enable();
-  }, 800);    
+  }, 500);    
 }
 
 // Must Define After Monster, but before Basic Attack
@@ -438,10 +438,14 @@ const mageInit = function () {
     trinketModal.close();
   });
 
-  shopModal.setContent('<div class="shop-interface" id="shop"></div>');
+  // Shop logic starts. Move to general init later.
 
+  shopModal.setContent('<div class="shop-interface" id="shop"></div>');
   potions.forEach((potion) => {
     setShopItem(potion.name, potion.desc, potion.icon, potion.style, potion.cost, potion.id);
+  });
+  document.getElementById('buy-health').addEventListener('click', () => {
+    buyHealth();
   });
 
   shopModal.setFooterContent(getGold());
@@ -459,6 +463,15 @@ const mageInit = function () {
   });
 
   document.getElementById('equipment-shop').addEventListener('click', () => {
+    potions.forEach((potion) => {
+      let button = document.getElementById(potion.id);
+      if (Stats.gold < parseInt(potion.cost)) {        
+        button.disabled = true;
+      }
+      else {
+        button.disabled = false;
+      }
+    });
     shopModal.setFooterContent(getGold());
     shopModal.open();
   });
@@ -805,8 +818,6 @@ const advance = function() {
     log('Loot: ' + item.name + ' (' + item.type + ').', 'victory');
   }
 
-  
-
   currentMonster = getNextMonster(Stats.playerLevel);
 
   Stats.monsterHealth = currentMonster.monsterHealth;
@@ -821,7 +832,6 @@ const advance = function() {
   }, 750);
 
   updateStats();
-  
 }
 
 const getNextMonster = function(level) {
@@ -849,6 +859,24 @@ const getNextMonster = function(level) {
   }
 }
 
+const buyHealth = () => {
+  let result = roll(10) + 10;
+
+  if (Stats.playerHealth + result > 100) {
+    Stats.playerHealth = 100;
+  }
+  else {
+    Stats.playerHealth += result;
+  }
+ 
+  let cost = parseInt(potions[0].cost);
+  Stats.gold -= cost;
+  
+  shopModal.close();
+  log(`You drink a Health Potion and heal for ${result}!`,'ps');
+  endTurn();
+}
+
 $(".character-selection").hide();
 
 init('mage');
@@ -866,5 +894,5 @@ init('mage');
 // }, 2500);
 
 // Skip to monsters. Function still +1 to level 
-Stats.playerLevel = 2;
-advance();
+// Stats.playerLevel = 2;
+// advance();

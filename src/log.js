@@ -25,6 +25,9 @@ const styleHandler = function(style) {
     case 'pb':
     return 'log log-player-basic animated slideInDown';
 
+    case 'ps':
+    return 'log log-player-spell animated bounceIn';
+
     case 'ps-scorch':
     return 'log log-player-spell animated tada';
 
