@@ -27,6 +27,7 @@ import {
   sapphireAmuletCondition,
   dwarfTankCondition,
   monsterDead,
+  playerDisadvantage,
 } from './conditions';
 
 
@@ -175,18 +176,58 @@ const ent = {
   monsterRage: 0,
   src: 'res/mobs/ent.png',
   turn() {
-    this.basicAttack();
-
+    if (Stats.monsterRage > 50) {
+      this.growth();
+    } 
+    else {
+      let result = roll(100);
+      if (result > 50) {
+        this.vine();
+      }
+      else {
+        this.basicAttack();
+      }  
+    }
   },
   basicAttack() {
+    Stats.monsterRage += 20;
     let result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
     if (result != null) {
       playerHealthHelper(result);
       log('Ent hits for ' + result + ' damage!', 'mb');
-    } else {
+    } 
+    else {
       log('Ent missed.', 'miss');
     }
     endTurnMonster(result);
+  },
+  growth() {
+    // Chance of not using growth when rage > 50
+
+    let result = roll(3);
+    if (Stats.monsterRage === 100){
+      result = 3;
+    }
+    if (result === 3) {
+      let extra = Stats.monsterRage / 10;
+      Stats.monsterHealth = Stats.monsterHealth + extra;
+
+      if (DEV) {
+        console.log(`Extra: ${extra}`);
+      }
+
+      Stats.monsterRage = 0;
+      log(`Ent uses <i>Growth</i> and heals for ${extra} damage!`,'ms');
+      endTurnMonster();
+    }
+    else {
+      this.basicAttack();
+    }
+  },
+  vine() {
+    playerDisadvantage.active = true;
+    log('Ent uses <i>Vine Trip</i> and makes you disadvantaged for next turn!', 'ms');
+    endTurnMonster();
   },
 }
 
@@ -207,7 +248,7 @@ const monsterHealthHelper = function(result) {
   }  
 };
 
-const playerHealthHelper = function(result) {
+const playerHealthHelper = (result) => {
   if(Stats.playerHealth - result <= 0) {
     Stats.playerHealth = 0;
     log('You died to ' + currentMonster.name + '!', 'ms');
@@ -275,11 +316,8 @@ const endTurn = function(result) {
 
 
   setTimeout(() => {
-    currentMonster.turn();     
-    setTimeout(() => {
-      enable();
-    }, 200);    
-  }, 1800);
+    currentMonster.turn();         
+  }, 1500);
 }
 
 const endTurnMonster = function(result) {
@@ -313,6 +351,10 @@ const endTurnMonster = function(result) {
     $('.monster-graphic').removeClass('poke-left');
     $('.player-graphic').removeClass('player-flail');
   }, 750);
+
+  setTimeout(() => {
+    enable();
+  }, 800);    
 }
 
 // Must Define After Monster, but before Basic Attack
@@ -397,8 +439,6 @@ const mageInit = function () {
   });
 
   shopModal.setContent('<div class="shop-interface" id="shop"></div>');
-
- 
 
   potions.forEach((potion) => {
     setShopItem(potion.name, potion.desc, potion.icon, potion.style, potion.cost, potion.id);
@@ -826,5 +866,5 @@ init('mage');
 // }, 2500);
 
 // Skip to monsters. Function still +1 to level 
-// Stats.playerLevel = 2;
-// advance();
+Stats.playerLevel = 2;
+advance();

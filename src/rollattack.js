@@ -1,5 +1,5 @@
 import { DEV } from './dev';
-import { alzursThunderCondition } from './conditions';
+import { alzursThunderCondition, playerDisadvantage } from './conditions';
 
 const throwIfMissing = () => { throw new Error('Missing Paramater') };
 
@@ -37,7 +37,21 @@ export const attack = function(playerDamage = throwIfMissing(), playerHitChanceM
   }
 
   let result = 0;
-  let hit = roll(20) + playerHitChanceModifier;  
+  let hit = roll(20) + playerHitChanceModifier;
+
+  if (playerDisadvantage.active === true) {
+    let hitSecond = roll(20) + playerHitChanceModifier;
+
+    if (DEV) {
+      console.log(`Disadvantaged - hit: ${hit}, hitSecond: ${hitSecond}`);
+    }
+
+    if (hitSecond < hit) {
+      hit = hitSecond;
+    }
+    playerDisadvantage.active = false;
+  }
+
   if (hit >= monsterArmour) {
     for (let i = 0; i < playerMultiplier; i++) {
       result += roll(playerDamage);

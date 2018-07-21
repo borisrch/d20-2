@@ -74,6 +74,24 @@ button:disabled {
   cursor: pointer;
 }
 
+ .achievement-interface > button {
+  border: none;
+  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.10);
+  border-radius: 0px;
+  font-family: 'Patua One', 'Times New Roman', cursive;
+  width: 40px;
+  height: 40px;
+  transition:all 0.3s ease;
+}
+
+ .achievement-interface > button:hover {
+  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+  -webkit-transform: scale(1.2);
+  -ms-transform: scale(1.2);
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
 .spell {
   background-color: #42A5F5;
   font-size: 1em;
