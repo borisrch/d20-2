@@ -206,13 +206,13 @@ const ent = {
   growth() {
     // Chance of not using growth when rage > 50
 
-    let result = roll(3);
+    let result = roll(2);
     if (Stats.monsterRage === 100){
-      result = 3;
+      result = 2;
     }
-    if (result === 3) {
+    if (result === 2) {
       let extra = Stats.monsterRage / 10;
-      Stats.monsterHealth = Stats.monsterHealth + extra;
+      Stats.monsterHealth = (Stats.monsterHealth + extra)*2;
 
       if (DEV) {
         console.log(`Extra: ${extra}`);
@@ -227,6 +227,7 @@ const ent = {
     }
   },
   vine() {
+    Stats.monsterRage += 20;
     playerDisadvantage.active = true;
     log('Ent uses <i>Vine Trip</i> and makes you disadvantaged for next turn!', 'ms');
     endTurnMonster();
@@ -951,5 +952,5 @@ init('mage');
 // }, 2500);
 
 // Skip to monsters. Function still +1 to level 
-// Stats.playerLevel = 2;
-// advance();
+Stats.playerLevel = 2;
+advance();
