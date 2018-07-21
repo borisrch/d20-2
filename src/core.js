@@ -28,6 +28,8 @@ import {
   dwarfTankCondition,
   monsterDead,
   playerDisadvantage,
+  defensePotionCondition,
+  accuracyPotionCondition,
 } from './conditions';
 
 
@@ -38,7 +40,7 @@ if (DEV) {
 // Add items for other classes. Desc refers to array in equipment.js
 const mageItem = [
   { name: 'Oak Wand', type: 'weapon', gold: 1, desc: 0 },
-  { name: 'Sapphire Amulet', type: 'amulet', gold: 15, desc: 0 },
+  { name: 'Sapphire Amulet', type: 'amulet', gold: 95, desc: 0 },
   { name: 'Magical Stick', type: 'trinket', gold: 50, desc: 0 },
   { name: 'Ebony Wand', type: 'weapon', gold: 1, desc: 1 },
   { name: 'Emerald Amulet', type: 'amulet', gold: 1, desc: 1 },
@@ -262,7 +264,7 @@ const endTurn = function(result) {
     $('.monster-health').addClass('animated jello');
   }
 
-  if (runicEchoesCondition.active == true) {
+  if (runicEchoesCondition.active === true || defensePotionCondition.active === true) {
     $('.player-armour').addClass('colour-mana-add');
   }
 
@@ -336,6 +338,24 @@ const endTurnMonster = function(result) {
   if (runicEchoesCondition.active == true) {
     Stats.playerArmour = Stats.playerArmour - runicEchoesCondition.bonusArmour;
     runicEchoesCondition.active = false;
+  }
+
+  if (defensePotionCondition.turns > 0) {
+    defensePotionCondition.turns = defensePotionCondition.turns - 1;
+  }
+
+  if (defensePotionCondition.turns === 0 && defensePotionCondition.active) {
+    defensePotionCondition.active = false;
+    Stats.playerArmour = Stats.playerArmour - defensePotionCondition.bonusArmour;
+  }
+
+  if (accuracyPotionCondition.turns > 0) {
+    accuracyPotionCondition.turns = accuracyPotionCondition.turns - 1;
+  }
+
+  if (accuracyPotionCondition.turns > 0 && accuracyPotionCondition.active) {
+    accuracyPotionCondition.active = false;
+    Stats.playerHitChanceModifier -= accuracyPotionCondition.bonus;
   }
 
   $('.monster-graphic').addClass('poke-left');
@@ -444,8 +464,17 @@ const mageInit = function () {
   potions.forEach((potion) => {
     setShopItem(potion.name, potion.desc, potion.icon, potion.style, potion.cost, potion.id);
   });
+
   document.getElementById('buy-health').addEventListener('click', () => {
     buyHealth();
+  });
+
+  document.getElementById('buy-defense').addEventListener('click', () => {
+    buyDefense();
+  });
+
+  document.getElementById('buy-accuracy').addEventListener('click', () => {
+    buyAccuracy();
   });
 
   shopModal.setFooterContent(getGold());
@@ -495,8 +524,6 @@ const mageInit = function () {
   document.getElementById('r').addEventListener('click', () => {
     manaCheck(25, runic_echoes);
   });
-
-
 }
 
 const updateStats = function () {
@@ -618,9 +645,7 @@ const scorch = function() {
   } else {
     log('You missed Scorch!', 'miss-player');
   }
-
   endTurn(result);
-
 }
 
 const alzurs_thunder = function() {
@@ -868,13 +893,45 @@ const buyHealth = () => {
   else {
     Stats.playerHealth += result;
   }
- 
+
   let cost = parseInt(potions[0].cost);
   Stats.gold -= cost;
   
   shopModal.close();
   log(`You drink a Health Potion and heal for ${result}!`,'ps');
   endTurn();
+}
+
+const buyAccuracy = () => {
+  let result = roll(4);
+
+  accuracyPotionCondition.bonus = result;
+  accuracyPotionCondition.turns = 4;
+  accuracyPotionCondition.active = true;
+
+  Stats.playerHitChanceModifier += result;
+
+  shopModal.close();
+  log(`You drink a Accuracy Potion and boost hit chance by ${result}!`, 'ps');
+  endTurn();
+
+}
+
+const buyDefense = () => {
+  let result = roll(4) + 2;
+
+  defensePotionCondition.bonusArmour = result;
+  defensePotionCondition.turns = 4;
+  defensePotionCondition.active = true;
+
+  Stats.playerArmour += result;
+
+  if (DEV) console.log(`Result: ${result} Turns: ${defensePotionCondition.turns} Active: ${defensePotionCondition.active}`);
+
+  shopModal.close();
+  log(`You drink a Defense Potion and boost AC by ${result}!`, 'ps');
+  endTurn();
+
 }
 
 $(".character-selection").hide();

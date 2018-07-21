@@ -110,20 +110,20 @@ export const potions = [
     id: 'buy-health'
   },
   { 
-    name: 'Defense Potion',
-    desc: 'Increases AC by 1d6 for next 4 turns.',
-    icon: 'ra-round-bottom-flask',
-    style: 'potion-defense',
-    cost: '15',
-    id: 'buy-defense',
-  },
-  { 
     name: 'Accuracy Potion',
     desc: 'Increases hit chance by 1d4 for next 4 turns.',
     icon: 'ra-corked-tube',
     style: 'potion-accuracy',
     cost: '25',
     id: 'buy-accuracy',
+  },
+  { 
+    name: 'Defense Potion',
+    desc: 'Increases AC by 1d4 + 2 for next 4 turns.',
+    icon: 'ra-round-bottom-flask',
+    style: 'potion-defense',
+    cost: '35',
+    id: 'buy-defense',
   },
   { 
     name: 'PP Potion',

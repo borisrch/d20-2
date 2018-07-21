@@ -15,6 +15,18 @@ export const sapphireAmuletCondition = {
   active: false
 }
 
+export const defensePotionCondition = {
+  turns: 0,
+  bonusArmour: 0,
+  active: false,
+}
+
+export const accuracyPotionCondition = {
+  turns: 0,
+  bonus: 0,
+  active: false,
+}
+
 // Monster spells
 
 export const dwarfTankCondition = {
