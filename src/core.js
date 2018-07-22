@@ -1,6 +1,7 @@
 // Open Live-reload in dev env.
 // Webpack - load in modules when needed.
 // Refactor html
+import tippy from 'tippy.js';
 
 import { roll, attack, pureAttack, bonus } from './rollattack';
 import { log } from './log';
@@ -32,11 +33,7 @@ import {
   accuracyPotionCondition,
   runicPotionCondition
 } from './conditions';
-
-
-if (DEV) {
-  log('BUILD ALPHA 0.2.26 - Amulet, Trinket, Wand', 'info');
-}
+import { a } from './tutorial';
 
 // Add items for other classes. Desc refers to array in equipment.js
 const mageItem = [
@@ -1006,6 +1003,8 @@ const buyRunic = () => {
 $(".character-selection").hide();
 
 init('mage');
+
+a();
 
 // Turn simulator
 

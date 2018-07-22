@@ -153,6 +153,10 @@ body {
   justify-self: start;
 }
 
+.log-interface {
+  margin-top: 40px;
+}
+
 .list {
   width: 500px;
   list-style-type: none;
@@ -372,6 +376,28 @@ body {
 .spell-achievement {
   background: linear-gradient(120deg, #90CAF9 0%, #64B5F6 100%);
   color: #F1F8E9;
+}
+
+.tutorial {
+  display: inline-block;
+  background: url(../res/pointer.svg);
+  background-size: 18px 18px;
+  width: 18px;
+  height: 18px;
+  color: white;
+  vertical-align: middle;
+  margin-bottom: 5px;
+}
+
+.tippy-tooltip.light-theme {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  background-color: white;
+  color: #333;
+  border-bottom: 2px solid #ef5350;
+}
+
+.tippy-tooltip.light-theme .tippy-backdrop {
+  background-color: white;
 }
 
 /*
