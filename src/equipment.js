@@ -127,7 +127,7 @@ export const potions = [
   },
   { 
     name: 'PP Potion',
-    desc: 'Restores 50 PP.',
+    desc: 'Restores 75 PP.',
     icon: 'ra-bubbling-potion',
     style: 'potion-pp',
     cost: '50',
@@ -135,7 +135,7 @@ export const potions = [
   },
   { 
     name: 'Runic Potion',
-    desc: 'Grants 1d4 bonus Runic for next 4 turns.',
+    desc: 'Grants 1d2 + 2 bonus Runic for next 4 turns.',
     icon: 'ra-fizzing-flask',
     style: 'potion-runic',
     cost: '75',

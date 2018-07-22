@@ -13,5 +13,5 @@ export default {
   monsterDamage: 0,
   monsterRage: 0,
   monsterName: null,
-  gold: 0,
+  gold: 100,
 }

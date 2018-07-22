@@ -30,6 +30,7 @@ import {
   playerDisadvantage,
   defensePotionCondition,
   accuracyPotionCondition,
+  runicPotionCondition
 } from './conditions';
 
 
@@ -40,8 +41,8 @@ if (DEV) {
 // Add items for other classes. Desc refers to array in equipment.js
 const mageItem = [
   { name: 'Oak Wand', type: 'weapon', gold: 1, desc: 0 },
-  { name: 'Sapphire Amulet', type: 'amulet', gold: 95, desc: 0 },
-  { name: 'Magical Stick', type: 'trinket', gold: 50, desc: 0 },
+  { name: 'Sapphire Amulet', type: 'amulet', gold: 1, desc: 0 },
+  { name: 'Magical Stick', type: 'trinket', gold: 1, desc: 0 },
   { name: 'Ebony Wand', type: 'weapon', gold: 1, desc: 1 },
   { name: 'Emerald Amulet', type: 'amulet', gold: 1, desc: 1 },
   { name: 'Cursed Locket', type: 'trinket', gold: 1, desc: 1 },
@@ -211,8 +212,8 @@ const ent = {
       result = 2;
     }
     if (result === 2) {
-      let extra = Stats.monsterRage / 10;
-      Stats.monsterHealth = (Stats.monsterHealth + extra)*2;
+      let extra = (Stats.monsterRage / 10);
+      Stats.monsterHealth = Stats.monsterHealth + extra
 
       if (DEV) {
         console.log(`Extra: ${extra}`);
@@ -354,9 +355,18 @@ const endTurnMonster = function(result) {
     accuracyPotionCondition.turns = accuracyPotionCondition.turns - 1;
   }
 
-  if (accuracyPotionCondition.turns > 0 && accuracyPotionCondition.active) {
+  if (accuracyPotionCondition.turns === 0 && accuracyPotionCondition.active) {
     accuracyPotionCondition.active = false;
     Stats.playerHitChanceModifier -= accuracyPotionCondition.bonus;
+  }
+
+  if (runicPotionCondition.turns > 0) {
+    runicPotionCondition.turns -= 1;
+  }
+
+  if (runicPotionCondition.turns === 0 && runicPotionCondition.active) {
+    runicPotionCondition.active = false;
+    Stats.playerRunic -= runicPotionCondition.bonus;
   }
 
   $('.monster-graphic').addClass('poke-left');
@@ -476,6 +486,14 @@ const mageInit = function () {
 
   document.getElementById('buy-accuracy').addEventListener('click', () => {
     buyAccuracy();
+  });
+
+  document.getElementById('buy-pp').addEventListener('click', () => {
+    buyPp();
+  });
+
+  document.getElementById('buy-runic').addEventListener('click', () => {
+    buyRunic();
   });
 
   shopModal.setFooterContent(getGold());
@@ -912,6 +930,9 @@ const buyAccuracy = () => {
 
   Stats.playerHitChanceModifier += result;
 
+  let cost = parseInt(potions[1].cost);
+  Stats.gold -= cost;
+
   shopModal.close();
   log(`You drink a Accuracy Potion and boost hit chance by ${result}!`, 'ps');
   endTurn();
@@ -929,10 +950,57 @@ const buyDefense = () => {
 
   if (DEV) console.log(`Result: ${result} Turns: ${defensePotionCondition.turns} Active: ${defensePotionCondition.active}`);
 
+  let cost = parseInt(potions[2].cost);
+  Stats.gold -= cost;
+
   shopModal.close();
   log(`You drink a Defense Potion and boost AC by ${result}!`, 'ps');
   endTurn();
 
+}
+
+const buyPp = () => {
+  let extra = 50;
+
+  if (sapphireAmuletCondition.active == true) {
+    Stats.playerMaxMana = 125;
+  } else {
+    Stats.playerMaxMana = 100;
+  }
+
+  if (DEV) console.log(`Extra: ${extra} PlayerMana: ${Stats.playerMana} PlayerMaxMana: ${Stats.playerMaxMana}`);
+
+  if (Stats.playerMana + extra > Stats.playerMaxMana) {
+    Stats.playerMana = Stats.playerMana;
+  }
+  else {
+    Stats.playerMana += extra;
+  }
+
+  let cost = parseInt(potions[3].cost);
+  Stats.gold -= cost;
+
+  shopModal.close();
+  log(`You drink a PP Potion and gain 75 mana!`, 'ps');
+  endTurn();
+}
+
+const buyRunic = () => {
+  let result = roll(2) + 2;
+  
+  runicPotionCondition.bonus = result;
+  runicPotionCondition.turns = 4;
+  runicPotionCondition.active = true;
+
+  Stats.playerRunic += result;
+
+  let cost = parseInt(potions[4].cost);
+  Stats.gold -= cost;
+
+  shopModal.close();
+  log(`You drink a Runic Potion and boost Runic by ${result}!`, 'ps');
+  endTurn();
+  
 }
 
 $(".character-selection").hide();
@@ -952,5 +1020,5 @@ init('mage');
 // }, 2500);
 
 // Skip to monsters. Function still +1 to level 
-Stats.playerLevel = 2;
-advance();
+// Stats.playerLevel = 2;
+// advance();

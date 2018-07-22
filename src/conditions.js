@@ -27,6 +27,12 @@ export const accuracyPotionCondition = {
   active: false,
 }
 
+export const runicPotionCondition = {
+  turns: 0,
+  bonus: 0,
+  active: false,
+}
+
 // Monster spells
 
 export const dwarfTankCondition = {
