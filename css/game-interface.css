@@ -36,11 +36,13 @@ body {
   grid-gap: 5px;
   justify-items: center;  
   color: #292929;
+  z-index: 3;
 }
 
 .health-player {
   justify-self: center;
   font-size: 5em; 
+  
 }
 
 .health-monster {
@@ -56,7 +58,6 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr;
-  grid-gap: 5px;
   justify-items: center;  
   margin-top: 10px;    
 }
@@ -72,7 +73,7 @@ body {
 
 .info-item {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
   grid-template: 1fr;
   grid-gap: 5px;
   justify-items: center;   
@@ -131,13 +132,15 @@ body {
   grid-template-rows: 1fr;
   grid-gap: 20px;
   justify-items: center; 
-  margin-top: 20px; 
+  margin-top: 160px;
+  z-index: 2;
 }
 
 .graphics {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
+  position: relative;
 }
 
 .equipment-button {
@@ -151,10 +154,6 @@ body {
 
 .pull-left {
   justify-self: start;
-}
-
-.log-interface {
-  margin-top: 40px;
 }
 
 .list {
@@ -398,6 +397,28 @@ body {
 
 .tippy-tooltip.light-theme .tippy-backdrop {
   background-color: white;
+}
+
+.platform {
+  position: absolute;
+  left: -170px;
+  top: -94px;
+  z-index: 0;
+  pointer-events: none;
+  float: right;
+}
+
+.player-graphic, .monster-graphic {
+  z-index: 2;
+  position: absolute;
+}
+
+.player-graphic {
+  left: -100px;
+}
+
+.monster-graphic {
+  
 }
 
 /*

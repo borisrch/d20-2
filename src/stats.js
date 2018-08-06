@@ -8,6 +8,7 @@ export default {
   playerLevel: 0,
   playerClass: 'null',
   playerMaxMana: 100,
+  currentMonster: null,
   monsterHealth: 0,
   monsterArmour: 0,
   monsterDamage: 0,
