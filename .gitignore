@@ -2,3 +2,5 @@ node_modules/
 package-lock.json
 package.json
 webpack.config.js
+d20.code-workspace
+.eslintrc.json
