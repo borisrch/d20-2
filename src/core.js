@@ -2,7 +2,6 @@
 // Webpack - load in modules when needed.
 // Refactor html
 import tippy from 'tippy.js';
-import introJs from 'intro.js';
 
 import { roll, attack, pureAttack, bonus } from './rollattack';
 import { log } from './log';
@@ -32,9 +31,9 @@ import {
   playerDisadvantage,
   defensePotionCondition,
   accuracyPotionCondition,
-  runicPotionCondition
+  runicPotionCondition,
 } from './conditions';
-import { a } from './tutorial';
+import { runTutorial } from './tutorial';
 import { endTurn, endTurnMonster } from './turn';
 import { updateStats } from './update';
 import Logger from './logger';
@@ -260,133 +259,6 @@ const playerHealthHelper = (result) => {
     Stats.playerHealth = Stats.playerHealth - result;
   } 
 }
-
-// const endTurn = function(result) {
-//   if (result) {
-//     $('.monster-health').addClass('animated jello');
-//   }
-
-//   if (runicEchoesCondition.active === true || defensePotionCondition.active === true) {
-//     $('.player-armour').addClass('colour-mana-add');
-//   }
-
-//   if (dwarfTankCondition.active == true) {
-//     dwarfTankCondition.active = false;
-//     Stats.monsterArmour = Stats.monsterArmour - dwarfTankCondition.bonusArmour;
-//   }
-  
-//   $('.player-graphic').addClass('poke-right');
-
-//   if (monsterDead.active == true) {
-//     $('.monster-graphic').addClass('spawn');
-//     monsterDead.active = false;
-//   } else {
-//     $('.monster-graphic').addClass('monster-flail');
-//   }  
-
-//   if (sapphireAmuletCondition.active == true) {
-//     Stats.playerMaxMana = 125;
-//   } else {
-//     Stats.playerMaxMana = 100;
-//   }
-  
-//   if (Stats.playerMana + 25 >= Stats.playerMaxMana) {
-//     Stats.playerMana = Stats.playerMaxMana;
-//   } else {
-//     Stats.playerMana = Stats.playerMana + 25;
-//     $('.player-mana').addClass('colour-mana-add');
-//   }
-
-//   updateStats();
-
-//   disable();
-
-//   // Remove animation classes.
-
-//   setTimeout(() => {
-//     $('.monster-health').removeClass('animated jello');
-//   }, 500);
-
-//   setTimeout(() => {
-//     $('.player-graphic').removeClass('poke-right');
-//     $('.monster-graphic').removeClass('monster-flail');
-//     $('.monster-graphic').removeClass('spawn');
-//   }, 500);
-
-//   setTimeout(() => {
-//     $('.player-mana').removeClass('colour-mana-add');
-//     $('.player-armour').removeClass('colour-mana-add');
-//   }, 1000);
-
-
-//   setTimeout(() => {
-//     currentMonster.turn();         
-//   }, 1500);
-// }
-
-// const endTurnMonster = function(result) {
-//   if (result) {
-//     $('.player-health').addClass('animated jello');
-//   }
-
-//   if(Stats.monsterRage > 0) {
-//     $('.monster-rage').addClass('colour-rage-add');
-//   }
-  
-//   if (dwarfTankCondition.active == true) {
-//     $('.monster-armour').addClass('colour-rage-add');
-//   }
-
-//   if (runicEchoesCondition.active == true) {
-//     Stats.playerArmour = Stats.playerArmour - runicEchoesCondition.bonusArmour;
-//     runicEchoesCondition.active = false;
-//   }
-
-//   if (defensePotionCondition.turns > 0) {
-//     defensePotionCondition.turns = defensePotionCondition.turns - 1;
-//   }
-
-//   if (defensePotionCondition.turns === 0 && defensePotionCondition.active) {
-//     defensePotionCondition.active = false;
-//     Stats.playerArmour = Stats.playerArmour - defensePotionCondition.bonusArmour;
-//   }
-
-//   if (accuracyPotionCondition.turns > 0) {
-//     accuracyPotionCondition.turns = accuracyPotionCondition.turns - 1;
-//   }
-
-//   if (accuracyPotionCondition.turns === 0 && accuracyPotionCondition.active) {
-//     accuracyPotionCondition.active = false;
-//     Stats.playerHitChanceModifier -= accuracyPotionCondition.bonus;
-//   }
-
-//   if (runicPotionCondition.turns > 0) {
-//     runicPotionCondition.turns -= 1;
-//   }
-
-//   if (runicPotionCondition.turns === 0 && runicPotionCondition.active) {
-//     runicPotionCondition.active = false;
-//     Stats.playerRunic -= runicPotionCondition.bonus;
-//   }
-
-//   $('.monster-graphic').addClass('poke-left');
-//   $('.player-graphic').addClass('player-flail');
-
-//   updateStats();
-//   setTimeout(() => {
-//     $('.player-health').removeClass('animated jello');
-//     $('.monster-armour').removeClass('colour-rage-add');
-//     $('.monster-rage').removeClass('colour-rage-add');
-//   }, 500);
-//   setTimeout(() => {
-//     $('.monster-graphic').removeClass('poke-left');
-//     $('.player-graphic').removeClass('player-flail');
-//   }, 750);
-
-//   setTimeout(() => {
-//     enable();
-//   }, 500);    
-// }
 
 // Must Define After Monster, but before Basic Attack
 
@@ -647,7 +519,7 @@ const scorch = function() {
 
   deathfireGraspCondition.active = false;
 
-  let base = roll(2);   
+  let base = roll(2);
   let bonusRes = bonus(Stats.playerRunic, 2);
   let total = base + bonusRes;
 
@@ -661,7 +533,6 @@ const scorch = function() {
   if(result != null) {
     log('You <i>Scorch</i> for ' + result + ' damage!', 'ps-scorch');
     monsterHealthHelper(result);
-    
   } else {
     log('You missed Scorch!', 'miss-player');
   }
@@ -781,13 +652,11 @@ const trinketModal = new tingle.modal({
   closeLabel: "Close",
   cssClass: ['custom-class-1', 'custom-class-2'],
   onOpen: function() {
-      
   },
   onClose: function() {
-      
   },
   beforeClose: function() {
-      return true;
+  return true;
   }
 });
 
@@ -1004,19 +873,13 @@ const buyRunic = () => {
   shopModal.close();
   log(`You drink a Runic Potion and boost Runic by ${result}!`, 'ps');
   endTurn();
-  
 }
 
 $(".character-selection").hide();
 
 init('mage');
 
-Logger.mob('Monster Does Something');
-Logger.player('Player');
-Logger.mob('Monster Does Something');
-Logger.player('Player');
-
-introJs().start();
+runTutorial();
 
 // Turn simulator
 
