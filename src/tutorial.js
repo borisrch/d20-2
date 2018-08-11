@@ -5,6 +5,8 @@ const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
 const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
 const br = '<br/>';
 
+const intro = introJs();
+
 const steps = [
   {
     el: '.game-interface',
@@ -32,13 +34,13 @@ const steps = [
   },
   {
     el: '.player-graphic',
-    info: 'Wizards Bathtub is turn based. Performing a basic attack, casting a spell, or purchasing a potion will end your turn.',
+    info: `Combat is turn based. ${br} ${br} Performing a basic attack, casting a spell, or purchasing a potion will end your turn.`,
     step: 5,
     position: null,
   },
   {
     el: '.monster-graphic',
-    info: 'After your turn, it will be the monsters turn. Monsters will have an arsenal of spells and quirks to attack you with, so be prepared!',
+    info: `After your turn, the monster's turn will begin. ${br} ${br} Monsters will have an arsenal of spells and quirks to attack you with, so be prepared!`,
     step: 6,
     position: null,
   },
@@ -61,9 +63,26 @@ export const runTutorial = () => {
       $(step.el).attr('data-position', step.position);
     }
   });
-  
-  const intro = introJs();
+ 
   intro.setOption('showBullets', false);
   intro.setOption('showProgress', true);
   intro.start();
+
+  // If user leaves earlier, other tutorial conditions are not started.
+  intro.onexit(() => {
+    tutorialCondition.a = false;
+  })
+
+}
+
+export const tutorialCondition = {
+  a: true,
+  b: false,
+}
+
+export const tutorialPause = (n) => {
+  intro.exit();
+  setTimeout(() => {
+    intro.goToStepNumber(n).start();
+  }, 2500);
 }

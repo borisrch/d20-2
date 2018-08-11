@@ -20,6 +20,7 @@ import {
   potions,
   setShopItem,
   getGold,
+  setEquipmentInterface,
 } from './equipment';
 import {
   alzursThunderCondition,
@@ -33,10 +34,11 @@ import {
   accuracyPotionCondition,
   runicPotionCondition,
 } from './conditions';
-import { runTutorial } from './tutorial';
+import { runTutorial, tutorialCondition, tutorialPause } from './tutorial';
 import { endTurn, endTurnMonster } from './turn';
 import { updateStats } from './update';
 import Logger from './logger';
+
 
 const noop = () => {};
 
@@ -280,7 +282,7 @@ const playerTurnBasicAttack = function() {
 
 const init = function (mode) {
 
-  tippyInit();
+  
   monsterInit();
 
   switch(mode) {
@@ -300,11 +302,13 @@ const init = function (mode) {
     console.log('Error in init');
   }
   updateStats();
+
+  tippyInit();
 }
 
 const mageInit = function () {
   Stats.playerHealth = 100;
-  Stats.playerDamage = 10;
+  Stats.playerDamage = 6;
   Stats.playerArmour = 8;
   Stats.playerRunic = 2;
   Stats.playerMana = 100;
@@ -348,6 +352,9 @@ const mageInit = function () {
     setShopItem(potion.name, potion.desc, potion.icon, potion.style, potion.cost, potion.id);
   });
 
+  equipmentModal.setContent('<div id="equipment"></div>');
+  setEquipmentInterface();
+
   document.getElementById('buy-health').addEventListener('click', () => {
     buyHealth();
   });
@@ -368,17 +375,18 @@ const mageInit = function () {
     buyRunic();
   });
 
-  shopModal.setFooterContent(getGold());
-
   document.getElementById('equipment-weapon').addEventListener('click', () => {
+    equipmentModal.close();
     weaponModal.open();
   });
 
   document.getElementById('equipment-amulet').addEventListener('click', () => {
+    equipmentModal.close();
     amuletModal.open();
   });
 
   document.getElementById('equipment-trinket').addEventListener('click', () => {
+    equipmentModal.close();
     trinketModal.open();
   });
 
@@ -396,23 +404,50 @@ const mageInit = function () {
     shopModal.open();
   });
 
+  document.getElementById('equipment-new').addEventListener('click', () => {
+    equipmentModal.open();
+  });
+
   document.getElementById('basic-attack').addEventListener('click', () => {
+    if (tutorialCondition.a) {
+      tutorialCondition.a = false;
+      tutorialPause(2);
+      tutorialCondition.b = true;
+    }
+
     playerTurnBasicAttack();
   });
 
   document.getElementById('q').addEventListener('click', () => {
+    if (tutorialCondition.b) {
+      tutorialCondition.b = false;
+      tutorialPause(3);
+    }
+
     manaCheck(75, scorch);
   });
 
   document.getElementById('w').addEventListener('click', () => {
+    if (tutorialCondition.b) {
+      tutorialCondition.b = false;
+      tutorialPause(3);
+    }
     manaCheck(100, alzurs_thunder);
   });
 
   document.getElementById('e').addEventListener('click', () => {
+    if (tutorialCondition.b) {
+      tutorialCondition.b = false;
+      tutorialPause(3);
+    }
     manaCheck(50, deathfire_grasp);
   });
 
   document.getElementById('r').addEventListener('click', () => {
+    if (tutorialCondition.b) {
+      tutorialCondition.b = false;
+      tutorialPause(3);
+    }
     manaCheck(25, runic_echoes);
   });
 }
@@ -432,47 +467,95 @@ const mageInit = function () {
 // }
 
 const tippyInit = function () {
-  const title = 'title';
 
   const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
   const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
   const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
 
-  const playerDamageTip = 'Damage attribute affects basic attack and spell damage.';
-  $('.player-damage-tip').prop(title, playerDamageTip);
-  tippy('.player-damage-tip');  
+  const tippyMessages = [
+    {
+      el: '.player-damage-tip',
+      tip: 'Damage attribute affects basic attack and spell damage.',
+    },
+    {
+      el: '.player-armour-tip',
+      tip: 'Armour class represents how hard it is for opponents to land an attack or spell on you.',
+    },
+    {
+      el: '.player-runic-tip',
+      tip: 'Runic attribute improves spells and their effects.',
+    },
+    {
+      el: '.monster-rage-tip',
+      tip: 'Rage is aquired over time, and allows Monsters to have additional spells and effects.',
+    },
+    {
+      el: '.player-mana-tip',
+      tip: 'PP represents the cost for casting spells. 25 PP is recharged per turn.',
+    },
+    {
+      el: '#equipment-weapon',
+      tip: '<b>Equip Weapon</b>',
+    },
+    {
+      el: '#equipment-amulet',
+      tip: '<b>Equip Amulet</b>',
+    },
+    {
+      el: '#equipment-trinket',
+      tip: '<b>Equip Trinket</b>',
+    },
+    {
+      el: '#equipment-shop',
+      tip: '<b>Browse Shop</b>',
+    },
+  ];
 
-  const playerArmourTip = 'Armour class represents how hard it is for opponents to land an attack or spell on you.';
-  $('.player-armour-tip').prop(title, playerArmourTip);  
-  tippy('.player-armour-tip');  
+  const tippyElements = [];
 
-  const playerRunicTip = 'Runic attribute improves spells and their effects.';
-  $('.player-runic-tip').prop(title, playerRunicTip);  
-  tippy('.player-runic-tip');  
+  tippyMessages.forEach((item) => {
+    let c = document.querySelector(item.el);
+    c.setAttribute('title', item.tip);
+    tippyElements.push(c);
+  })
 
-  const playerManaTip = 'PP represents the cost for casting spells. 25 PP is recharged per turn.';
-  $('.player-mana-tip').prop(title, playerManaTip);
-  tippy('.player-mana-tip');
+  tippy(tippyElements);
 
-  const monsterRageTip = 'Rage is aquired over time, and allows Monsters to have additional spells and effects.';
-  $('.monster-rage-tip').prop(title, monsterRageTip);
-  tippy('.monster-rage-tip');
+  // const playerDamageTip = 'Damage attribute affects basic attack and spell damage.';
+  // $('.player-damage-tip').prop(title, playerDamageTip);
+  // tippy('.player-damage-tip');  
 
-  const weaponTip = 'Switch Weapon - Weapons affect your hit chance.';
-  $('#equipment-weapon').prop(title, weaponTip);
-  tippy('#equipment-weapon');
+  // const playerArmourTip = 'Armour class represents how hard it is for opponents to land an attack or spell on you.';
+  // $('.player-armour-tip').prop(title, playerArmourTip);  
+  // tippy('.player-armour-tip');  
 
-  const amuletTip = `Switch Amulet - Amulets can affect ${damageIcon} and ${armourIcon} .`;
-  $('#equipment-amulet').prop(title, amuletTip);
-  tippy('#equipment-amulet');
+  // const playerRunicTip = 'Runic attribute improves spells and their effects.';
+  // $('.player-runic-tip').prop(title, playerRunicTip);  
+  // tippy('.player-runic-tip');  
 
-  const trinketTip = 'Switch Trinket - Trinkets affect all attributes.';
-  $('#equipment-trinket').prop(title, trinketTip);
-  tippy('#equipment-trinket');
+  // const playerManaTip = 'PP represents the cost for casting spells. 25 PP is recharged per turn.';
+  // $('.player-mana-tip').prop(title, playerManaTip);
+  // tippy('.player-mana-tip');
 
-  const shopTip = 'Browse Shop - Buy potions with gold.';
-  $('#equipment-shop').prop(title, shopTip);
-  tippy('#equipment-shop');
+  // const monsterRageTip = 'Rage is aquired over time, and allows Monsters to have additional spells and effects.';
+  // $('.monster-rage-tip').prop(title, monsterRageTip);
+  // tippy('.monster-rage-tip');
+
+  // const weaponTip = '<b>Equip Weapon</b>';
+  // $('#equipment-weapon').prop(title, weaponTip);
+  // tippy('#equipment-weapon');
+
+  // const amuletTip = '<b>Equip Amulet</b>';
+  // $('#equipment-amulet').prop(title, amuletTip);
+  // tippy('#equipment-amulet');
+
+  // const trinketTip = '<b>Equip Trinket</b>';
+  // $('#equipment-trinket').prop(title, trinketTip);
+  // tippy('#equipment-trinket');
+
+  // const shopTip = '<b>Browse Shop</b>';
+  // $('#equipment-shop').prop(title, shopTip);
+  // tippy('#equipment-shop');
 }
 
 const tippyMage = function() {  
@@ -677,6 +760,13 @@ const shopModal = new tingle.modal({
   }
 });
 
+const equipmentModal = new tingle.modal({
+  footer: true,
+  stickyFooter: false,
+  closeMethods: ['button', 'escape'],
+  closeLabel: "Close",
+});
+
 // Incomplete function. Add item types to this.
 const advance = function() {
   
@@ -879,7 +969,7 @@ $(".character-selection").hide();
 
 init('mage');
 
-runTutorial();
+// runTutorial();
 
 // Turn simulator
 

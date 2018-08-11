@@ -152,7 +152,7 @@ export const setShopItem = (potionName, potionDescription, ra, style, potionCost
   shopDesc.classList.add('shop-desc');
   
   let potion = document.createElement('p');
-  potion.innerText = potionName + ': ';
+  potion.innerText = potionName + '';
   
   let description = document.createElement('p');
   description.innerText = potionDescription
@@ -163,12 +163,18 @@ export const setShopItem = (potionName, potionDescription, ra, style, potionCost
   icon.classList.add(style);
   icon.classList.add('shop-icon');
   
-  let cost = document.createElement('p');
-  cost.innerText = potionCost + ' gold.';
+  let cost = document.createElement('div');
+  let costDesc = document.createElement('p');
+  costDesc.innerText = potionCost + ' gold.';
+  costDesc.classList.add('shop-desc');
+  let coinImg = document.createElement('img');
+  coinImg.src = '/res/common/coin.png';
+  coinImg.classList.add('shop-coin');
 
   let button = document.createElement('button');
   button.innerText = 'Buy';
   button.classList.add('spell-potion');
+  button.classList.add('shop-buy');
   button.setAttribute('id', id);
 
   let shopItem = document.createElement('div');
@@ -176,6 +182,9 @@ export const setShopItem = (potionName, potionDescription, ra, style, potionCost
 
   potion.appendChild(description);
   shopDesc.appendChild(potion);
+  
+  cost.appendChild(coinImg);
+  cost.appendChild(costDesc);
 
   shopItem.appendChild(icon);
   shopItem.appendChild(shopDesc);
@@ -186,3 +195,57 @@ export const setShopItem = (potionName, potionDescription, ra, style, potionCost
   shop.appendChild(shopItem);
 }
 
+export const setEquipmentInterface = () => {
+
+  // Container set up.
+  const upperContainer = document.createElement('div');
+  upperContainer.className = 'upper-container';
+  const lowerContainer = document.createElement('div');
+  lowerContainer.className = 'lower-container';
+
+  // Add amulet button.
+  const amuletButton = document.createElement('button');
+  amuletButton.id = 'equipment-amulet';
+  amuletButton.className = 'spell spell-amulet square-button';
+  const amuletIcon = document.createElement('span');
+  amuletIcon.className = 'ra ra-gem-pendant icon';
+
+  // Add weapon button.
+  const weaponButton = document.createElement('button');
+  weaponButton.id = 'equipment-weapon';
+  weaponButton.className = 'spell spell-weapon square-button';
+  const weaponIcon = document.createElement('span');
+  weaponIcon.className = 'ra ra-hand-emblem icon';
+
+  // Add trinket button.
+  const trinketButton = document.createElement('button');
+  trinketButton.id = 'equipment-trinket';
+  trinketButton.className = 'spell spell-trinket square-button';
+  const trinketIcon = document.createElement('span');
+  trinketIcon.className = 'ra ra-ankh icon';
+  
+  // Add icons to buttons.
+  amuletButton.appendChild(amuletIcon);
+  weaponButton.appendChild(weaponIcon);
+  trinketButton.appendChild(trinketIcon);
+  
+  // Get character image.
+  const player = document.createElement('img');
+  player.className = 'equipment-player-graphic';
+  player.src = 'res/mobs/mage.png';
+
+  // Append elements to containers.
+  upperContainer.appendChild(amuletButton);
+  upperContainer.appendChild(player);
+  upperContainer.appendChild(weaponButton);
+  lowerContainer.appendChild(trinketButton);
+
+  const equipment = document.getElementById('equipment');
+  const title = document.createElement('h2');
+  title.className = 'modal-title';
+  title.innerText = 'Change Equipment';
+
+  equipment.appendChild(title);
+  equipment.appendChild(upperContainer);
+  equipment.appendChild(lowerContainer);
+}

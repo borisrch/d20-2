@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link href="https://fonts.googleapis.com/css?family=Patua+One" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Cabin:400,700" rel="stylesheet">
+
   <link rel="stylesheet" href="./css/tingle.min.css">
   <link rel="stylesheet" href="./css/character-selection.css">
   <link rel="stylesheet" href="./css/select.css">
@@ -70,19 +72,19 @@
 
       <div class="player-stats">
         <div class="info-item player-damage-tip" id="">
-            <span class="ra ra-sword colour-damage"></span>
+            <span class="ra ra-sword colour-damage info-icon-dmg"></span>
             <div class="player-damage">0</div>
         </div>
         <div class="info-item player-armour-tip">
-            <span class="ra ra-shield colour-ac"></span>
+            <span class="ra ra-shield colour-ac info-icon"></span>
             <div class="player-armour" id="">0</div>
         </div>
         <div class="info-item player-runic-tip">
-            <span class="ra ra-crystals colour-runic"></span>
+            <span class="ra ra-crystals colour-runic info-icon"></span>
             <div class="player-runic">0</div>
         </div>
         <div class="info-item player-mana-tip">
-            <span class="ra ra-lightning-bolt colour-mana"></span>
+            <span class="ra ra-lightning-bolt colour-mana info-icon"></span>
             <div class="player-mana">0</div>
         </div>
       </div>
@@ -93,15 +95,15 @@
 
       <div class="monster-stats">
         <div class="info-item player-damage-tip">
-          <span class="ra ra-sword colour-damage"></span>
+          <span class="ra ra-sword colour-damage info-icon-dmg"></span>
           <div class="monster-damage">0</div>
         </div>
         <div class="info-item player-armour-tip">
-          <span class="ra ra-shield colour-ac"></span>
+          <span class="ra ra-shield colour-ac info-icon"></span>
           <div class="monster-armour">0</div>
         </div>
         <div class="info-item monster-rage-tip">
-          <span class="ra ra-player-pyromaniac colour-rage"></span>
+          <span class="ra ra-player-pyromaniac colour-rage info-icon"></span>
           <div class="monster-rage">0</div>
         </div>
       </div>
@@ -109,38 +111,33 @@
 
     <div class="ability-interface">
       <div class="basic-container pull-right">
-          <button class="spell basic-attack" id="basic-attack">
+          <button class="spell basic-attack round-button" id="basic-attack">
               <span class="ra ra-sword basic-attack-icon icon"></span>
             </button>
       </div>
           <div class="spells-interface">
-            <button class="q" id="q">
+            <button class="q round-button" id="q">
               <span class="qi"></span>
             </button>
-            <button class="w"  id="w">
+            <button class="w round-button"  id="w">
               <span class="wi"></span>
             </button>
-            <button class="e" id="e">
+            <button class="e round-button" id="e">
               <span class="ei"></span>
             </button>
-            <button class="r" id="r">
+            <button class="r round-button" id="r">
               <span class="ri"></span>
             </button>
           </div> 
 
           <div class="equipment-interface pull-left">
-            <button class="spell spell-equipment" id="equipment-weapon">
-                <span class="ra ra-hand-emblem icon"></span>
-            </button>
-            <button class="spell spell-amulet" id="equipment-amulet">
-                <span class="ra ra-gem-pendant icon"></span>
-            </button>
-            <button class="spell spell-trinket" id="equipment-trinket">
-                <span class="ra ra-ankh icon"></span>
-            </button>
+            <button class="spell spell-equipment" id="equipment-new">
+              <span class="ra ra-vest icon"></span>
+            </button>   
             <button class="spell spell-potion" id="equipment-shop">
                 <span class="ra ra-potion icon"></span>
-            </button>            
+            </button>     
+       
           </div>
     
     </div>

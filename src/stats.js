@@ -8,6 +8,7 @@ export default {
   playerLevel: 0,
   playerClass: 'null',
   playerMaxMana: 100,
+  playerGraphic: '/res/mobs/mage.png',
   currentMonster: null,
   monsterHealth: 0,
   monsterArmour: 0,

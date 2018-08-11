@@ -10,51 +10,112 @@
   <link rel="stylesheet" href="./css/spell-interface.css">
 </head>
 <body>
-  <div class="shop-interface">
-    <div class="shop-item">
-      <span class="ra ra-heart-bottle icon"></span>
-      <div class="shop-desc">
-        <p>Healing Potion: Heals for 1d10 + 10 HP. 15 gold.</p>
+  
+  <div id="class-container">
+
+    <div class="class-panel" id="wizard">
+
+      <img src="res/platform/bg.png" alt="" srcset="" class="class-background">
+
+      <div class="class-title">
+        <span>MAGE</span>
       </div>
-      <button class="spell spell-potion">BUY</button>
+
+      <div class="class-spells">
+        <div class="spell"></div>
+        <div class="spell"></div>
+        <div class="spell"></div>
+        <div class="spell"></div>
+      </div>
+
+      <div class="class-description">
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iure dolore assumenda ducimus sapiente fugiat.
+      </div>
+
+      <div class="class-stats">
+        
+        <div class="stat-group">
+          <span class="class-icon">a</span>
+          <div class="bar">
+              <div class="fill"></div>
+          </div>
+        </div>
+        
+          </div>
+
+      </div>
+
     </div>
 
-    <div class="shop-item">
-      <span class="ra ra-round-bottom-flask icon"></span>
-      <div class="shop-desc"><p>Defense Potion: Increases AC by 1d6 for next 4 turns. 15 gold.</p></div>
-      <button class="spell spell-potion">BUY</button>
-    </div> 
-
-    <div class="shop-item">
-      <span class="ra ra-corked-tube icon"></span>
-      <div class="shop-desc"><p>Accuracy Potion: Increases hit chance by 1d4 for next 4 turns. 25 gold.</p></div>
-      <button class="spell spell-potion">BUY</button>
-    </div> 
-
-    <div class="shop-item">
-      <span class="ra  ra-bubbling-potion icon"></span>
-      <div class="shop-desc"><p>PP Potion: Restores 50 PP. 50 gold.</p></div>
-      <button class="spell spell-potion">BUY</button>
-    </div> 
-
-    <div class="shop-item">
-      <span class="ra  ra-fizzing-flask icon"></span>
-      <div class="shop-desc"><p>Runic Potion: Grants 1d4 bonus Runic for next 4 turns. 75 gold.</p></div>
-      <button class="spell spell-potion">BUY</button>
-    </div>  
   </div>
-    
-    Healing Potion - 15gp
-    Mana Potion - 50gp
-    Defense Potion - 15gp
-    Accuracy Potion - 25gp
-    Runic Potion - 75gp
 
-    <style> 
-    body {
-      background-image: none;
+  <style>
+    .class-panel {
       background-color: white;
+      width: 225px;
+      height: 400px;
+      border-radius: 10px;
+      overflow: hidden;
+      
     }
-    </style>
+
+    .class-panel:hover {
+      
+    }
+
+    .class-background {
+      width: inherit;
+      height: 150px;
+    }
+
+    .class-spells {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      width: 220px;
+      justify-items: center;
+      margin-left: 2px;
+      
+    }
+
+    .spell {
+      width: 50px;
+      height: 50px;
+      background-color: orange;
+    }
+
+    .class-stats {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .stat-group {
+      display: grid;
+      grid-template-columns: 0.25fr 0.75fr;
+    }
+
+    .class-icon {
+      justify-self: end;
+      margin-right: 10px;
+      align-self: center;
+    }
+
+    .bar {
+      height: 7px;
+      width: 150px;
+      background-color: gray;
+      align-self: center;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+
+    .fill {
+      height: inherit;
+      width: 50%;
+      background-color: cyan;
+    }
+  
+  </style>
+
 </body>
 </html>
