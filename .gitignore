@@ -4,3 +4,5 @@ package.json
 webpack.config.js
 d20.code-workspace
 .eslintrc.json
+shop.html
+dist/

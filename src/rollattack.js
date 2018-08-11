@@ -1,27 +1,31 @@
 import { DEV } from './dev';
 import { alzursThunderCondition, playerDisadvantage } from './conditions';
+import MersenneTwister from 'mersenne-twister';
 
 const throwIfMissing = () => { throw new Error('Missing Paramater') };
 
+const generator = new MersenneTwister();
+
 // Returns result of random 1 to n.
-export const roll = function(n) {
-  let min = 1;
-  let max = Math.floor(n);
-  let result = Math.floor(Math.random() * (max - min + 1)) + min;
+export const roll = function (n) {
+  const min = 1;
+  const max = Math.floor(n);
+  const rand = generator.random();
+  const result = Math.floor(rand * (max - min + 1)) + min;
   return result;
-}
+};
 
 // Returns bonus of runic d n
-export const bonus = function(runic, n) {
+export const bonus = function (runic, n) {
   let b = 0;
-  for (let i = 0; i < runic; i++) {
-    b = b + roll(n);
+  for (let i = 0; i < runic; i += 1) {
+    b += roll(n);
   }
   return b;
-}
+};
 
 // Returns result of damage or null, considers conditions.
-export const attack = function(playerDamage = throwIfMissing(), playerHitChanceModifier = throwIfMissing(), playerDamageModifier = throwIfMissing(), playerMultiplier = throwIfMissing(), monsterArmour = throwIfMissing()) {
+export const attack = function (playerDamage = throwIfMissing(), playerHitChanceModifier = throwIfMissing(), playerDamageModifier = throwIfMissing(), playerMultiplier = throwIfMissing(), monsterArmour = throwIfMissing()) {
 
   let extra = 0;
 
@@ -86,3 +90,4 @@ export const pureAttack = function(playerDamage, playerHitChanceModifier, player
 export const getRandomInt = function(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
+
