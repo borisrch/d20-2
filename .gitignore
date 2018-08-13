@@ -6,3 +6,4 @@ d20.code-workspace
 .eslintrc.json
 shop.html
 dist/
+res/
