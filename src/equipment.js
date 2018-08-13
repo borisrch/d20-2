@@ -1,11 +1,14 @@
 import Stats from './stats';
 import { sapphireAmuletCondition } from './conditions';
 import { roll } from './rollattack';
+import { wizardItems } from './equipment-weapons';
 
 const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
 const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
 const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
 const manaIcon = '<span class="ra ra-lightning-bolt colour-mana"></span>';
+
+let SELECTED_WEAPON = '';
 
 export const selectWeapon = function(weapon) {
   switch(weapon) {
@@ -148,6 +151,7 @@ export const getGold = () => {
 }
 
 export const setShopItem = (potionName, potionDescription, ra, style, potionCost, id) => {
+  
   let shopDesc = document.createElement('div');
   shopDesc.classList.add('shop-desc');
   
@@ -232,6 +236,7 @@ export const setEquipmentInterface = () => {
   // Get character image.
   const player = document.createElement('img');
   player.className = 'equipment-player-graphic';
+  player.id = 'equipment-player-graphic';
   player.src = 'res/mobs/mage.png';
 
   // Append elements to containers.
@@ -243,9 +248,96 @@ export const setEquipmentInterface = () => {
   const equipment = document.getElementById('equipment');
   const title = document.createElement('h2');
   title.className = 'modal-title';
-  title.innerText = 'Change Equipment';
+  title.innerText = 'CHANGE EQUIPMENT';
 
   equipment.appendChild(title);
   equipment.appendChild(upperContainer);
   equipment.appendChild(lowerContainer);
+}
+
+// Update player graphic on equipment modal.
+export const updateEquipmentInterface = () => {
+  const player = document.getElementById('equipment-player-graphic');
+  player.src = Stats.playerGraphic;
+}
+
+// Use for initial construction of weapon interface.
+export const setWeaponInterface = () => {
+  
+  const weaponInterface = document.getElementById('weapon-interface');
+
+  const upperContainer = document.createElement('div');
+  upperContainer.className = 'upper-container-weapon';
+  upperContainer.id = 'upper-container-weapon';
+
+  wizardItems.forEach((weapon) => {
+    
+    const weaponGroup = document.createElement('div');
+    weaponGroup.className = 'weapon-group';
+    weaponGroup.id = weapon.id;
+
+    const name = document.createElement('span');
+    name.innerText = weapon.name;
+    name.className = 'weapon-group-title';
+
+    const img = document.createElement('img');
+    img.src = weapon.img;
+    img.className = 'weapon-group-image';
+
+    const stats = document.createElement('div');
+    stats.innerHTML = weapon.desc;
+
+    weaponGroup.appendChild(name);
+    weaponGroup.appendChild(img);
+    weaponGroup.appendChild(stats);
+    upperContainer.appendChild(weaponGroup);
+
+  });
+
+  const lowerContainer = document.createElement('div');
+  const button = document.createElement('button');
+  button.className = 'weapon-interface-button';
+  button.id = 'weapon-interface-button';
+  button.disabled = true;
+  button.innerText = 'SELECT WEAPON';
+  lowerContainer.appendChild(button);
+
+  // Append elements before adding logic.  
+  weaponInterface.appendChild(upperContainer);
+  weaponInterface.appendChild(lowerContainer);
+
+  // Event listeners for each button.
+  wizardItems.forEach((weapon) => {
+    const item = document.getElementById(weapon.id);
+    item.addEventListener('click', () => {
+      item.classList.add('weapon-selected');
+      SELECTED_WEAPON = weapon.id;
+
+      // TODO: Add button select logic. May need to move modal logic to here for close() function.
+      const button = document.getElementById('weapon-interface-button');
+      button.disabled = false;
+      button.innerText = `Equip ${weapon.name}`;
+
+      const container = document.getElementById('upper-container-weapon');
+      Array.from(container.children).forEach((item) => {
+        if (item.id != weapon.id) {
+          item.classList.remove('weapon-selected');
+        }
+      });
+    });
+  });
+
+  
+
+}
+
+// Use to check if weapon is owned.
+export const updateWeaponInterface = () => {
+
+  wizardItems.forEach((weapon) => {
+    if (weapon.active == false) {
+      const wep = document.getElementById(weapon.id);
+      wep.classList.add('weapon-unavailable');
+    }
+  })
 }

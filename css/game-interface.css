@@ -4,7 +4,7 @@ html {
 
 body {
   background-color: rgb(5, 5, 7);
-  background-image: url(../res/drop-3.png);
+  background-image: url(/dist/images/drop-3.png);
   background-size:     cover;                      /* <------ */
   background-repeat:   no-repeat;
   background-position: center center;
@@ -150,6 +150,14 @@ body {
 
 .colour-rage-add {
   color: #d32f2f;
+}
+
+.colour-armoury {
+  color: #3F51B5;
+}
+
+.colour-hit {
+  color: #26A69A;
 }
 
 .ability-interface {
@@ -305,17 +313,24 @@ body {
 
 .spell-equipment {
   background: linear-gradient(120deg, #FFE082 0%, #FF8A65 100%);
-  color: #E8F5E9;
+  color: #FFF3E0;
 }
 
 .tingle-modal-box__content {
-  font-family: 'Patua One', sans-serif;
-  padding: 15px;
-  
+  font-family: 'Cabin', sans-serif;
+  padding: 10px !important;
+}
+
+.tingle-modal-box {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .tingle-modal-box__footer {
-  padding: 15px;
 }
 
 .tingle-modal-box__footer > button, 
@@ -483,6 +498,7 @@ body {
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
+  padding-bottom: 30px;
 }
 
 .square-button {
@@ -521,4 +537,67 @@ body {
 
 .modal-title {
   text-align: center;
+  font-size: 1em;
+  color: #3b3b3b;
+  font-weight: bold;
+}
+
+.upper-container-weapon {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.weapon-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 50px 1fr 1fr;
+  justify-items: center;
+  border-bottom: 5px solid #ECEFF1;
+  border-radius: 5px;
+  height: 250px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.weapon-group:hover {
+  border-bottom: 5px solid #42A5F5;
+  color: #42A5F5;
+  cursor: pointer;
+}
+
+.weapon-group-image {
+  padding-bottom: 20px;
+}
+
+.weapon-group-title {
+  font-weight: bold;
+}
+
+.weapon-group-title:hover {
+  font-weight: bold;
+  color: #42A5F5;
+}
+
+.weapon-unavailable {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+.weapon-selected {
+  color: #1976D2;
+  border-bottom: 5px solid #42A5F5;
+}
+
+.weapon-interface-button {
+  margin-top: 15px;
+  background-color: #ECEFF1;
+  border-radius: 0px;
+  border: none;
+  padding: 25px;
+  width: 100%;
+  font-family: inherit;
+  font-size: 1em;
+  font-weight: bold;
 }

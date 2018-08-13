@@ -3,6 +3,9 @@
 // Refactor html
 import tippy from 'tippy.js';
 
+import '../css/tingle.min.css';
+// import '../css/game-interface.css';
+
 import { roll, attack, pureAttack, bonus } from './rollattack';
 import { log } from './log';
 import { disable, enable } from './disable';
@@ -21,6 +24,9 @@ import {
   setShopItem,
   getGold,
   setEquipmentInterface,
+  setWeaponInterface,
+  updateWeaponInterface,
+  updateEquipmentInterface,
 } from './equipment';
 import {
   alzursThunderCondition,
@@ -307,11 +313,15 @@ const init = function (mode) {
 }
 
 const mageInit = function () {
+  
   Stats.playerHealth = 100;
   Stats.playerDamage = 6;
   Stats.playerArmour = 8;
   Stats.playerRunic = 2;
   Stats.playerMana = 100;
+
+  const playerGraphic = document.getElementById('player-graphic');
+  playerGraphic.src = Stats.playerGraphic;
 
   $('.q').addClass('spell spell-dragon-breath');
   $('.qi').addClass('ra ra-dragon-breath icon');
@@ -325,12 +335,13 @@ const mageInit = function () {
   $('.r').addClass('spell spell-fire-shield');
   $('.ri').addClass('ra ra-fire-shield icon');
 
-  weaponModal.setContent(wand_desc[0]);
-  weaponModal.addFooterBtn('Oak Wand', 'spell-equipment wand-button', function() {
-    selectWeapon('Oak Wand');
-    updateStats();
-    weaponModal.close();
-  });
+  weaponModal.setContent('<div id="weapon-interface"></div>');
+  setWeaponInterface();
+  // weaponModal.addFooterBtn('Oak Wand', 'spell-equipment wand-button', function() {
+  //   selectWeapon('Oak Wand');
+  //   updateStats();
+  //   weaponModal.close();
+  // });
 
   amuletModal.setContent('<h2>Select Amulet</h2><p>You don\'t have any amulets yet.');
   amuletModal.addFooterBtn('None', 'spell-amulet', function() {
@@ -377,6 +388,8 @@ const mageInit = function () {
 
   document.getElementById('equipment-weapon').addEventListener('click', () => {
     equipmentModal.close();
+    
+    updateWeaponInterface();
     weaponModal.open();
   });
 
@@ -521,41 +534,6 @@ const tippyInit = function () {
 
   tippy(tippyElements);
 
-  // const playerDamageTip = 'Damage attribute affects basic attack and spell damage.';
-  // $('.player-damage-tip').prop(title, playerDamageTip);
-  // tippy('.player-damage-tip');  
-
-  // const playerArmourTip = 'Armour class represents how hard it is for opponents to land an attack or spell on you.';
-  // $('.player-armour-tip').prop(title, playerArmourTip);  
-  // tippy('.player-armour-tip');  
-
-  // const playerRunicTip = 'Runic attribute improves spells and their effects.';
-  // $('.player-runic-tip').prop(title, playerRunicTip);  
-  // tippy('.player-runic-tip');  
-
-  // const playerManaTip = 'PP represents the cost for casting spells. 25 PP is recharged per turn.';
-  // $('.player-mana-tip').prop(title, playerManaTip);
-  // tippy('.player-mana-tip');
-
-  // const monsterRageTip = 'Rage is aquired over time, and allows Monsters to have additional spells and effects.';
-  // $('.monster-rage-tip').prop(title, monsterRageTip);
-  // tippy('.monster-rage-tip');
-
-  // const weaponTip = '<b>Equip Weapon</b>';
-  // $('#equipment-weapon').prop(title, weaponTip);
-  // tippy('#equipment-weapon');
-
-  // const amuletTip = '<b>Equip Amulet</b>';
-  // $('#equipment-amulet').prop(title, amuletTip);
-  // tippy('#equipment-amulet');
-
-  // const trinketTip = '<b>Equip Trinket</b>';
-  // $('#equipment-trinket').prop(title, trinketTip);
-  // tippy('#equipment-trinket');
-
-  // const shopTip = '<b>Browse Shop</b>';
-  // $('#equipment-shop').prop(title, shopTip);
-  // tippy('#equipment-shop');
 }
 
 const tippyMage = function() {  
@@ -693,11 +671,10 @@ const runic_echoes = function() {
 }
 
 const weaponModal = new tingle.modal({
-  footer: true,
+  footer: false,
   stickyFooter: false,
   closeMethods: ['button', 'escape'],
   closeLabel: "Close",
-  cssClass: ['custom-class-1', 'custom-class-2'],
   onOpen: function() {
       
   },
@@ -761,10 +738,14 @@ const shopModal = new tingle.modal({
 });
 
 const equipmentModal = new tingle.modal({
-  footer: true,
+  footer: false,
   stickyFooter: false,
   closeMethods: ['button', 'escape'],
   closeLabel: "Close",
+  onOpen: function() {
+      // Updates the player graphic.
+      updateEquipmentInterface();
+  },
 });
 
 // Incomplete function. Add item types to this.
@@ -784,35 +765,35 @@ const advance = function() {
 
   let item = mageItem[Stats.playerLevel];
 
-  if (item.type === 'weapon') {
-    weaponModal.addFooterBtn(item.name, 'spell-equipment wand-button', () => {
-      selectWeapon(item.name);
-      updateStats();      
-      weaponModal.close();
-    });
+  // if (item.type === 'weapon') {
+  //   weaponModal.addFooterBtn(item.name, 'spell-equipment wand-button', () => {
+  //     selectWeapon(item.name);
+  //     updateStats();      
+  //     weaponModal.close();
+  //   });
     
-    weaponModal.setContent(wand_desc[item.desc]);
+  //   weaponModal.setContent(wand_desc[item.desc]);
     
-  }
+  // }
 
-  if (item.type === 'amulet') {
-    amuletModal.addFooterBtn(item.name, 'spell-amulet wand-button', () => {
-      selectAmulet(item.name);
-      updateStats();      
-      amuletModal.close();
-    });
+  // if (item.type === 'amulet') {
+  //   amuletModal.addFooterBtn(item.name, 'spell-amulet wand-button', () => {
+  //     selectAmulet(item.name);
+  //     updateStats();      
+  //     amuletModal.close();
+  //   });
 
-    amuletModal.setContent(amulet_desc[item.desc]);  
-  }
+  //   amuletModal.setContent(amulet_desc[item.desc]);  
+  // }
 
-  if (item.type === 'trinket') {
-    trinketModal.addFooterBtn(item.name, 'spell-trinket wand-button', () => {
-      selectTrinket(item.name);
-      updateStats();      
-      trinketModal.close();
-    });
-    trinketModal.setContent(trinket_desc[item.desc]);
-  }
+  // if (item.type === 'trinket') {
+  //   trinketModal.addFooterBtn(item.name, 'spell-trinket wand-button', () => {
+  //     selectTrinket(item.name);
+  //     updateStats();      
+  //     trinketModal.close();
+  //   });
+  //   trinketModal.setContent(trinket_desc[item.desc]);
+  // }
 
   // Handles gold income and logging. 
   if (item.gold > 0) {
@@ -969,7 +950,7 @@ $(".character-selection").hide();
 
 init('mage');
 
-// runTutorial();
+runTutorial();
 
 // Turn simulator
 
