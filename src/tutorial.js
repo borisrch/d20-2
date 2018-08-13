@@ -3,6 +3,7 @@ import introJs from 'intro.js';
 const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
 const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
 const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
+const armouryIcon = '<span class="ra ra-anvil colour-armoury"></span>';
 const br = '<br/>';
 
 const intro = introJs();
@@ -28,7 +29,7 @@ const steps = [
   },
   {
     el: '.equipment-interface',
-    info: `You can access the equiment interface to change your gear once purchased from the Armoury. ${br} ${br} You can also buy potions from the shop to aid you in combat. Potions purchased will have their effects granted immediately.`,
+    info: `Weapons and items purchased from the ${armouryIcon} Armoury can be changed in the equipment interface. ${br} ${br} You can buy potions from the shop to aid you in combat. Potions purchased will have their effects granted immediately.`,
     step: 4,
     position: null,
   },
