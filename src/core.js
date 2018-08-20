@@ -291,7 +291,6 @@ const playerTurnBasicAttack = function() {
 
 const init = function (mode) {
 
-  
   monsterInit();
 
   switch(mode) {
@@ -311,7 +310,6 @@ const init = function (mode) {
     console.log('Error in init');
   }
   updateStats();
-
   tippyInit();
 }
 
@@ -339,12 +337,6 @@ const mageInit = function () {
 
   $('.r').addClass('spell spell-fire-shield');
   $('.ri').addClass('ra ra-fire-shield icon');
-
-  trinketModal.setContent('<h2>Select Trinket</h2><p>You don\'t have any trinkets yet.');
-  trinketModal.addFooterBtn('None', 'spell-trinket', function() {
-    updateStats();
-    trinketModal.close();
-  });
 
   // Shop logic starts. Move to general init later.
 
@@ -469,6 +461,10 @@ const tippyInit = function () {
       el: '#equipment-shop',
       tip: '<b>Browse Shop</b>',
     },
+    {
+      el: '#equipment-armour',
+      tip: '<b>Equip Armour</b>',
+    },
   ];
 
   const tippyElements = [];
@@ -522,7 +518,6 @@ const monsterInit = function() {
 }
 
 const scorch = function() {
-
   Stats.playerMana = Stats.playerMana - 75;
 
   deathfireGraspCondition.active = false;
@@ -621,21 +616,6 @@ const runic_echoes = function() {
 
   endTurn();
 }
-
-const trinketModal = new tingle.modal({
-  footer: true,
-  stickyFooter: false,
-  closeMethods: ['button', 'escape'],
-  closeLabel: "Close",
-  cssClass: ['custom-class-1', 'custom-class-2'],
-  onOpen: function() {
-  },
-  onClose: function() {
-  },
-  beforeClose: function() {
-  return true;
-  }
-});
 
 // Incomplete function. Add item types to this.
 const advance = function() {
@@ -736,104 +716,88 @@ const getNextMonster = function(level) {
   }
 }
 
-// const buyHealth = () => {
-//   let result = roll(10) + 10;
 
-//   if (Stats.playerHealth + result > 100) {
-//     Stats.playerHealth = 100;
-//   }
-//   else {
-//     Stats.playerHealth += result;
-//   }
 
-//   let cost = parseInt(potions[0].cost);
-//   Stats.gold -= cost;
+const buyAccuracy = () => {
+  let result = roll(4);
+
+  accuracyPotionCondition.bonus = result;
+  accuracyPotionCondition.turns = 4;
+  accuracyPotionCondition.active = true;
+
+  Stats.playerHitChanceModifier += result;
+
+  let cost = parseInt(potions[1].cost);
+  Stats.gold -= cost;
+
+  shopModal.close();
+  log(`You drink a Accuracy Potion and boost hit chance by ${result}!`, 'ps');
+  endTurn();
+
+}
+
+const buyDefense = () => {
+  let result = roll(4) + 2;
+
+  defensePotionCondition.bonusArmour = result;
+  defensePotionCondition.turns = 4;
+  defensePotionCondition.active = true;
+
+  Stats.playerArmour += result;
+
+  if (DEV) console.log(`Result: ${result} Turns: ${defensePotionCondition.turns} Active: ${defensePotionCondition.active}`);
+
+  let cost = parseInt(potions[2].cost);
+  Stats.gold -= cost;
+
+  shopModal.close();
+  log(`You drink a Defense Potion and boost AC by ${result}!`, 'ps');
+  endTurn();
+
+}
+
+const buyPp = () => {
+  let extra = 50;
+
+  if (sapphireAmuletCondition.active == true) {
+    Stats.playerMaxMana = 125;
+  } else {
+    Stats.playerMaxMana = 100;
+  }
+
+  if (DEV) console.log(`Extra: ${extra} PlayerMana: ${Stats.playerMana} PlayerMaxMana: ${Stats.playerMaxMana}`);
+
+  if (Stats.playerMana + extra > Stats.playerMaxMana) {
+    Stats.playerMana = Stats.playerMana;
+  }
+  else {
+    Stats.playerMana += extra;
+  }
+
+  let cost = parseInt(potions[3].cost);
+  Stats.gold -= cost;
+
+  shopModal.close();
+  log(`You drink a PP Potion and gain 75 mana!`, 'ps');
+  endTurn();
+}
+
+const buyRunic = () => {
+  let result = roll(2) + 2;
   
-//   shopModal.close();
-//   log(`You drink a Health Potion and heal for ${result}!`,'ps');
-//   endTurn();
-// }
+  runicPotionCondition.bonus = result;
+  runicPotionCondition.turns = 4;
+  runicPotionCondition.active = true;
 
-// const buyAccuracy = () => {
-//   let result = roll(4);
+  Stats.playerRunic += result;
 
-//   accuracyPotionCondition.bonus = result;
-//   accuracyPotionCondition.turns = 4;
-//   accuracyPotionCondition.active = true;
+  let cost = parseInt(potions[4].cost);
+  Stats.gold -= cost;
 
-//   Stats.playerHitChanceModifier += result;
-
-//   let cost = parseInt(potions[1].cost);
-//   Stats.gold -= cost;
-
-//   shopModal.close();
-//   log(`You drink a Accuracy Potion and boost hit chance by ${result}!`, 'ps');
-//   endTurn();
-
-// }
-
-// const buyDefense = () => {
-//   let result = roll(4) + 2;
-
-//   defensePotionCondition.bonusArmour = result;
-//   defensePotionCondition.turns = 4;
-//   defensePotionCondition.active = true;
-
-//   Stats.playerArmour += result;
-
-//   if (DEV) console.log(`Result: ${result} Turns: ${defensePotionCondition.turns} Active: ${defensePotionCondition.active}`);
-
-//   let cost = parseInt(potions[2].cost);
-//   Stats.gold -= cost;
-
-//   shopModal.close();
-//   log(`You drink a Defense Potion and boost AC by ${result}!`, 'ps');
-//   endTurn();
-
-// }
-
-// const buyPp = () => {
-//   let extra = 50;
-
-//   if (sapphireAmuletCondition.active == true) {
-//     Stats.playerMaxMana = 125;
-//   } else {
-//     Stats.playerMaxMana = 100;
-//   }
-
-//   if (DEV) console.log(`Extra: ${extra} PlayerMana: ${Stats.playerMana} PlayerMaxMana: ${Stats.playerMaxMana}`);
-
-//   if (Stats.playerMana + extra > Stats.playerMaxMana) {
-//     Stats.playerMana = Stats.playerMana;
-//   }
-//   else {
-//     Stats.playerMana += extra;
-//   }
-
-//   let cost = parseInt(potions[3].cost);
-//   Stats.gold -= cost;
-
-//   shopModal.close();
-//   log(`You drink a PP Potion and gain 75 mana!`, 'ps');
-//   endTurn();
-// }
-
-// const buyRunic = () => {
-//   let result = roll(2) + 2;
-  
-//   runicPotionCondition.bonus = result;
-//   runicPotionCondition.turns = 4;
-//   runicPotionCondition.active = true;
-
-//   Stats.playerRunic += result;
-
-//   let cost = parseInt(potions[4].cost);
-//   Stats.gold -= cost;
-
-//   shopModal.close();
-//   log(`You drink a Runic Potion and boost Runic by ${result}!`, 'ps');
-//   endTurn();
-// }
+  shopModal.close();
+  log(`You drink a Runic Potion and boost Runic by ${result}!`, 'ps');
+  endTurn();
+}
 
 $(".character-selection").hide();
 

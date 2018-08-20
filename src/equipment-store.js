@@ -1,3 +1,6 @@
+import { roll } from './rollattack';
+import Stats from './stats';
+
 const ac = '<span class="ra ra-shield colour-ac"></span>';
 const damage = '<span class="ra ra-sword colour-damage-tip"></span>';
 const runic = '<span class="ra ra-crystals colour-runic-tip"></span>';
@@ -179,46 +182,70 @@ export const potions = [
   {
     name: 'Elixir of Fortitude',
     id: 'health-potion',
-    src: 'res/item/potion/warbelt-trinket.png',
+    src: 'res/item/shop/hp-potion.png',
     desc: `Gain 2d5 health.`,
     lore: 'A magical elixir that can quickly mend even the deepest of wounds.',
-    cost: 50,
+    cost: 10,
     active: true,
+    action: function() {
+      const result = roll(5) + roll(5);
+      if (Stats.playerHealth + result > 100) {
+        Stats.playerHealth = 100;
+      }
+      else {
+        Stats.playerHealth += result;
+      }
+      console.log(Stats.gold);
+      Stats.gold -= this.cost;
+      console.log(Stats.gold);
+    }
   },
   {
     name: 'Decoction of Agility',
     id: 'hit-potion',
-    src: 'res/item/potion/warbelt-trinket.png',
+    src: 'res/item/shop/hit-potion.png',
     desc: `Gain 1d2 ${hit} for 3 turns.`,
     lore: 'This blend is favoured among the elves.',
-    cost: 50,
+    cost: 20,
     active: true,
+    action: function() {
+
+    }
   },
   {
     name: 'Draught of Iron',
     id: 'ac-potion',
-    src: 'res/item/potion/warbelt-trinket.png',
+    src: 'res/item/shop/ac-potion.png',
     desc: `Gain 1d2 ${ac} for 3 turns.`,
     lore: 'A thick draught capable of giving even the weak a dwarven resilience.',
     cost: 50,
     active: true,
+    action: function() {
+      
+    }
   },
   {
     name: 'Essence of Vigor',
     id: 'mana-potion',
-    src: 'res/item/potion/warbelt-trinket.png',
+    src: 'res/item/shop/mana-potion.png',
     desc: `Gain bonus 50 ${mana}.`,
     lore: 'Rumoured to have been brewed with a rare herb from the Faerun.',
-    cost: 50,
+    cost: 500,
     active: true,
+    action: function() {
+      
+    }
   },
   {
     name: 'Ichor of Sorcery',
     id: 'runic-potion',
-    src: 'res/item/potion/warbelt-trinket.png',
+    src: 'res/item/shop/runic-potion.png',
     desc: `Gain 1d2 ${runic} for 3 turns.`,
     lore: 'A magical brew that can enhance ones magical nature.',
-    cost: 50,
+    cost: 1000,
     active: true,
+    action: function() {
+      
+    }
   },
 ]

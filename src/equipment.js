@@ -14,6 +14,9 @@ import {
   trinkets,
   potions
 } from './equipment-store';
+import {
+  endTurn
+} from './turn';
 
 const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
 const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
@@ -22,6 +25,7 @@ const manaIcon = '<span class="ra ra-lightning-bolt colour-mana"></span>';
 
 let SELECTED_WEAPON = '';
 let SELECTED_AMULET = '';
+let SELECTED_POTION = '';
 
 export const selectWeapon = function (weapon) {
   switch (weapon) {
@@ -647,7 +651,7 @@ const setTrinketInterface = () => {
   });
 }
 
-const setShopInterface = () => {
+const setShopInterface = (modal) => {
 
   const shopInterface = document.getElementById('shop-interface');
 
@@ -707,19 +711,19 @@ const setShopInterface = () => {
 
   lower.appendChild(button);
 
-  trinketInterface.appendChild(upper);
-  trinketInterface.appendChild(lower);
+  shopInterface.appendChild(upper);
+  shopInterface.appendChild(lower);
 
   potions.forEach((potion) => {
     const item = document.getElementById(potion.id);
     item.addEventListener('click', () => {
       item.classList.add('item-selected');
-      // SELECTED_AMULET = amulet.id;
+      SELECTED_POTION = potion.id;
 
       // TODO: Add button select logic. May need to move modal logic to here for close() function.
       const button = document.getElementById('shop-interface-button');
       button.disabled = false;
-      button.innerText = `Equip ${potion.name}`;
+      button.innerText = `Buy ${potion.name}`;
 
       const img = document.getElementById('shop-item-right-img');
       img.src = potion.src;
@@ -740,6 +744,15 @@ const setShopInterface = () => {
         }
       });
     });
+  });
+}
+
+export const updateShopInterface = () => {
+  potions.forEach((potion) => {
+    if (potion.cost > Stats.gold) {
+      const item = document.getElementById(potion.id);
+      item.classList.add('weapon-unavailable');
+    }
   });
 }
 
@@ -808,7 +821,8 @@ export const buildInterface = () => {
   trinketModal.setContent('<div id="trinket-interface"></div>');
   setTrinketInterface();
 
-  shopModal.setContent('<div class="shop-interface" id="shop"></div>');
+  shopModal.setContent('<div id="shop-interface"></div>');
+  setShopInterface(shopModal);
 
   // Add event listeners.
   document.getElementById('equipment-weapon').addEventListener('click', () => {
@@ -837,19 +851,11 @@ export const buildInterface = () => {
   });
   document.getElementById('equipment-trinket').addEventListener('click', () => {
     equipmentModal.close();
-
+    
     trinketModal.open();
   });
   document.getElementById('equipment-shop').addEventListener('click', () => {
-    // potions.forEach((potion) => {
-    //   let button = document.getElementById(potion.id);
-    //   if (Stats.gold < parseInt(potion.cost)) {        
-    //     button.disabled = true;
-    //   }
-    //   else {
-    //     button.disabled = false;
-    //   }
-    // });
+    updateShopInterface();
     shopModal.open();
   });
 }
