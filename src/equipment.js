@@ -1,7 +1,19 @@
 import Stats from './stats';
-import { sapphireAmuletCondition } from './conditions';
-import { roll } from './rollattack';
-import { wizardItems } from './equipment-weapons';
+import {
+  sapphireAmuletCondition
+} from './conditions';
+import {
+  roll
+} from './rollattack';
+import {
+  wizardItems
+} from './equipment-weapons';
+import {
+  amulets,
+  armour,
+  trinkets,
+  potions
+} from './equipment-store';
 
 const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
 const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
@@ -9,155 +21,136 @@ const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
 const manaIcon = '<span class="ra ra-lightning-bolt colour-mana"></span>';
 
 let SELECTED_WEAPON = '';
+let SELECTED_AMULET = '';
 
-export const selectWeapon = function(weapon) {
-  switch(weapon) {
+export const selectWeapon = function (weapon) {
+  switch (weapon) {
     case 'Oak Wand':
-    Stats.playerRunic = 2;
-    Stats.playerHitChanceModifier = 0;
-    break;
+      Stats.playerRunic = 2;
+      Stats.playerHitChanceModifier = 0;
+      break;
 
     case 'Ebony Wand':
-    Stats.playerRunic = 3;
-    Stats.playerHitChanceModifier = 2;
-    break;
+      Stats.playerRunic = 3;
+      Stats.playerHitChanceModifier = 2;
+      break;
 
     case 'Elder Wand':
-    Stats.playerRunic = 4;
-    Stats.playerHitChanceModifier = 3;
-    break;
+      Stats.playerRunic = 4;
+      Stats.playerHitChanceModifier = 3;
+      break;
 
     default:
-    throw new Error('Error at selectWeapon');
-    break;
+      throw new Error('Error at selectWeapon');
+      break;
   }
 }
 
-const oak_wand_desc = '<h2>Equip Wand</h2> <b>Oak Wand</b>: +2 to ' + runicIcon + ' . <br>';
-const ebony_wand_desc = '<b>Ebony Wand</b>: +2 to hit chance,  +3 to ' + runicIcon + ' . <br>';
-const elder_wand_desc = '<b>Elder Wand</b>: +3 to hit chance,  +4 to ' + runicIcon + ' . <br>';
-
-export const wand_desc = [oak_wand_desc, oak_wand_desc + ebony_wand_desc, oak_wand_desc + ebony_wand_desc + elder_wand_desc];
-
-export const selectAmulet = function(amulet) {
-  switch(amulet) {
+export const selectAmulet = function (amulet) {
+  switch (amulet) {
     case 'None':
-    sapphireAmuletCondition.active = false;
-    break;
+      sapphireAmuletCondition.active = false;
+      break;
 
     case 'Sapphire Amulet':
-    sapphireAmuletCondition.active = true;
-    break;
+      sapphireAmuletCondition.active = true;
+      break;
 
     case 'Emerald Amulet':
-    sapphireAmuletCondition.active = false;
-    Stats.playerArmour = Stats.playerArmour + 2;
-    break;
+      sapphireAmuletCondition.active = false;
+      Stats.playerArmour = Stats.playerArmour + 2;
+      break;
 
     case 'Ruby Amulet':
-    break;
+      break;
 
     default:
-    throw new Error('Error at selectAmulet');
-    break;
+      throw new Error('Error at selectAmulet');
+      break;
   }
 }
 
-const sapphire_amulet_desc = '<h2>Equip Amulet</h2> <b>Sapphire Amulet</b>: +25 to maximum ' + manaIcon + '.<br>';
-const emerald_amulet_desc = '<b>Emerald Amulet</b>: +2 to ' + armourIcon + '.<br>';
-const ruby_amulet_desc = '<b>Ruby Amulet</b>: +15% lifesteal. <br>';
-
-export const amulet_desc = [sapphire_amulet_desc, sapphire_amulet_desc + emerald_amulet_desc, sapphire_amulet_desc + emerald_amulet_desc + ruby_amulet_desc];
-
-export const selectTrinket = function(trinket) {
-  switch(trinket) {
+export const selectTrinket = function (trinket) {
+  switch (trinket) {
     case 'None':
 
-    break;
+      break;
 
     case 'Magical Stick':
-    
-    break;
+
+      break;
 
     case 'Cursed Locket':
 
-    break;
+      break;
 
     case 'Ancient Coin':
-    break;
+      break;
 
 
     case 'Null Sphere':
-    break;
+      break;
 
     default:
-    throw new Error('Error at selectTrinket');
-    break;
+      throw new Error('Error at selectTrinket');
+      break;
   }
 }
 
-const magical_stick_desc = '<h2>Equip Trinket</h2> <b>Slightly Magical Stick</b>: +1 to ' + runicIcon + '.<br>';
-const cursed_locket_desc = '<b>Susannah\'s Cursed Locket</b>: +2 to ' + runicIcon + ' but -2 to ' + armourIcon + '.<br>';
-const ancient_coin_desc = '<b>Ancient Coin</b>: +3 to ' + runicIcon + ' and ' + damageIcon + ' but -5 to ' + armourIcon +'.<br>';
-const null_sphere_desc = '<b>Null Sphere</b>: -25 % to ' + manaIcon + ' cost. <br>';
-
-export const trinket_desc = [magical_stick_desc, magical_stick_desc + cursed_locket_desc, magical_stick_desc + cursed_locket_desc + ancient_coin_desc, magical_stick_desc + cursed_locket_desc + ancient_coin_desc + null_sphere_desc];
-
-export const potions = [
-  { 
-    name: 'Healing Potion',
-    desc: 'Heals for 1d10 + 10 HP.',
-    icon: 'ra-heart-bottle',
-    style: 'potion-health',
-    cost: '15',
-    id: 'buy-health'
-  },
-  { 
-    name: 'Accuracy Potion',
-    desc: 'Increases hit chance by 1d4 for next 4 turns.',
-    icon: 'ra-corked-tube',
-    style: 'potion-accuracy',
-    cost: '25',
-    id: 'buy-accuracy',
-  },
-  { 
-    name: 'Defense Potion',
-    desc: 'Increases AC by 1d4 + 2 for next 4 turns.',
-    icon: 'ra-round-bottom-flask',
-    style: 'potion-defense',
-    cost: '35',
-    id: 'buy-defense',
-  },
-  { 
-    name: 'PP Potion',
-    desc: 'Restores 75 PP.',
-    icon: 'ra-bubbling-potion',
-    style: 'potion-pp',
-    cost: '50',
-    id: 'buy-pp',
-  },
-  { 
-    name: 'Runic Potion',
-    desc: 'Grants 1d2 + 2 bonus Runic for next 4 turns.',
-    icon: 'ra-fizzing-flask',
-    style: 'potion-runic',
-    cost: '75',
-    id: 'buy-runic',
-  },
-];
+// export const potions = [{
+//     name: 'Healing Potion',
+//     desc: 'Heals for 1d10 + 10 HP.',
+//     icon: 'ra-heart-bottle',
+//     style: 'potion-health',
+//     cost: '15',
+//     id: 'buy-health'
+//   },
+//   {
+//     name: 'Accuracy Potion',
+//     desc: 'Increases hit chance by 1d4 for next 4 turns.',
+//     icon: 'ra-corked-tube',
+//     style: 'potion-accuracy',
+//     cost: '25',
+//     id: 'buy-accuracy',
+//   },
+//   {
+//     name: 'Defense Potion',
+//     desc: 'Increases AC by 1d4 + 2 for next 4 turns.',
+//     icon: 'ra-round-bottom-flask',
+//     style: 'potion-defense',
+//     cost: '35',
+//     id: 'buy-defense',
+//   },
+//   {
+//     name: 'PP Potion',
+//     desc: 'Restores 75 PP.',
+//     icon: 'ra-bubbling-potion',
+//     style: 'potion-pp',
+//     cost: '50',
+//     id: 'buy-pp',
+//   },
+//   {
+//     name: 'Runic Potion',
+//     desc: 'Grants 1d2 + 2 bonus Runic for next 4 turns.',
+//     icon: 'ra-fizzing-flask',
+//     style: 'potion-runic',
+//     cost: '75',
+//     id: 'buy-runic',
+//   },
+// ];
 
 export const getGold = () => {
-  return '<div>Current gold: ' + Stats.gold +'</div>';
+  return '<div>Current gold: ' + Stats.gold + '</div>';
 }
 
 export const setShopItem = (potionName, potionDescription, ra, style, potionCost, id) => {
-  
+
   let shopDesc = document.createElement('div');
   shopDesc.classList.add('shop-desc');
-  
+
   let potion = document.createElement('p');
   potion.innerText = potionName + '';
-  
+
   let description = document.createElement('p');
   description.innerText = potionDescription
 
@@ -166,7 +159,7 @@ export const setShopItem = (potionName, potionDescription, ra, style, potionCost
   icon.classList.add(ra);
   icon.classList.add(style);
   icon.classList.add('shop-icon');
-  
+
   let cost = document.createElement('div');
   let costDesc = document.createElement('p');
   costDesc.innerText = potionCost + ' gold.';
@@ -186,7 +179,7 @@ export const setShopItem = (potionName, potionDescription, ra, style, potionCost
 
   potion.appendChild(description);
   shopDesc.appendChild(potion);
-  
+
   cost.appendChild(coinImg);
   cost.appendChild(costDesc);
 
@@ -199,7 +192,7 @@ export const setShopItem = (potionName, potionDescription, ra, style, potionCost
   shop.appendChild(shopItem);
 }
 
-export const setEquipmentInterface = () => {
+const setEquipmentInterface = () => {
 
   // Container set up.
   const upperContainer = document.createElement('div');
@@ -219,7 +212,14 @@ export const setEquipmentInterface = () => {
   weaponButton.id = 'equipment-weapon';
   weaponButton.className = 'spell spell-weapon square-button';
   const weaponIcon = document.createElement('span');
-  weaponIcon.className = 'ra ra-hand-emblem icon';
+  weaponIcon.className = 'ra ra-crystal-wand icon';
+
+  // Add armour button.
+  const armourButton = document.createElement('button');
+  armourButton.id = 'equipment-armour';
+  armourButton.className = 'spell spell-armour square-button';
+  const armourIcon = document.createElement('span');
+  armourIcon.className = 'ra ra-helmet icon';
 
   // Add trinket button.
   const trinketButton = document.createElement('button');
@@ -227,12 +227,13 @@ export const setEquipmentInterface = () => {
   trinketButton.className = 'spell spell-trinket square-button';
   const trinketIcon = document.createElement('span');
   trinketIcon.className = 'ra ra-ankh icon';
-  
+
   // Add icons to buttons.
   amuletButton.appendChild(amuletIcon);
   weaponButton.appendChild(weaponIcon);
   trinketButton.appendChild(trinketIcon);
-  
+  armourButton.appendChild(armourIcon);
+
   // Get character image.
   const player = document.createElement('img');
   player.className = 'equipment-player-graphic';
@@ -243,6 +244,7 @@ export const setEquipmentInterface = () => {
   upperContainer.appendChild(amuletButton);
   upperContainer.appendChild(player);
   upperContainer.appendChild(weaponButton);
+  lowerContainer.appendChild(armourButton);
   lowerContainer.appendChild(trinketButton);
 
   const equipment = document.getElementById('equipment');
@@ -262,8 +264,8 @@ export const updateEquipmentInterface = () => {
 }
 
 // Use for initial construction of weapon interface.
-export const setWeaponInterface = () => {
-  
+const setWeaponInterface = () => {
+
   const weaponInterface = document.getElementById('weapon-interface');
 
   const upperContainer = document.createElement('div');
@@ -271,7 +273,7 @@ export const setWeaponInterface = () => {
   upperContainer.id = 'upper-container-weapon';
 
   wizardItems.forEach((weapon) => {
-    
+
     const weaponGroup = document.createElement('div');
     weaponGroup.className = 'weapon-group';
     weaponGroup.id = weapon.id;
@@ -326,14 +328,10 @@ export const setWeaponInterface = () => {
       });
     });
   });
-
-  
-
 }
 
 // Use to check if weapon is owned.
 export const updateWeaponInterface = () => {
-
   wizardItems.forEach((weapon) => {
     if (weapon.active == false) {
       const wep = document.getElementById(weapon.id);
@@ -341,3 +339,518 @@ export const updateWeaponInterface = () => {
     }
   })
 }
+
+const setAmuletInterface = () => {
+
+  const amuletInterface = document.getElementById('amulet-interface');
+
+  const upper = document.createElement('div');
+  upper.className = 'item-interface-upper';
+
+  const left = document.createElement('div');
+  left.className = 'item-interface-left';
+  left.id = 'amulet-left';
+
+  amulets.forEach((item) => {
+    const box = document.createElement('div');
+    box.className = 'item-box';
+    box.id = item.id;
+    const img = document.createElement('img');
+    img.src = item.src;
+    img.className = 'item-img';
+
+    box.appendChild(img);
+    left.appendChild(box);
+  })
+
+  const right = document.createElement('div');
+  right.className = 'item-interface-right';
+  right.id = 'amulet-right';
+
+  const img = document.createElement('img');
+  img.className = 'item-right-img';
+  img.id = 'amulet-item-right-img';
+
+  const name = document.createElement('div');
+  name.className = 'item-label';
+  name.id = 'amulet-item-label';
+
+  const desc = document.createElement('div');
+  desc.className = 'item-desc';
+  desc.id = 'amulet-item-desc';
+
+  const lore = document.createElement('div');
+  lore.className = 'item-lore';
+  lore.id = 'amulet-item-lore';
+
+  right.appendChild(img);
+  right.appendChild(name);
+  right.appendChild(desc);
+  right.appendChild(lore);
+
+  upper.appendChild(left);
+  upper.appendChild(right);
+
+  const lower = document.createElement('div');
+  const button = document.createElement('button');
+  button.className = 'weapon-interface-button';
+  button.id = 'amulet-interface-button';
+  button.disabled = true;
+  button.innerText = 'EQUIP RING';
+
+  lower.appendChild(button);
+
+  amuletInterface.appendChild(upper);
+  amuletInterface.appendChild(lower);
+
+  amulets.forEach((amulet) => {
+    const item = document.getElementById(amulet.id);
+    item.addEventListener('click', () => {
+      item.classList.add('item-selected');
+      SELECTED_AMULET = amulet.id;
+
+      // TODO: Add button select logic. May need to move modal logic to here for close() function.
+      const button = document.getElementById('amulet-interface-button');
+      button.disabled = false;
+      button.innerText = `Equip ${amulet.name}`;
+
+      const img = document.getElementById('amulet-item-right-img');
+      img.src = amulet.src;
+
+      const label = document.getElementById('amulet-item-label');
+      label.innerText = amulet.name;
+
+      const desc = document.getElementById('amulet-item-desc');
+      desc.innerHTML = amulet.desc;
+
+      const lore = document.getElementById('amulet-item-lore');
+      lore.innerText = amulet.lore;
+
+      const container = document.getElementById('amulet-left');
+      Array.from(container.children).forEach((item) => {
+        if (item.id != amulet.id) {
+          item.classList.remove('item-selected');
+        }
+      });
+
+    });
+  });
+}
+
+export const updateAmuletInterface = () => {
+  amulets.forEach((amulet) => {
+    if (amulet.active == false) {
+      const item = document.getElementById(amulet.id);
+      item.classList.add('weapon-unavailable');
+    }
+  });
+}
+
+const setArmourInterface = () => {
+
+  const armourInterface = document.getElementById('armour-interface');
+
+  const upper = document.createElement('div');
+  upper.className = 'item-interface-upper';
+
+  const left = document.createElement('div');
+  left.className = 'item-interface-left';
+  left.id = 'armour-left';
+
+  armour.forEach((item) => {
+    const box = document.createElement('div');
+    box.className = 'item-box';
+    box.id = item.id;
+    const img = document.createElement('img');
+    img.src = item.src;
+    img.className = 'item-img';
+
+    box.appendChild(img);
+    left.appendChild(box);
+  })
+
+  const right = document.createElement('div');
+  right.className = 'item-interface-right';
+  right.id = 'armour-right';
+
+  const img = document.createElement('img');
+  img.className = 'item-right-img';
+  img.id = 'armour-item-right-img';
+
+  const name = document.createElement('div');
+  name.className = 'item-label';
+  name.id = 'armour-item-label';
+
+  const desc = document.createElement('div');
+  desc.className = 'item-desc';
+  desc.id = 'armour-item-desc';
+
+  const lore = document.createElement('div');
+  lore.className = 'item-lore';
+  lore.id = 'armour-item-lore';
+
+  right.appendChild(img);
+  right.appendChild(name);
+  right.appendChild(desc);
+  right.appendChild(lore);
+
+  upper.appendChild(left);
+  upper.appendChild(right);
+
+  const lower = document.createElement('div');
+  const button = document.createElement('button');
+  button.className = 'weapon-interface-button';
+  button.id = 'armour-interface-button';
+  button.disabled = true;
+  button.innerText = 'EQUIP ARMOUR';
+
+  lower.appendChild(button);
+
+  armourInterface.appendChild(upper);
+  armourInterface.appendChild(lower);
+
+  armour.forEach((_armour) => {
+    const item = document.getElementById(_armour.id);
+    item.addEventListener('click', () => {
+      item.classList.add('item-selected');
+      // SELECTED_AMULET = amulet.id;
+
+      // TODO: Add button select logic. May need to move modal logic to here for close() function.
+      const button = document.getElementById('armour-interface-button');
+      button.disabled = false;
+      button.innerText = `Equip ${_armour.name}`;
+
+      const img = document.getElementById('armour-item-right-img');
+      img.src = _armour.src;
+
+      const label = document.getElementById('armour-item-label');
+      label.innerText = _armour.name;
+
+      const desc = document.getElementById('armour-item-desc');
+      desc.innerHTML = _armour.desc;
+
+      const lore = document.getElementById('armour-item-lore');
+      lore.innerText = _armour.lore;
+
+      const container = document.getElementById('armour-left');
+      Array.from(container.children).forEach((item) => {
+        if (item.id != _armour.id) {
+          item.classList.remove('item-selected');
+        }
+      });
+    });
+  });
+}
+
+export const updateArmourInterface = () => {
+  armour.forEach((_armour) => {
+    if (_armour.active == false) {
+      const item = document.getElementById(_armour.id);
+      item.classList.add('weapon-unavailable');
+    }
+  });
+}
+
+const setTrinketInterface = () => {
+
+  const trinketInterface = document.getElementById('trinket-interface');
+
+  const upper = document.createElement('div');
+  upper.className = 'item-interface-upper';
+
+  const left = document.createElement('div');
+  left.className = 'item-interface-left';
+  left.id = 'trinket-left';
+
+  trinkets.forEach((item) => {
+    const box = document.createElement('div');
+    box.className = 'item-box';
+    box.id = item.id;
+    const img = document.createElement('img');
+    img.src = item.src;
+    img.className = 'item-img';
+
+    box.appendChild(img);
+    left.appendChild(box);
+  })
+
+  const right = document.createElement('div');
+  right.className = 'item-interface-right';
+  right.id = 'trinket-right';
+
+  const img = document.createElement('img');
+  img.className = 'item-right-img';
+  img.id = 'trinket-item-right-img';
+
+  const name = document.createElement('div');
+  name.className = 'item-label';
+  name.id = 'trinket-item-label';
+
+  const desc = document.createElement('div');
+  desc.className = 'item-desc';
+  desc.id = 'trinket-item-desc';
+
+  const lore = document.createElement('div');
+  lore.className = 'item-lore';
+  lore.id = 'trinket-item-lore';
+
+  right.appendChild(img);
+  right.appendChild(name);
+  right.appendChild(desc);
+  right.appendChild(lore);
+
+  upper.appendChild(left);
+  upper.appendChild(right);
+
+  const lower = document.createElement('div');
+  const button = document.createElement('button');
+  button.className = 'weapon-interface-button';
+  button.id = 'trinket-interface-button';
+  button.disabled = true;
+  button.innerText = 'EQUIP TRINKET';
+
+  lower.appendChild(button);
+
+  trinketInterface.appendChild(upper);
+  trinketInterface.appendChild(lower);
+
+  trinkets.forEach((trinket) => {
+    const item = document.getElementById(trinket.id);
+    item.addEventListener('click', () => {
+      item.classList.add('item-selected');
+      // SELECTED_AMULET = amulet.id;
+
+      // TODO: Add button select logic. May need to move modal logic to here for close() function.
+      const button = document.getElementById('trinket-interface-button');
+      button.disabled = false;
+      button.innerText = `Equip ${trinket.name}`;
+
+      const img = document.getElementById('trinket-item-right-img');
+      img.src = trinket.src;
+
+      const label = document.getElementById('trinket-item-label');
+      label.innerText = trinket.name;
+
+      const desc = document.getElementById('trinket-item-desc');
+      desc.innerHTML = trinket.desc;
+
+      const lore = document.getElementById('trinket-item-lore');
+      lore.innerText = trinket.lore;
+
+      const container = document.getElementById('trinket-left');
+      Array.from(container.children).forEach((item) => {
+        if (item.id != trinket.id) {
+          item.classList.remove('item-selected');
+        }
+      });
+    });
+  });
+}
+
+const setShopInterface = () => {
+
+  const shopInterface = document.getElementById('shop-interface');
+
+  const upper = document.createElement('div');
+  upper.className = 'item-interface-upper';
+
+  const left = document.createElement('div');
+  left.className = 'item-interface-left';
+  left.id = 'shop-left';
+
+  potions.forEach((item) => {
+    const box = document.createElement('div');
+    box.className = 'item-box';
+    box.id = item.id;
+    const img = document.createElement('img');
+    img.src = item.src;
+    img.className = 'item-img';
+
+    box.appendChild(img);
+    left.appendChild(box);
+  })
+
+  const right = document.createElement('div');
+  right.className = 'item-interface-right';
+  right.id = 'shop-right';
+
+  const img = document.createElement('img');
+  img.className = 'item-right-img';
+  img.id = 'shop-item-right-img';
+
+  const name = document.createElement('div');
+  name.className = 'item-label';
+  name.id = 'shop-item-label';
+
+  const desc = document.createElement('div');
+  desc.className = 'item-desc';
+  desc.id = 'shop-item-desc';
+
+  const lore = document.createElement('div');
+  lore.className = 'item-lore';
+  lore.id = 'shop-item-lore';
+
+  right.appendChild(img);
+  right.appendChild(name);
+  right.appendChild(desc);
+  right.appendChild(lore);
+
+  upper.appendChild(left);
+  upper.appendChild(right);
+
+  const lower = document.createElement('div');
+  const button = document.createElement('button');
+  button.className = 'weapon-interface-button';
+  button.id = 'shop-interface-button';
+  button.disabled = true;
+  button.innerText = 'BUY POTION';
+
+  lower.appendChild(button);
+
+  trinketInterface.appendChild(upper);
+  trinketInterface.appendChild(lower);
+
+  potions.forEach((potion) => {
+    const item = document.getElementById(potion.id);
+    item.addEventListener('click', () => {
+      item.classList.add('item-selected');
+      // SELECTED_AMULET = amulet.id;
+
+      // TODO: Add button select logic. May need to move modal logic to here for close() function.
+      const button = document.getElementById('shop-interface-button');
+      button.disabled = false;
+      button.innerText = `Equip ${potion.name}`;
+
+      const img = document.getElementById('shop-item-right-img');
+      img.src = potion.src;
+
+      const label = document.getElementById('shop-item-label');
+      label.innerText = potion.name;
+
+      const desc = document.getElementById('shop-item-desc');
+      desc.innerHTML = potion.desc;
+
+      const lore = document.getElementById('shop-item-lore');
+      lore.innerText = potion.lore;
+
+      const container = document.getElementById('shop-left');
+      Array.from(container.children).forEach((item) => {
+        if (item.id != potion.id) {
+          item.classList.remove('item-selected');
+        }
+      });
+    });
+  });
+}
+
+export const buildInterface = () => {
+  // Modal instantiation.
+  const weaponModal = new tingle.modal({
+    footer: false,
+    stickyFooter: false,
+    closeMethods: ['button', 'escape'],
+    closeLabel: "Close",
+    beforeClose: function () {
+      return true;
+    }
+  });
+  const amuletModal = new tingle.modal({
+    footer: false,
+    stickyFooter: false,
+    closeMethods: ['button', 'escape'],
+    closeLabel: "Close",
+    beforeClose: function () {
+      return true;
+    }
+  });
+  const equipmentModal = new tingle.modal({
+    footer: false,
+    stickyFooter: false,
+    closeMethods: ['button', 'escape'],
+    closeLabel: "Close",
+    onOpen: function () {},
+  });
+  const armourModal = new tingle.modal({
+    footer: false,
+    stickyFooter: false,
+    closeMethods: ['button', 'escape'],
+    closeLabel: "Close",
+    onOpen: function () {},
+  });
+  const trinketModal = new tingle.modal({
+    footer: false,
+    stickyFooter: false,
+    closeMethods: ['button', 'escape'],
+    closeLabel: "Close",
+    onOpen: function () {},
+  });
+  const shopModal = new tingle.modal({
+    footer: false,
+    stickyFooter: false,
+    closeMethods: ['button', 'escape'],
+    closeLabel: "Close",
+    onOpen: function () {},
+  });
+
+  // Build interfaces.
+  weaponModal.setContent('<div id="weapon-interface"></div>');
+  setWeaponInterface();
+
+  amuletModal.setContent('<div id="amulet-interface"></div>');
+  setAmuletInterface();
+
+  equipmentModal.setContent('<div id="equipment"></div>');
+  setEquipmentInterface();
+
+  armourModal.setContent('<div id="armour-interface"></div>');
+  setArmourInterface();
+
+  trinketModal.setContent('<div id="trinket-interface"></div>');
+  setTrinketInterface();
+
+  shopModal.setContent('<div class="shop-interface" id="shop"></div>');
+
+  // Add event listeners.
+  document.getElementById('equipment-weapon').addEventListener('click', () => {
+    equipmentModal.close();
+    updateWeaponInterface();
+    weaponModal.open();
+  });
+  document.getElementById('equipment-amulet').addEventListener('click', () => {
+    equipmentModal.close();
+    updateAmuletInterface();
+    amuletModal.open();
+  });
+  document.getElementById('equipment-new').addEventListener('click', () => {
+    updateEquipmentInterface();
+    equipmentModal.open();
+  });
+  document.getElementById('equipment-amulet').addEventListener('click', () => {
+    equipmentModal.close();
+    updateAmuletInterface();
+    amuletModal.open();
+  });
+  document.getElementById('equipment-armour').addEventListener('click', () => {
+    equipmentModal.close();
+    updateArmourInterface();
+    armourModal.open();
+  });
+  document.getElementById('equipment-trinket').addEventListener('click', () => {
+    equipmentModal.close();
+
+    trinketModal.open();
+  });
+  document.getElementById('equipment-shop').addEventListener('click', () => {
+    // potions.forEach((potion) => {
+    //   let button = document.getElementById(potion.id);
+    //   if (Stats.gold < parseInt(potion.cost)) {        
+    //     button.disabled = true;
+    //   }
+    //   else {
+    //     button.disabled = false;
+    //   }
+    // });
+    shopModal.open();
+  });
+}
+

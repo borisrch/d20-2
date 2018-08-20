@@ -27,6 +27,9 @@ import {
   setWeaponInterface,
   updateWeaponInterface,
   updateEquipmentInterface,
+  setAmuletInterface,
+  updateAmuletInterface,
+  buildInterface,
 } from './equipment';
 import {
   alzursThunderCondition,
@@ -314,6 +317,8 @@ const init = function (mode) {
 
 const mageInit = function () {
   
+  buildInterface();
+
   Stats.playerHealth = 100;
   Stats.playerDamage = 6;
   Stats.playerArmour = 8;
@@ -335,21 +340,6 @@ const mageInit = function () {
   $('.r').addClass('spell spell-fire-shield');
   $('.ri').addClass('ra ra-fire-shield icon');
 
-  weaponModal.setContent('<div id="weapon-interface"></div>');
-  setWeaponInterface();
-  // weaponModal.addFooterBtn('Oak Wand', 'spell-equipment wand-button', function() {
-  //   selectWeapon('Oak Wand');
-  //   updateStats();
-  //   weaponModal.close();
-  // });
-
-  amuletModal.setContent('<h2>Select Amulet</h2><p>You don\'t have any amulets yet.');
-  amuletModal.addFooterBtn('None', 'spell-amulet', function() {
-    selectAmulet('None');
-    updateStats();
-    amuletModal.close();
-  });
-
   trinketModal.setContent('<h2>Select Trinket</h2><p>You don\'t have any trinkets yet.');
   trinketModal.addFooterBtn('None', 'spell-trinket', function() {
     updateStats();
@@ -358,68 +348,25 @@ const mageInit = function () {
 
   // Shop logic starts. Move to general init later.
 
-  shopModal.setContent('<div class="shop-interface" id="shop"></div>');
-  potions.forEach((potion) => {
-    setShopItem(potion.name, potion.desc, potion.icon, potion.style, potion.cost, potion.id);
-  });
+  // document.getElementById('buy-health').addEventListener('click', () => {
+  //   buyHealth();
+  // });
 
-  equipmentModal.setContent('<div id="equipment"></div>');
-  setEquipmentInterface();
+  // document.getElementById('buy-defense').addEventListener('click', () => {
+  //   buyDefense();
+  // });
 
-  document.getElementById('buy-health').addEventListener('click', () => {
-    buyHealth();
-  });
+  // document.getElementById('buy-accuracy').addEventListener('click', () => {
+  //   buyAccuracy();
+  // });
 
-  document.getElementById('buy-defense').addEventListener('click', () => {
-    buyDefense();
-  });
+  // document.getElementById('buy-pp').addEventListener('click', () => {
+  //   buyPp();
+  // });
 
-  document.getElementById('buy-accuracy').addEventListener('click', () => {
-    buyAccuracy();
-  });
-
-  document.getElementById('buy-pp').addEventListener('click', () => {
-    buyPp();
-  });
-
-  document.getElementById('buy-runic').addEventListener('click', () => {
-    buyRunic();
-  });
-
-  document.getElementById('equipment-weapon').addEventListener('click', () => {
-    equipmentModal.close();
-    
-    updateWeaponInterface();
-    weaponModal.open();
-  });
-
-  document.getElementById('equipment-amulet').addEventListener('click', () => {
-    equipmentModal.close();
-    amuletModal.open();
-  });
-
-  document.getElementById('equipment-trinket').addEventListener('click', () => {
-    equipmentModal.close();
-    trinketModal.open();
-  });
-
-  document.getElementById('equipment-shop').addEventListener('click', () => {
-    potions.forEach((potion) => {
-      let button = document.getElementById(potion.id);
-      if (Stats.gold < parseInt(potion.cost)) {        
-        button.disabled = true;
-      }
-      else {
-        button.disabled = false;
-      }
-    });
-    shopModal.setFooterContent(getGold());
-    shopModal.open();
-  });
-
-  document.getElementById('equipment-new').addEventListener('click', () => {
-    equipmentModal.open();
-  });
+  // document.getElementById('buy-runic').addEventListener('click', () => {
+  //   buyRunic();
+  // });
 
   document.getElementById('basic-attack').addEventListener('click', () => {
     if (tutorialCondition.a) {
@@ -629,18 +576,23 @@ const deathfire_grasp = function() {
   Stats.playerMana = Stats.playerMana - 50;
 
   if (DEV) {
-    console.log('@DeathfireGrasp');
-    console.log('Active: ' + deathfireGraspCondition.active);
+    Logger.info('@DeathfireGrasp');
+    Logger.info('Active: ' + deathfireGraspCondition.active);
+    Logger.info('Stack: ' + deathfireGraspCondition.stack);
   }
 
   let result;
 
   if (deathfireGraspCondition.active == true) {
-    let bonusRes = bonus(Stats.playerRunic, 2);
+    const stackRunic = Stats.playerRunic + deathfireGraspCondition.stack;
+    deathfireGraspCondition.stack += 1;
+
+    let bonusRes = bonus(stackRunic, 2);
     result = attack(10, Stats.playerHitChanceModifier, bonusRes, 1, Stats.monsterArmour);
 
   } else {
     result = attack(10, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour);
+    deathfireGraspCondition.stack = 1;
   }
   
   deathfireGraspCondition.active = true;
@@ -670,41 +622,6 @@ const runic_echoes = function() {
   endTurn();
 }
 
-const weaponModal = new tingle.modal({
-  footer: false,
-  stickyFooter: false,
-  closeMethods: ['button', 'escape'],
-  closeLabel: "Close",
-  onOpen: function() {
-      
-  },
-  onClose: function() {
-      
-  },
-  beforeClose: function() {
-      // here's goes some logic
-      // e.g. save content before closing the modal
-      return true; // close the modal
-  }
-});
-
-const amuletModal = new tingle.modal({
-  footer: true,
-  stickyFooter: false,
-  closeMethods: ['button', 'escape'],
-  closeLabel: "Close",
-  cssClass: ['custom-class-1', 'custom-class-2'],
-  onOpen: function() {
-      
-  },
-  onClose: function() {
-      
-  },
-  beforeClose: function() {
-      return true;
-  }
-});
-
 const trinketModal = new tingle.modal({
   footer: true,
   stickyFooter: false,
@@ -718,34 +635,6 @@ const trinketModal = new tingle.modal({
   beforeClose: function() {
   return true;
   }
-});
-
-const shopModal = new tingle.modal({
-  footer: true,
-  stickyFooter: false,
-  closeMethods: ['button', 'escape'],
-  closeLabel: "Close",
-  cssClass: ['custom-class-1', 'custom-class-2'],
-  onOpen: function() {
-      
-  },
-  onClose: function() {
-      
-  },
-  beforeClose: function() {
-      return true;
-  }
-});
-
-const equipmentModal = new tingle.modal({
-  footer: false,
-  stickyFooter: false,
-  closeMethods: ['button', 'escape'],
-  closeLabel: "Close",
-  onOpen: function() {
-      // Updates the player graphic.
-      updateEquipmentInterface();
-  },
 });
 
 // Incomplete function. Add item types to this.
@@ -847,110 +736,110 @@ const getNextMonster = function(level) {
   }
 }
 
-const buyHealth = () => {
-  let result = roll(10) + 10;
+// const buyHealth = () => {
+//   let result = roll(10) + 10;
 
-  if (Stats.playerHealth + result > 100) {
-    Stats.playerHealth = 100;
-  }
-  else {
-    Stats.playerHealth += result;
-  }
+//   if (Stats.playerHealth + result > 100) {
+//     Stats.playerHealth = 100;
+//   }
+//   else {
+//     Stats.playerHealth += result;
+//   }
 
-  let cost = parseInt(potions[0].cost);
-  Stats.gold -= cost;
+//   let cost = parseInt(potions[0].cost);
+//   Stats.gold -= cost;
   
-  shopModal.close();
-  log(`You drink a Health Potion and heal for ${result}!`,'ps');
-  endTurn();
-}
+//   shopModal.close();
+//   log(`You drink a Health Potion and heal for ${result}!`,'ps');
+//   endTurn();
+// }
 
-const buyAccuracy = () => {
-  let result = roll(4);
+// const buyAccuracy = () => {
+//   let result = roll(4);
 
-  accuracyPotionCondition.bonus = result;
-  accuracyPotionCondition.turns = 4;
-  accuracyPotionCondition.active = true;
+//   accuracyPotionCondition.bonus = result;
+//   accuracyPotionCondition.turns = 4;
+//   accuracyPotionCondition.active = true;
 
-  Stats.playerHitChanceModifier += result;
+//   Stats.playerHitChanceModifier += result;
 
-  let cost = parseInt(potions[1].cost);
-  Stats.gold -= cost;
+//   let cost = parseInt(potions[1].cost);
+//   Stats.gold -= cost;
 
-  shopModal.close();
-  log(`You drink a Accuracy Potion and boost hit chance by ${result}!`, 'ps');
-  endTurn();
+//   shopModal.close();
+//   log(`You drink a Accuracy Potion and boost hit chance by ${result}!`, 'ps');
+//   endTurn();
 
-}
+// }
 
-const buyDefense = () => {
-  let result = roll(4) + 2;
+// const buyDefense = () => {
+//   let result = roll(4) + 2;
 
-  defensePotionCondition.bonusArmour = result;
-  defensePotionCondition.turns = 4;
-  defensePotionCondition.active = true;
+//   defensePotionCondition.bonusArmour = result;
+//   defensePotionCondition.turns = 4;
+//   defensePotionCondition.active = true;
 
-  Stats.playerArmour += result;
+//   Stats.playerArmour += result;
 
-  if (DEV) console.log(`Result: ${result} Turns: ${defensePotionCondition.turns} Active: ${defensePotionCondition.active}`);
+//   if (DEV) console.log(`Result: ${result} Turns: ${defensePotionCondition.turns} Active: ${defensePotionCondition.active}`);
 
-  let cost = parseInt(potions[2].cost);
-  Stats.gold -= cost;
+//   let cost = parseInt(potions[2].cost);
+//   Stats.gold -= cost;
 
-  shopModal.close();
-  log(`You drink a Defense Potion and boost AC by ${result}!`, 'ps');
-  endTurn();
+//   shopModal.close();
+//   log(`You drink a Defense Potion and boost AC by ${result}!`, 'ps');
+//   endTurn();
 
-}
+// }
 
-const buyPp = () => {
-  let extra = 50;
+// const buyPp = () => {
+//   let extra = 50;
 
-  if (sapphireAmuletCondition.active == true) {
-    Stats.playerMaxMana = 125;
-  } else {
-    Stats.playerMaxMana = 100;
-  }
+//   if (sapphireAmuletCondition.active == true) {
+//     Stats.playerMaxMana = 125;
+//   } else {
+//     Stats.playerMaxMana = 100;
+//   }
 
-  if (DEV) console.log(`Extra: ${extra} PlayerMana: ${Stats.playerMana} PlayerMaxMana: ${Stats.playerMaxMana}`);
+//   if (DEV) console.log(`Extra: ${extra} PlayerMana: ${Stats.playerMana} PlayerMaxMana: ${Stats.playerMaxMana}`);
 
-  if (Stats.playerMana + extra > Stats.playerMaxMana) {
-    Stats.playerMana = Stats.playerMana;
-  }
-  else {
-    Stats.playerMana += extra;
-  }
+//   if (Stats.playerMana + extra > Stats.playerMaxMana) {
+//     Stats.playerMana = Stats.playerMana;
+//   }
+//   else {
+//     Stats.playerMana += extra;
+//   }
 
-  let cost = parseInt(potions[3].cost);
-  Stats.gold -= cost;
+//   let cost = parseInt(potions[3].cost);
+//   Stats.gold -= cost;
 
-  shopModal.close();
-  log(`You drink a PP Potion and gain 75 mana!`, 'ps');
-  endTurn();
-}
+//   shopModal.close();
+//   log(`You drink a PP Potion and gain 75 mana!`, 'ps');
+//   endTurn();
+// }
 
-const buyRunic = () => {
-  let result = roll(2) + 2;
+// const buyRunic = () => {
+//   let result = roll(2) + 2;
   
-  runicPotionCondition.bonus = result;
-  runicPotionCondition.turns = 4;
-  runicPotionCondition.active = true;
+//   runicPotionCondition.bonus = result;
+//   runicPotionCondition.turns = 4;
+//   runicPotionCondition.active = true;
 
-  Stats.playerRunic += result;
+//   Stats.playerRunic += result;
 
-  let cost = parseInt(potions[4].cost);
-  Stats.gold -= cost;
+//   let cost = parseInt(potions[4].cost);
+//   Stats.gold -= cost;
 
-  shopModal.close();
-  log(`You drink a Runic Potion and boost Runic by ${result}!`, 'ps');
-  endTurn();
-}
+//   shopModal.close();
+//   log(`You drink a Runic Potion and boost Runic by ${result}!`, 'ps');
+//   endTurn();
+// }
 
 $(".character-selection").hide();
 
 init('mage');
 
-runTutorial();
+// runTutorial();
 
 // Turn simulator
 

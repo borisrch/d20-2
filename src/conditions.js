@@ -4,6 +4,7 @@ export const alzursThunderCondition = {
 
 export const deathfireGraspCondition = {
   active: false,
+  stack: 0,
 }
 
 export const runicEchoesCondition = {
