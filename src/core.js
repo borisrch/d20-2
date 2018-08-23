@@ -48,22 +48,9 @@ import { endTurn, endTurnMonster } from './turn';
 import { updateStats } from './update';
 import Logger from './logger';
 
-
 const noop = () => {};
 
-// Add items for other classes. Desc refers to array in equipment.js
-const mageItem = [
-  { name: 'Oak Wand', type: 'weapon', gold: 1, desc: 0 },
-  { name: 'Sapphire Amulet', type: 'amulet', gold: 1, desc: 0 },
-  { name: 'Magical Stick', type: 'trinket', gold: 1, desc: 0 },
-  { name: 'Ebony Wand', type: 'weapon', gold: 1, desc: 1 },
-  { name: 'Emerald Amulet', type: 'amulet', gold: 1, desc: 1 },
-  { name: 'Cursed Locket', type: 'trinket', gold: 1, desc: 1 },
-  { name: 'Elder Wand', type: 'weapon', gold: 1, desc: 2 },
-  { name: 'Ruby Amulet', type: 'amulet', gold: 1, desc: 2 },
-  { name: 'Ancient Coin', type: 'trinket', gold: 1, desc: 2 },
-  { name: 'Null Sphere', type: 'trinket', gold: 1, desc: 3 },
-];
+$(".character-selection").hide();
 
 const chicken = {
   name: 'Cuck, the Chicken',
@@ -717,89 +704,6 @@ const getNextMonster = function(level) {
 }
 
 
-
-const buyAccuracy = () => {
-  let result = roll(4);
-
-  accuracyPotionCondition.bonus = result;
-  accuracyPotionCondition.turns = 4;
-  accuracyPotionCondition.active = true;
-
-  Stats.playerHitChanceModifier += result;
-
-  let cost = parseInt(potions[1].cost);
-  Stats.gold -= cost;
-
-  shopModal.close();
-  log(`You drink a Accuracy Potion and boost hit chance by ${result}!`, 'ps');
-  endTurn();
-
-}
-
-const buyDefense = () => {
-  let result = roll(4) + 2;
-
-  defensePotionCondition.bonusArmour = result;
-  defensePotionCondition.turns = 4;
-  defensePotionCondition.active = true;
-
-  Stats.playerArmour += result;
-
-  if (DEV) console.log(`Result: ${result} Turns: ${defensePotionCondition.turns} Active: ${defensePotionCondition.active}`);
-
-  let cost = parseInt(potions[2].cost);
-  Stats.gold -= cost;
-
-  shopModal.close();
-  log(`You drink a Defense Potion and boost AC by ${result}!`, 'ps');
-  endTurn();
-
-}
-
-const buyPp = () => {
-  let extra = 50;
-
-  if (sapphireAmuletCondition.active == true) {
-    Stats.playerMaxMana = 125;
-  } else {
-    Stats.playerMaxMana = 100;
-  }
-
-  if (DEV) console.log(`Extra: ${extra} PlayerMana: ${Stats.playerMana} PlayerMaxMana: ${Stats.playerMaxMana}`);
-
-  if (Stats.playerMana + extra > Stats.playerMaxMana) {
-    Stats.playerMana = Stats.playerMana;
-  }
-  else {
-    Stats.playerMana += extra;
-  }
-
-  let cost = parseInt(potions[3].cost);
-  Stats.gold -= cost;
-
-  shopModal.close();
-  log(`You drink a PP Potion and gain 75 mana!`, 'ps');
-  endTurn();
-}
-
-const buyRunic = () => {
-  let result = roll(2) + 2;
-  
-  runicPotionCondition.bonus = result;
-  runicPotionCondition.turns = 4;
-  runicPotionCondition.active = true;
-
-  Stats.playerRunic += result;
-
-  let cost = parseInt(potions[4].cost);
-  Stats.gold -= cost;
-
-  shopModal.close();
-  log(`You drink a Runic Potion and boost Runic by ${result}!`, 'ps');
-  endTurn();
-}
-
-$(".character-selection").hide();
 
 init('mage');
 

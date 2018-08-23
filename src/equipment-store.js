@@ -1,4 +1,16 @@
-import { roll } from './rollattack';
+import {
+  roll
+} from './rollattack';
+import {
+  endTurn
+} from './turn';
+import {
+  accuracyPotionCondition,
+  defensePotionCondition,
+  sapphireAmuletCondition,
+  runicPotionCondition,
+} from './conditions';
+import { log } from './log';
 import Stats from './stats';
 
 const ac = '<span class="ra ra-shield colour-ac"></span>';
@@ -7,8 +19,7 @@ const runic = '<span class="ra ra-crystals colour-runic-tip"></span>';
 const mana = '<span class="ra ra-lightning-bolt colour-mana"></span>';
 const hit = '<span class="ra ra-on-target colour-hit"></span>';
 
-export const amulets = [
-  {
+export const amulets = [{
     name: 'Ferocious Ring',
     id: 'ferocious-ring',
     src: 'res/item/amulet/ferocious-ring.png',
@@ -55,8 +66,7 @@ export const amulets = [
   },
 ]
 
-export const armour = [
-  {
+export const armour = [{
     name: 'Robe of Circe',
     id: 'circe-armour',
     src: 'res/item/armour/circe-armour.png',
@@ -103,13 +113,12 @@ export const armour = [
   },
 ]
 
-export const trinkets = [
-  {
+export const trinkets = [{
     name: 'Archeron War Boots',
     id: 'archeron-trinket',
     src: 'res/item/trinket/archeron-trinket.png',
     desc: `Increase ${damage} by 20%, but decrease ${ac} by 10%.`,
-    lore: 'Powerful armour that defends its wearer from even the most vicious of attacks.',
+    lore: 'The boots will make the wearer have no fear of combat.',
     cost: 50,
     active: true,
   },
@@ -118,7 +127,7 @@ export const trinkets = [
     id: 'achilles-trinket',
     src: 'res/item/trinket/achilles-trinket.png',
     desc: `Increase ${ac} by 50%, but decrease ${hit} by 25%.`,
-    lore: 'Powerful armour that defends its wearer from even the most vicious of attacks.',
+    lore: 'The helmet of a legendary warrior who fell in battle.',
     cost: 50,
     active: true,
   },
@@ -127,7 +136,7 @@ export const trinkets = [
     id: 'asgardian-trinket',
     src: 'res/item/trinket/asgardian-trinket.png',
     desc: `Increase ${hit} by 20%, but decrease ${ac} by 10%.`,
-    lore: 'Powerful armour that defends its wearer from even the most vicious of attacks.',
+    lore: 'Celestial magic is still remnant from the valkyrie who once wore it.',
     cost: 50,
     active: true,
   },
@@ -136,7 +145,7 @@ export const trinkets = [
     id: 'fates-trinket',
     src: 'res/item/trinket/fates-trinket.png',
     desc: `Your spells will have 100% ${hit}, but have twice the ${mana} cost.`,
-    lore: 'Powerful armour that defends its wearer from even the most vicious of attacks.',
+    lore: 'A divine amulet used to influence the nature of spells.',
     cost: 50,
     active: true,
   },
@@ -145,7 +154,7 @@ export const trinkets = [
     id: 'oblivion-trinket',
     src: 'res/item/trinket/oblivion-trinket.png',
     desc: `You will deal double damage, but will also recieve double incoming damage.`,
-    lore: 'Powerful armour that defends its wearer from even the most vicious of attacks.',
+    lore: 'Rumoured to have ',
     cost: 50,
     active: true,
   },
@@ -154,7 +163,7 @@ export const trinkets = [
     id: 'silverhawk-trinket',
     src: 'res/item/trinket/silverhawk-trinket.png',
     desc: `Gain a 5% chance of casting a spell twice.`,
-    lore: 'Powerful armour that defends its wearer from even the most vicious of attacks.',
+    lore: 'Holding the magic of the Silverhawk, this mystical feather brings limitless dexterity to those that bear it.',
     cost: 50,
     active: true,
   },
@@ -163,7 +172,7 @@ export const trinkets = [
     id: 'mystra-trinket',
     src: 'res/item/trinket/mystra-trinket.png',
     desc: `Increase ${runic} by 20%, but decrease ${ac} by 20%.`,
-    lore: 'Powerful armour that defends its wearer from even the most vicious of attacks.',
+    lore: 'An artefact of unknown origin which emanates dark magical power.',
     cost: 50,
     active: true,
   },
@@ -172,7 +181,7 @@ export const trinkets = [
     id: 'warbelt-trinket',
     src: 'res/item/trinket/warbelt-trinket.png',
     desc: `Passively deal bonus 2 ${damage} on succesful hits.`,
-    lore: 'A divine warbelt that causes damage and a bright burning effect that lays waste to nearby enemies.',
+    lore: 'A warbelt that causes damage and a bright burning effect that lays waste to nearby enemies.',
     cost: 50,
     active: true,
   },
@@ -187,65 +196,99 @@ export const potions = [
     lore: 'A magical elixir that can quickly mend even the deepest of wounds.',
     cost: 10,
     active: true,
-    action: function() {
+    action: function () {
       const result = roll(5) + roll(5);
       if (Stats.playerHealth + result > 100) {
         Stats.playerHealth = 100;
-      }
-      else {
+      } else {
         Stats.playerHealth += result;
       }
-      console.log(Stats.gold);
       Stats.gold -= this.cost;
-      console.log(Stats.gold);
+      log(`You heal for ${result} health.`, 'ps');
+      endTurn();
     }
   },
   {
     name: 'Decoction of Agility',
     id: 'hit-potion',
     src: 'res/item/shop/hit-potion.png',
-    desc: `Gain 1d2 ${hit} for 3 turns.`,
+    desc: `Gain 1d2 + 1 ${hit} for 3 turns.`,
     lore: 'This blend is favoured among the elves.',
-    cost: 20,
+    cost: 10,
     active: true,
-    action: function() {
-
+    action: function () {
+      const result = roll(2) + 1;
+      accuracyPotionCondition.bonus = result;
+      accuracyPotionCondition.turns = 3;
+      accuracyPotionCondition.active = true;
+      Stats.playerHitChanceModifier += result;
+      Stats.gold -= this.cost;
+      log(`You drink a ${this.name} and boost hit chance by ${result} for 3 turns!`, 'ps');
+      endTurn();
     }
   },
   {
     name: 'Draught of Iron',
     id: 'ac-potion',
     src: 'res/item/shop/ac-potion.png',
-    desc: `Gain 1d2 ${ac} for 3 turns.`,
+    desc: `Gain 2d2 ${ac} for 3 turns.`,
     lore: 'A thick draught capable of giving even the weak a dwarven resilience.',
-    cost: 50,
+    cost: 10,
     active: true,
-    action: function() {
-      
+    action: function () {
+      const result = roll(2) + roll(2);
+      defensePotionCondition.bonusArmour = result;
+      defensePotionCondition.turns = 3;
+      defensePotionCondition.active = true;
+      Stats.playerArmour += result;
+      Stats.gold -= this.cost;
+      log(`You drink a ${this.name} and boost AC by ${result} for 3 turns!`, 'ps');
+      endTurn();
     }
   },
   {
     name: 'Essence of Vigor',
     id: 'mana-potion',
     src: 'res/item/shop/mana-potion.png',
-    desc: `Gain bonus 50 ${mana}.`,
+    desc: `Gain 50 ${mana}.`,
     lore: 'Rumoured to have been brewed with a rare herb from the Faerun.',
-    cost: 500,
+    cost: 10,
     active: true,
-    action: function() {
-      
+    action: function () {
+      const extra = 25;
+      if (sapphireAmuletCondition.active == true) {
+        Stats.playerMaxMana = 125;
+      } else {
+        Stats.playerMaxMana = 100;
+      }
+      if (Stats.playerMana + extra > Stats.playerMaxMana) {
+        Stats.playerMana = Stats.playerMaxMana;
+      }
+      else {
+        Stats.playerMana += extra;
+      }
+      Stats.gold -= this.cost;
+      log(`You drink a ${this.name} and gain 50 mana!`, 'ps');
+      endTurn();
     }
   },
   {
     name: 'Ichor of Sorcery',
     id: 'runic-potion',
     src: 'res/item/shop/runic-potion.png',
-    desc: `Gain 1d2 ${runic} for 3 turns.`,
+    desc: `Gain 1d2 + 1 ${runic} for 3 turns.`,
     lore: 'A magical brew that can enhance ones magical nature.',
-    cost: 1000,
+    cost: 10,
     active: true,
-    action: function() {
-      
+    action: function () {
+      const result = roll(2) + 1;
+      runicPotionCondition.bonus = result;
+      runicPotionCondition.turns = 3;
+      runicPotionCondition.active = true;   
+      Stats.playerRunic += result;
+      Stats.gold -= this.cost;
+      log(`You drink a ${this.name} and boost runic by ${result} for 3 turns!`, 'ps');
+      endTurn();
     }
   },
 ]

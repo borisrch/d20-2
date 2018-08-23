@@ -658,6 +658,9 @@ const setShopInterface = (modal) => {
   const upper = document.createElement('div');
   upper.className = 'item-interface-upper';
 
+  const leftContainer = document.createElement('div');
+  leftContainer.className = 'item-interface-left-container';
+
   const left = document.createElement('div');
   left.className = 'item-interface-left';
   left.id = 'shop-left';
@@ -672,7 +675,12 @@ const setShopInterface = (modal) => {
 
     box.appendChild(img);
     left.appendChild(box);
-  })
+  });
+
+  const leftLower = document.createElement('div');
+  leftLower.className = 'item-interface-left-lower';
+  leftLower.id = 'shop-player-gold';
+  leftLower.innerHTML = '<span class="ra ra-ball item-gold"></span> ' + `${Stats.gold}`;
 
   const right = document.createElement('div');
   right.className = 'item-interface-right';
@@ -699,7 +707,10 @@ const setShopInterface = (modal) => {
   right.appendChild(desc);
   right.appendChild(lore);
 
-  upper.appendChild(left);
+  leftContainer.appendChild(left);
+  leftContainer.appendChild(leftLower);
+
+  upper.appendChild(leftContainer);
   upper.appendChild(right);
 
   const lower = document.createElement('div');
@@ -722,8 +733,19 @@ const setShopInterface = (modal) => {
 
       // TODO: Add button select logic. May need to move modal logic to here for close() function.
       const button = document.getElementById('shop-interface-button');
-      button.disabled = false;
-      button.innerText = `Buy ${potion.name}`;
+      
+      const newButton = document.createElement('button');
+      newButton.className = 'weapon-interface-button';
+      newButton.id = 'shop-interface-button';
+      newButton.disabled = false;
+      newButton.innerHTML = 'BUY <span class="ra ra-ball item-gold"></span> ' + `${potion.cost}`;
+      newButton.addEventListener('click', () => {
+        potion.action();
+        modal.close();
+      });
+      
+      button.remove();
+      lower.appendChild(newButton);
 
       const img = document.getElementById('shop-item-right-img');
       img.src = potion.src;
@@ -732,7 +754,7 @@ const setShopInterface = (modal) => {
       label.innerText = potion.name;
 
       const desc = document.getElementById('shop-item-desc');
-      desc.innerHTML = potion.desc;
+      desc.innerHTML = `${potion.desc}`;
 
       const lore = document.getElementById('shop-item-lore');
       lore.innerText = potion.lore;
@@ -745,9 +767,13 @@ const setShopInterface = (modal) => {
       });
     });
   });
+
 }
 
 export const updateShopInterface = () => {
+  const gold = document.getElementById('shop-player-gold');
+  gold.innerHTML = '<span class="ra ra-ball item-gold"></span> ' + `${Stats.gold}`;
+  
   potions.forEach((potion) => {
     if (potion.cost > Stats.gold) {
       const item = document.getElementById(potion.id);
