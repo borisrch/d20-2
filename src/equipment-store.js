@@ -154,7 +154,7 @@ export const trinkets = [{
     id: 'oblivion-trinket',
     src: 'res/item/trinket/oblivion-trinket.png',
     desc: `You will deal double damage, but will also recieve double incoming damage.`,
-    lore: 'Rumoured to have ',
+    lore: 'Rumoured to have been mined from the heart of a dead star, the stone grants the bearer immense power at a mortal cost.',
     cost: 50,
     active: true,
   },

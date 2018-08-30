@@ -44,13 +44,13 @@ import {
   runicPotionCondition,
 } from './conditions';
 import { runTutorial, tutorialCondition, tutorialPause } from './tutorial';
-import { endTurn, endTurnMonster } from './turn';
+import { endTurn, endTurnMonster, playerHealthHelper } from './turn';
 import { updateStats } from './update';
 import Logger from './logger';
 
-const noop = () => {};
+import Goblin from './mobs/goblin';
 
-$(".character-selection").hide();
+const noop = () => {};
 
 const chicken = {
   name: 'Cuck, the Chicken',
@@ -73,42 +73,6 @@ const chicken = {
     endTurnMonster(result);
   },
 };
-
-const goblin = {
-  name: 'Wormface, the Goblin',
-  monsterHealth: 20,
-  monsterArmour: 4,
-  monsterDamage: 4,
-  monsterRage: 0,
-  src: 'res/mobs/goblin.png',
-  names: ['Wormface', 'Grubhead', 'Fartbreath', 'Poopnose', 'Wormhair'],
-  turn() {
-    const result = roll(100);
-    DEV ? Logger.mob(`Goblin Ability Chance: ${result}`) : noop;
-    result > 75 ? this.goblinSpit() : this.basicAttack();
-  },
-  basicAttack() {
-    const result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
-    if (result != null) {
-      playerHealthHelper(result);
-      log('Goblin hits for ' + result + ' damage!', 'mb');
-    } 
-    else {
-      log('Goblin missed.', 'miss');
-    }
-    endTurnMonster(result);
-  },
-  goblinSpit() {
-    let result = pureAttack(Stats.monsterDamage, 1, 0, 1, Stats.playerArmour);
-    if (result != null) {
-      playerHealthHelper(result);
-      log('Goblin uses <i>Goblin Spit</i> for ' + result + ' damage!', 'ms');
-    } else {
-      log('Goblin missed.', 'miss');
-    }
-    endTurnMonster(result);
-  }
-}
 
 const dwarf = {
   name: 'Gimli, the Dwarf',
@@ -248,15 +212,6 @@ const monsterHealthHelper = function(result) {
     Stats.monsterHealth = Stats.monsterHealth - result;
   }  
 };
-
-const playerHealthHelper = (result) => {
-  if(Stats.playerHealth - result <= 0) {
-    Stats.playerHealth = 0;
-    log('You died to ' + currentMonster.name + '!', 'ms');
-  } else {
-    Stats.playerHealth = Stats.playerHealth - result;
-  } 
-}
 
 // Must Define After Monster, but before Basic Attack
 
@@ -452,6 +407,10 @@ const tippyInit = function () {
       el: '#equipment-armour',
       tip: '<b>Equip Armour</b>',
     },
+    {
+      el: '#equipment-new',
+      tip: '<b>Change Equipment</b>',
+    },
   ];
 
   const tippyElements = [];
@@ -611,7 +570,7 @@ const advance = function() {
     console.log('@Advance');
   }
 
-  Stats.playerLevel = Stats.playerLevel + 1;
+  Stats.playerLevel += 1;
 
   // NEED TO ADD CHECK FOR LAST MONSTERS !! if (Stats.playerLevel > 10) or whatever.
 
@@ -619,45 +578,13 @@ const advance = function() {
     throw new Error('playerLevel exceeds 10. No more monsters');
   }
 
-  let item = mageItem[Stats.playerLevel];
-
-  // if (item.type === 'weapon') {
-  //   weaponModal.addFooterBtn(item.name, 'spell-equipment wand-button', () => {
-  //     selectWeapon(item.name);
-  //     updateStats();      
-  //     weaponModal.close();
-  //   });
-    
-  //   weaponModal.setContent(wand_desc[item.desc]);
-    
-  // }
-
-  // if (item.type === 'amulet') {
-  //   amuletModal.addFooterBtn(item.name, 'spell-amulet wand-button', () => {
-  //     selectAmulet(item.name);
-  //     updateStats();      
-  //     amuletModal.close();
-  //   });
-
-  //   amuletModal.setContent(amulet_desc[item.desc]);  
-  // }
-
-  // if (item.type === 'trinket') {
-  //   trinketModal.addFooterBtn(item.name, 'spell-trinket wand-button', () => {
-  //     selectTrinket(item.name);
-  //     updateStats();      
-  //     trinketModal.close();
-  //   });
-  //   trinketModal.setContent(trinket_desc[item.desc]);
-  // }
-
   // Handles gold income and logging. 
-  if (item.gold > 0) {
-    Stats.gold += item.gold;
-    log('Loot: ' + item.name + ' (' + item.type + ') and ' + item.gold + ' gold.', 'victory');
-  } else {
-    log('Loot: ' + item.name + ' (' + item.type + ').', 'victory');
-  }
+  // if (item.gold > 0) {
+  //   Stats.gold += item.gold;
+  //   log('Loot: ' + item.name + ' (' + item.type + ') and ' + item.gold + ' gold.', 'victory');
+  // } else {
+  //   log('Loot: ' + item.name + ' (' + item.type + ').', 'victory');
+  // }
 
   currentMonster = getNextMonster(Stats.playerLevel);
 
@@ -678,6 +605,10 @@ const advance = function() {
   updateStats();
 }
 
+const completeStage = () => {
+  
+}
+
 const getNextMonster = function(level) {
   switch(level) {
     case 0:
@@ -685,7 +616,7 @@ const getNextMonster = function(level) {
     break;
 
     case 1:
-    return goblin;
+    return Goblin;
     break;
 
     case 2:

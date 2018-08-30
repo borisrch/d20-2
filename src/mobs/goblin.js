@@ -1,38 +1,43 @@
-import { log } from './log';
-import { roll, attack } from './rollattack';
-import { DEV } from './dev';
+import { log } from '../log';
+import { roll, attack, pureAttack } from '../rollattack';
+import { DEV } from '../dev';
+import { endTurnMonster, playerHealthHelper } from '../turn';
+import Stats from '../stats';
 
-export const goblin = {
-  monsterArmour: 15,
+const goblin = {
+  name: 'Wormface, the Goblin',
+  monsterHealth: 20,
+  monsterArmour: 4,
   monsterDamage: 4,
   monsterRage: 0,
-  monsterTurnAttack() {
-    let result = roll(100);
-    
-    if(DEV) {
-      console.log('Goblin Abilty Chance ' + result)
-    }
-
-    if (result > 75) {      
-      this.goblinSpit();
-    } else {
-      this.basicAttack();
-    }
+  src: 'res/mobs/goblin.png',
+  names: ['Wormface', 'Grubhead', 'Fartbreath', 'Poopnose', 'Wormhair'],
+  turn() {
+    const result = roll(100);
+    result > 75 ? this.goblinSpit() : this.basicAttack();
   },
   basicAttack() {
-    let result = attack(this.monsterDamage, 0, 0, 1, playerArmour);
-    if (result != null) {      
+    const result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
+    if (result != null) {
+      playerHealthHelper(result);
       log('Goblin hits for ' + result + ' damage!', 'mb');
-    } else {
+    } 
+    else {
       log('Goblin missed.', 'miss');
     }
+    endTurnMonster(result);
   },
   goblinSpit() {
-    let result = attack(this.monsterDamage, 1, 0, 1, playerArmour);
+    const result = pureAttack(Stats.monsterDamage, 1, 0, 1, Stats.playerArmour);
     if (result != null) {
+      playerHealthHelper(result);
       log('Goblin uses <i>Goblin Spit</i> for ' + result + ' damage!', 'ms');
-    } else {
+    } 
+    else {
       log('Goblin missed.', 'miss');
     }
+    endTurnMonster(result);
   }
 }
+
+export default goblin;

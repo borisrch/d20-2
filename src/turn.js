@@ -141,3 +141,13 @@ export const endTurnMonster = function(result) {
     enable();
   }, 500);    
 }
+
+export const playerHealthHelper = (result) => {
+  if (Stats.playerHealth - result <= 0) {
+    Stats.playerHealth = 0;
+    log('You died to ' + currentMonster.name + '!', 'ms');
+  } 
+  else {
+    Stats.playerHealth = Stats.playerHealth - result;
+  } 
+}
