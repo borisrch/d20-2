@@ -24,6 +24,7 @@ const addClassPanel = (obj) => {
 
     const button = document.createElement('div');
     button.className = spell.button;
+    button.id = spell.name;
 
     const icon = document.createElement('span');
     icon.className = spell.icon;

@@ -13,6 +13,84 @@ import {
   runicPotionCondition
 } from './conditions';
 import { updateStats } from './update';
+import tippy from 'tippy.js';
+
+const status = {
+  SHOCKED: {
+    id: 'monster-shocked',
+    unit: 'monster',
+    buff: false,
+    icon: 'ra-player-thunder-struck',
+    message: '<b>Shocked</b> - This monster will take additional damage on your next attack.',
+  },
+  DISADVANTAGED: {
+    id: 'player-disadvantaged',
+    unit: 'player',
+    buff: false,
+    icon: 'ra-player-despair',
+    message: '<b>Disadvantaged</b> - You are less likely to hit on your next attack.',
+  },
+  DWARF_TANK: {
+    id: 'monster-dwarf-tank',
+    unit: 'monster',
+    buff: true,
+    icon: 'ra-muscle-fat',
+    message: '<b>Dwarven Resilience</b> - Armour class is buffed by 4 for this turn.',
+  },
+  POTION_ACTIVE: {
+    id: 'player-potion-buff',
+    unit: 'player',
+    buff: true,
+    icon: 'ra-fizzing-flask',
+    message: `<b>Potion Active</b> - A potion buff is currently affecting your stats.`,
+  }
+}
+
+const setStatus = (buff) => {
+  const el = document.getElementById(buff.id);
+  if (el === null) {
+
+    let status;
+
+    if (buff.unit === 'monster') {
+      status = document.getElementById('monster-status');
+    }
+    else if (buff.unit === 'player') {
+      status = document.getElementById('player-status');
+    }
+    
+    const icon = document.createElement('span');
+    icon.id = buff.id;
+    icon.classList.add('ra', buff.icon, 'animated', 'flipIn');
+
+    if (buff.buff) {
+      icon.classList.add('colour-buff');
+    }
+    else {
+      icon.classList.add('colour-debuff');
+    }
+
+    icon.setAttribute('title', buff.message);
+
+    status.appendChild(icon);    
+
+    tippy(icon);
+    
+    // setTimeout(() => {
+    //   icon.classList.remove('bounce');
+    // }, 1001);
+  }
+}
+
+const removeStatus = (buff) => {
+  const el = document.getElementById(buff.id);
+  if (el !== null) {
+    el.classList.add('fadeOut');
+    setTimeout(() => {
+      el.parentNode.removeChild(el);
+    }, 1000)
+  }
+}
 
 export const endTurn = (result) => {
   if (result) {
@@ -49,6 +127,17 @@ export const endTurn = (result) => {
     Stats.playerMana = Stats.playerMana + 25;
     $('.player-mana').addClass('colour-mana-add');
   }
+
+  if (alzursThunderCondition.turns > 0) {
+    setStatus(status.SHOCKED);
+  } 
+  else if (alzursThunderCondition.turns === 0) {
+    removeStatus(status.SHOCKED);
+  }
+
+  if (defensePotionCondition.active || accuracyPotionCondition.active || runicPotionCondition.active) {
+    setStatus(status.POTION_ACTIVE);
+  } 
 
   updateStats();
 
@@ -123,6 +212,27 @@ export const endTurnMonster = function(result) {
     Stats.playerRunic -= runicPotionCondition.bonus;
   }
 
+  if (defensePotionCondition.active === false && accuracyPotionCondition.active === false && runicPotionCondition.active === false) {
+    removeStatus(status.POTION_ACTIVE);
+  }
+
+  console.log(playerDisadvantage.active);
+
+  if (playerDisadvantage.active === true) {
+    setStatus(status.DISADVANTAGED);
+  }
+  else if (playerDisadvantage.active === false) {
+    removeStatus(status.DISADVANTAGED);
+  }
+
+  if (dwarfTankCondition.active === true) {
+    setStatus(status.DWARF_TANK);
+  }
+  else if (dwarfTankCondition.active === false) {
+    removeStatus(status.DWARF_TANK);
+  }
+
+
   $('.monster-graphic').addClass('poke-left');
   $('.player-graphic').addClass('player-flail');
 
@@ -139,7 +249,7 @@ export const endTurnMonster = function(result) {
 
   setTimeout(() => {
     enable();
-  }, 500);    
+  }, 500);
 }
 
 export const playerHealthHelper = (result) => {
@@ -149,5 +259,5 @@ export const playerHealthHelper = (result) => {
   } 
   else {
     Stats.playerHealth = Stats.playerHealth - result;
-  } 
+  }
 }

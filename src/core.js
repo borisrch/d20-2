@@ -49,6 +49,7 @@ import { updateStats } from './update';
 import Logger from './logger';
 
 import Goblin from './mobs/goblin';
+import { armour } from './equipment-store';
 
 const noop = () => {};
 
@@ -381,11 +382,11 @@ const tippyInit = function () {
     },
     {
       el: '.monster-rage-tip',
-      tip: 'Rage is aquired over time, and allows Monsters to have additional spells and effects.',
+      tip: 'Rage is aquired over time, and allows monsters to have additional spells and effects.',
     },
     {
       el: '.player-mana-tip',
-      tip: 'PP represents the cost for casting spells. 25 PP is recharged per turn.',
+      tip: 'Mana is used as the cost for casting spells. 25 mana is recharged per turn to a base maximum of 100.',
     },
     {
       el: '#equipment-weapon',
@@ -431,24 +432,25 @@ const tippyMage = function() {
   const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
   const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
   const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
+  const manaIcon = '<span class="ra ra-lightning-bolt colour-mana-tip"></span>';
 
   const basicAttackTip = '<b>Basic Attack</b> - Deal 1d' + Stats.playerDamage + ' ' + damageIcon + ' .';
   $('.basic-attack').prop(title, basicAttackTip);
   tippy('.basic-attack');
 
-  const mageSpellQ = '<b>Scorch (75 PP)</b> - Ignore 1d2 ' + armourIcon + ' and deal 1d10 ' + damageIcon + '. Ignore an additional 1d2 ' + armourIcon + ' per ' + runicIcon + ' level.';
+  const mageSpellQ = `<b>Scorch (${manaIcon}75 )</b> - Deal 1d10 ${damageIcon} while ignoring 1d2 ${armourIcon}. Ignore an additional 1d2 ${armourIcon} per ${runicIcon} level.`;
   $('.q').prop(title, mageSpellQ);
   tippy('.q');
 
-  const mageSpellW = '<b>Alzur\'s Thunder (100 PP)</b> - Deal 2d4 ' + damageIcon + ' and apply <i>Shocked</i>. Shock deals bonus 1d4 ' + damageIcon + ' for ' + runicIcon + ' turns.';
+  const mageSpellW =`<b>Alzur's Thunder (${manaIcon}100 )</b> - Deal 2d4 ${damageIcon} and apply <i>Shocked</i>, which deals bonus 1d4 ${damageIcon} for ${runicIcon} turns.`;
   $('.w').prop(title, mageSpellW);
   tippy('.w');
 
-  const mageSpellE = '<b>Malevolence (50 PP)</b> - Deal 1d10 ' + damageIcon + ' . Consecutive Malevolence casts deal bonus 1d2 ' + damageIcon + ' per ' + runicIcon + ' level.';
+  const mageSpellE = `<b>Malevolence (${manaIcon}50 )</b> - Deal 1d10 ${damageIcon} . Consecutive casts of Malevolence deals additional 1d2 ${damageIcon} per ${runicIcon} level.`;
   $('.e').prop(title, mageSpellE);
   tippy('.e');
 
-  const mageSpellR = '<b>Runic Echoes (25 PP)</b> - Increase ' + armourIcon + ' by 1d2 per ' + runicIcon + ' level for the next turn.';
+  const mageSpellR = `<b>Runic Echoes (${manaIcon}25 )</b> - Increase ${armourIcon} by 1d2 per ${runicIcon} level for the next turn.`;
   $('.r').prop(title, mageSpellR);
   tippy('.r');
 }
@@ -653,5 +655,5 @@ init('mage');
 // }, 2500);
 
 // Skip to monsters. Function still +1 to level 
-// Stats.playerLevel = 2;
+// Stats.playerLevel = 1;
 // advance();

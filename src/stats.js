@@ -10,6 +10,7 @@ export default {
   playerMaxMana: 100,
   playerGraphic: '/res/player/wizard/wizard-1.png',
   playerWeapon: '',
+  playerRing: '',
   currentMonster: null,
   monsterHealth: 0,
   monsterArmour: 0,

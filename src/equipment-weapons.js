@@ -48,7 +48,7 @@ export const wizardItems = [
       hit: 2,
     },
     desc: `${runicIcon} 5 Runic <br> ${damageIcon} 5 Damage <br> ${hitIcon} 2 Hit`,
-    active: false,
+    active: true,
   }, 
   {
     name: 'Infinity Staff',
@@ -60,6 +60,6 @@ export const wizardItems = [
       hit: 3,
     },
     desc: `${runicIcon} 6 Runic <br> ${damageIcon} 6 Damage <br> ${hitIcon} 3 Hit`,
-    active: false,
+    active: true,
   },
 ]

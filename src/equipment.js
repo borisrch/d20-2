@@ -101,48 +101,6 @@ export const selectTrinket = function (trinket) {
   }
 }
 
-// export const potions = [{
-//     name: 'Healing Potion',
-//     desc: 'Heals for 1d10 + 10 HP.',
-//     icon: 'ra-heart-bottle',
-//     style: 'potion-health',
-//     cost: '15',
-//     id: 'buy-health'
-//   },
-//   {
-//     name: 'Accuracy Potion',
-//     desc: 'Increases hit chance by 1d4 for next 4 turns.',
-//     icon: 'ra-corked-tube',
-//     style: 'potion-accuracy',
-//     cost: '25',
-//     id: 'buy-accuracy',
-//   },
-//   {
-//     name: 'Defense Potion',
-//     desc: 'Increases AC by 1d4 + 2 for next 4 turns.',
-//     icon: 'ra-round-bottom-flask',
-//     style: 'potion-defense',
-//     cost: '35',
-//     id: 'buy-defense',
-//   },
-//   {
-//     name: 'PP Potion',
-//     desc: 'Restores 75 PP.',
-//     icon: 'ra-bubbling-potion',
-//     style: 'potion-pp',
-//     cost: '50',
-//     id: 'buy-pp',
-//   },
-//   {
-//     name: 'Runic Potion',
-//     desc: 'Grants 1d2 + 2 bonus Runic for next 4 turns.',
-//     icon: 'ra-fizzing-flask',
-//     style: 'potion-runic',
-//     cost: '75',
-//     id: 'buy-runic',
-//   },
-// ];
-
 export const getGold = () => {
   return '<div>Current gold: ' + Stats.gold + '</div>';
 }
@@ -344,7 +302,7 @@ export const updateWeaponInterface = () => {
   })
 }
 
-const setAmuletInterface = () => {
+const setAmuletInterface = (modal) => {
 
   const amuletInterface = document.getElementById('amulet-interface');
 
@@ -413,10 +371,27 @@ const setAmuletInterface = () => {
       item.classList.add('item-selected');
       SELECTED_AMULET = amulet.id;
 
-      // TODO: Add button select logic. May need to move modal logic to here for close() function.
       const button = document.getElementById('amulet-interface-button');
-      button.disabled = false;
-      button.innerText = `Equip ${amulet.name}`;
+      const newButton = document.createElement('button');
+      newButton.className = 'weapon-interface-button';
+      newButton.id = 'amulet-interface-button';
+
+      // Checks to see if it is currently equipped.
+      if (Stats.playerRing == SELECTED_AMULET) {
+        newButton.disabled = true;
+        newButton.innerText = `${amulet.name} already equipped.`
+      }
+      else {
+        newButton.disabled = false;
+        newButton.innerText = `Equip ${amulet.name}`;
+        newButton.addEventListener('click', () => {
+          amulet.action();
+          modal.close();
+        });
+      }
+
+      button.remove();
+      lower.appendChild(newButton);
 
       const img = document.getElementById('amulet-item-right-img');
       img.src = amulet.src;
@@ -448,6 +423,15 @@ export const updateAmuletInterface = () => {
       item.classList.add('weapon-unavailable');
     }
   });
+  const button = document.getElementById('amulet-interface-button');
+  if (SELECTED_AMULET == Stats.playerRing) {
+    button.disabled = true;
+    button.innerText = `Item already equipped.`
+  } 
+  else if (SELECTED_AMULET == '') {
+    button.disabled = true;
+    button.innerText = 'Select item to equip.'
+  }
 }
 
 const setArmourInterface = () => {
@@ -836,7 +820,7 @@ export const buildInterface = () => {
   setWeaponInterface();
 
   amuletModal.setContent('<div id="amulet-interface"></div>');
-  setAmuletInterface();
+  setAmuletInterface(amuletModal);
 
   equipmentModal.setContent('<div id="equipment"></div>');
   setEquipmentInterface();

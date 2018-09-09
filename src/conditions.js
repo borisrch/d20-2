@@ -1,3 +1,6 @@
+import Stats from './stats';
+
+// Spell conditions
 export const alzursThunderCondition = {
   turns: 0,
 }
@@ -12,10 +15,51 @@ export const runicEchoesCondition = {
   bonusArmour: 0,
 }
 
+// Equipment conditions
 export const sapphireAmuletCondition = {
   active: false
 }
 
+export const FEROCIOUS_RING_CONDITION = {
+  active: false,
+  bonus: 3,
+}
+
+export const GUARDIAN_RING_CONDITION = {
+  active: false,
+  bonus: 2,
+}
+
+export const ARCANE_RING_CONDITION = {
+  active: false,
+}
+
+export const SEERS_RING_CONDITION = {
+  active: false,
+}
+
+export const ARTEMISIAN_RING_CONDITION = {
+  active: false,
+}
+
+export const resetRing = () => {
+
+  if (FEROCIOUS_RING_CONDITION.active) {
+    Stats.playerDamage = Stats.playerDamage - FEROCIOUS_RING_CONDITION.bonus;
+  }
+  if (GUARDIAN_RING_CONDITION.active) {
+    Stats.playerArmour = Stats.playerArmour - GUARDIAN_RING_CONDITION.bonus;
+  }
+
+  FEROCIOUS_RING_CONDITION.active = false;
+  GUARDIAN_RING_CONDITION.active = false;
+  ARCANE_RING_CONDITION.active = false;
+  SEERS_RING_CONDITION.active = false;
+  ARTEMISIAN_RING_CONDITION.active = false;
+
+}
+
+// Potion conditions
 export const defensePotionCondition = {
   turns: 0,
   bonusArmour: 0,
@@ -35,14 +79,13 @@ export const runicPotionCondition = {
 }
 
 // Monster spells
-
 export const dwarfTankCondition = {
   active: false,
   bonusArmour: 0,
 }
 
 export const playerDisadvantage = {
-  active: true,
+  active: false,
 }
 
 export const monsterDead = {

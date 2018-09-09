@@ -9,7 +9,7 @@ const generator = new MersenneTwister();
 // Returns result of random 1 to n.
 export const roll = function (n) {
   const min = 1;
-  const max = Math.floor(n);
+  const max = Math.floor(n)
   const rand = generator.random();
   const result = Math.floor(rand * (max - min + 1)) + min;
   return result;

@@ -9,9 +9,13 @@ import {
   defensePotionCondition,
   sapphireAmuletCondition,
   runicPotionCondition,
+  FEROCIOUS_RING_CONDITION,
+  resetRing,
+  GUARDIAN_RING_CONDITION,
 } from './conditions';
 import { log } from './log';
 import Stats from './stats';
+import { updateStats } from './update';
 
 const ac = '<span class="ra ra-shield colour-ac"></span>';
 const damage = '<span class="ra ra-sword colour-damage-tip"></span>';
@@ -27,6 +31,16 @@ export const amulets = [{
     lore: 'The ring\'s bright ruby color is unmistakable on the battlefield.',
     cost: 50,
     active: true,
+    equip: function() {
+      return FEROCIOUS_RING_CONDITION.active;
+    },
+    action: function() {
+      resetRing();
+      FEROCIOUS_RING_CONDITION.active = true;
+      Stats.playerDamage += FEROCIOUS_RING_CONDITION.bonus;
+      Stats.playerRing = this.id;
+      updateStats();
+    }
   },
   {
     name: 'Guardian Ring',
@@ -36,6 +50,16 @@ export const amulets = [{
     lore: 'A glimmering ring that defends its bearer.',
     cost: 50,
     active: true,
+    equip: function() {
+      return GUARDIAN_RING_CONDITION.active;
+    },
+    action: function() {
+      resetRing();
+      GUARDIAN_RING_CONDITION.active = true;
+      Stats.playerArmour += GUARDIAN_RING_CONDITION.bonus;
+      Stats.playerRing = this.id;
+      updateStats();
+    }
   },
   {
     name: 'Arcane Ring',
@@ -44,7 +68,11 @@ export const amulets = [{
     desc: `+ 2 ${runic}`,
     lore: 'Its gem was once used to channel void realm magic, this ring pulses with energy.',
     cost: 50,
-    active: true,
+    active: false,
+    equip: false,
+    action: function() {
+      
+    }
   },
   {
     name: 'Seers Ring',
@@ -54,6 +82,10 @@ export const amulets = [{
     lore: 'A ring that grants more mana to its bearer.',
     cost: 50,
     active: false,
+    equip: false,
+    action: function() {
+      
+    }
   },
   {
     name: 'Artemisian Ring',
@@ -63,6 +95,10 @@ export const amulets = [{
     lore: 'This ring is considered a good luck charm among the elves.',
     cost: 50,
     active: false,
+    equip: false,
+    action: function() {
+      
+    }
   },
 ]
 
@@ -150,11 +186,38 @@ export const trinkets = [{
     active: true,
   },
   {
+    name: 'Black Star',
+    id: 'black-trinket',
+    src: 'res/item/trinket/black-trinket.png',
+    desc: `Gain 1 ${runic} per every 20% of missing health.`,
+    lore: 'An enigmatic amulet made from a cracked azure crystal, often used in rituals pertaining to dark magics.',
+    cost: 50,
+    active: true,
+  },
+  {
+    name: 'Glyph of Elvenkind',
+    id: 'elven-trinket',
+    src: 'res/item/trinket/elven-trinket.png',
+    desc: `Grants a 25% chance to lower enemy ${ac} by 1, down by a maximum of 10.`,
+    lore: 'An enchanted glyph that the elves wear to bring them good fortune in battle.',
+    cost: 50,
+    active: true,
+  },
+  {
     name: 'Oblivion Stone',
     id: 'oblivion-trinket',
     src: 'res/item/trinket/oblivion-trinket.png',
     desc: `You will deal double damage, but will also recieve double incoming damage.`,
     lore: 'Rumoured to have been mined from the heart of a dead star, the stone grants the bearer immense power at a mortal cost.',
+    cost: 50,
+    active: true,
+  },
+  {
+    name: 'Rune of the Void',
+    id: 'void-trinket',
+    src: 'res/item/trinket/void-trinket.png',
+    desc: `Enemies are 10% less likely to use spells.`,
+    lore: 'A powerful artifact long ago smuggled out of the Void. Or so many believe.',
     cost: 50,
     active: true,
   },
@@ -284,7 +347,7 @@ export const potions = [
       const result = roll(2) + 1;
       runicPotionCondition.bonus = result;
       runicPotionCondition.turns = 3;
-      runicPotionCondition.active = true;   
+      runicPotionCondition.active = true;
       Stats.playerRunic += result;
       Stats.gold -= this.cost;
       log(`You drink a ${this.name} and boost runic by ${result} for 3 turns!`, 'ps');
