@@ -1,7 +1,6 @@
-// Open Live-reload in dev env.
-// Webpack - load in modules when needed.
-// Refactor html
 import tippy from 'tippy.js';
+import Hammer from 'hammerjs';
+import tingle from 'tingle.js';
 
 import '../css/tingle.min.css';
 // import '../css/game-interface.css';
@@ -81,7 +80,7 @@ const dwarf = {
   monsterArmour: 8,
   monsterDamage: 6,
   monsterRage: 0,
-  src: 'res/mobs/dwarf.png',
+  src: 'res/mobs/dwarf-animated.gif',
   turn() {
     if (Stats.monsterRage > 40) {
       if(DEV) {
@@ -211,7 +210,7 @@ const monsterHealthHelper = function(result) {
 
   } else {    
     Stats.monsterHealth = Stats.monsterHealth - result;
-  }  
+  }
 };
 
 // Must Define After Monster, but before Basic Attack
@@ -254,6 +253,7 @@ const init = function (mode) {
   }
   updateStats();
   tippyInit();
+  setMobileEvents();
 }
 
 const mageInit = function () {
@@ -386,7 +386,7 @@ const tippyInit = function () {
     },
     {
       el: '.player-mana-tip',
-      tip: 'Mana is used as the cost for casting spells. 25 mana is recharged per turn to a base maximum of 100.',
+      tip: 'Mana is used as the cost for casting spells. 25 mana is recharged per turn.',
     },
     {
       el: '#equipment-weapon',
@@ -607,8 +607,16 @@ const advance = function() {
   updateStats();
 }
 
-const completeStage = () => {
-  
+const setMobileEvents = () => {
+    // mobile - touch/press.
+  const qElement = document.getElementById('q');
+  const q = new Hammer(qElement);
+  q.on('press', function(e) {
+    qElement._tippy.show();
+  });
+  q.on('tap', function(e) {
+    manaCheck(75, scorch);
+  })
 }
 
 const getNextMonster = function(level) {
@@ -639,6 +647,35 @@ const getNextMonster = function(level) {
 
 
 init('mage');
+
+
+window.onload = () => {
+  const game = document.getElementById('game-interface');
+  const el = document.getElementById('loading-container');
+  el.classList.add('animated', 'fadeOutUp');
+  setTimeout(() => {
+    el.classList.add('hidden');
+    game.classList.remove('hidden');
+    game.classList.add('animated', 'fadeInUp');
+    // Need to add sky animation now, or else it will interfere with fadeInUp.
+    setTimeout(() => {
+      game.setAttribute('style', 'animation: animate-sky 25s linear infinite;');
+    }, 1050);
+  }, 700);
+}
+
+// Disable to save CPU usage.
+// let skyX = 0;
+// const el = document.getElementById('game-interface');
+// const anim = setInterval(function () {
+//   if (skyX < 375) {
+//     el.style.backgroundPositionX = skyX + 'px';
+//     skyX = skyX + 1;
+//   } else {
+//     skyX = 0;
+//     el.style.backgroundPositionX = '0px';
+//   }
+// }, 50);
 
 // runTutorial();
 

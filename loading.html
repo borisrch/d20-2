@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Loading</title>
+  <link href="https://fonts.googleapis.com/css?family=Cabin:400,700" rel="stylesheet">
+</head>
+<body>
+
+  
+  <style>
+    body {
+      margin: 0px;
+    }
+
+    .loading {
+      width: 100vw;
+      height: 100vh;
+      background-color: #5c2776;
+      text-align: center;
+      vertical-align: middle;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .loading-icon {
+      margin-top: 40vh;
+    }
+
+    .loading-text {
+      margin-top: 5px;
+      font-family: Cabin;
+      color: #bea5d4;
+      letter-spacing: 1px;
+      font-size: 0.85em;
+    }
+
+    .spin {
+      animation: spin 2s ease-in-out 0s infinite reverse;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(360deg);
+      }
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+  </style>
+
+</body>
+</html>

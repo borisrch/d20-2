@@ -1,3 +1,5 @@
+import tingle from 'tingle.js';
+
 import Stats from './stats';
 import {
   sapphireAmuletCondition
@@ -23,9 +25,10 @@ const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
 const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
 const manaIcon = '<span class="ra ra-lightning-bolt colour-mana"></span>';
 
-let SELECTED_WEAPON = '';
-let SELECTED_AMULET = '';
-let SELECTED_POTION = '';
+let SELECTED_WEAPON = null;
+let SELECTED_AMULET = null;
+let SELECTED_POTION = null;
+let SELECTED_ARMOUR = null;
 
 export const selectWeapon = function (weapon) {
   switch (weapon) {
@@ -357,8 +360,10 @@ const setAmuletInterface = (modal) => {
   const button = document.createElement('button');
   button.className = 'weapon-interface-button';
   button.id = 'amulet-interface-button';
-  button.disabled = true;
   button.innerText = 'EQUIP RING';
+
+  button.disabled = true;
+  button.classList.add('button-disabled');
 
   lower.appendChild(button);
 
@@ -377,9 +382,15 @@ const setAmuletInterface = (modal) => {
       newButton.id = 'amulet-interface-button';
 
       // Checks to see if it is currently equipped.
-      if (Stats.playerRing == SELECTED_AMULET) {
+      if (Stats.playerRing === SELECTED_AMULET) {
         newButton.disabled = true;
-        newButton.innerText = `${amulet.name} already equipped.`
+        newButton.classList.add('button-disabled');
+        newButton.innerText = `${amulet.name} already equipped.`;
+      }
+      else if (amulet.active === false) {
+        newButton.disabled = true;
+        newButton.classList.add('button-disabled');
+        newButton.innerText = 'Item not owned';
       }
       else {
         newButton.disabled = false;
@@ -418,19 +429,21 @@ const setAmuletInterface = (modal) => {
 
 export const updateAmuletInterface = () => {
   amulets.forEach((amulet) => {
-    if (amulet.active == false) {
+    if (amulet.active === false) {
       const item = document.getElementById(amulet.id);
       item.classList.add('weapon-unavailable');
     }
   });
   const button = document.getElementById('amulet-interface-button');
-  if (SELECTED_AMULET == Stats.playerRing) {
+  if (SELECTED_AMULET === Stats.playerRing) {
     button.disabled = true;
-    button.innerText = `Item already equipped.`
+    button.classList.add('button-disabled');
+    button.innerText = `Item already equipped.`;
   } 
-  else if (SELECTED_AMULET == '') {
+  else if (SELECTED_AMULET === null) {
     button.disabled = true;
-    button.innerText = 'Select item to equip.'
+    button.classList.add('button-disabled');
+    button.innerText = 'Select item to equip.';
   }
 }
 
@@ -489,7 +502,10 @@ const setArmourInterface = () => {
   const button = document.createElement('button');
   button.className = 'weapon-interface-button';
   button.id = 'armour-interface-button';
+  
+  button.classList.add('button-disabled');
   button.disabled = true;
+  
   button.innerText = 'EQUIP ARMOUR';
 
   lower.appendChild(button);
@@ -501,12 +517,36 @@ const setArmourInterface = () => {
     const item = document.getElementById(_armour.id);
     item.addEventListener('click', () => {
       item.classList.add('item-selected');
-      // SELECTED_AMULET = amulet.id;
+      
+      SELECTED_ARMOUR = _armour.id;
 
       // TODO: Add button select logic. May need to move modal logic to here for close() function.
       const button = document.getElementById('armour-interface-button');
-      button.disabled = false;
-      button.innerText = `Equip ${_armour.name}`;
+      const newButton = document.createElement('button');
+      newButton.className = 'weapon-interface-button';
+      newButton.id = 'armour-interface-button';
+
+      if (Stats.playerArmour == SELECTED_ARMOUR) {
+        newButton.disabled = true;
+        newButton.classList.add('button-disabled');
+        newButton.innerText = `${_armour.name} already equipped.`;
+      }
+      else if (_armour.active == false) {
+        newButton.disabled = true;
+        newButton.classList.add('button-disabled');
+        newButton.innerText = 'Item not owned';
+      }
+      else {
+        newButton.disabled = false;
+        newButton.innerText = `Equip ${_armour.name}`;
+        newButton.addEventListener('click', () => {
+          amulet.action();
+          modal.close();
+        });
+      }
+
+      button.remove();
+      lower.appendChild(newButton);
 
       const img = document.getElementById('armour-item-right-img');
       img.src = _armour.src;
@@ -537,6 +577,15 @@ export const updateArmourInterface = () => {
       item.classList.add('weapon-unavailable');
     }
   });
+  const button = document.getElementById('armour-interface-button');
+  if (SELECTED_ARMOUR == Stats.playerArmour) {
+    button.classList.add('button-disabled');
+    button.innerText = `Item already equipped.`;
+  } 
+  else if (SELECTED_ARMOUR == '') {
+    button.classList.add('button-disabled');
+    button.innerText = 'Select item to equip.';
+  }
 }
 
 const setTrinketInterface = () => {
@@ -751,7 +800,6 @@ const setShopInterface = (modal) => {
       });
     });
   });
-
 }
 
 export const updateShopInterface = () => {
@@ -789,8 +837,9 @@ export const buildInterface = () => {
   const equipmentModal = new tingle.modal({
     footer: false,
     stickyFooter: false,
-    closeMethods: ['button', 'escape'],
+    closeMethods: ['overlay', 'escape'],
     closeLabel: "Close",
+    cssClass: ['test'],
     onOpen: function () {},
   });
   const armourModal = new tingle.modal({

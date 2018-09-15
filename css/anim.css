@@ -37,6 +37,10 @@
   animation: flip 1s 1;
 }
 
+.animate-sky {
+  
+}
+
 @keyframes bob {
   0% {
     transform: translate(0)
@@ -130,5 +134,14 @@
   }
   100% {
     transform: perspective(400px);
+  }
+}
+
+@-webkit-keyframes animate-sky {
+  0% { 
+    background-position: 0 0; 
+  }
+  100% { 
+    background-position: -375px 0; 
   }
 }

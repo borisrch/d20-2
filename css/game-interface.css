@@ -7,17 +7,19 @@ body {
 }
 
 .game-interface {
-  /* background: rgba(255, 255, 255, 0.96); */
   background-image: url('../res/platform/background-1.png');
   background-repeat: repeat-x;
+  background-position: 0px 0px;
+  /* animation: animate-sky 30s linear infinite; */
   background-color: #fffcf3;
   max-width: 100vw;
   min-width: 600px;
-  height: 97vh;
-  min-height: 400px;
-  margin-top: 2px;
+  /* height: 97vh; */
+  min-height: 700px;
+  max-height: 776px;
+  margin-top: 10px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  transition: all 0.1s cubic-bezier(.25,.8,.25,1);
+  /* transition: all 0.1s cubic-bezier(.25,.8,.25,1); */
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -25,7 +27,7 @@ body {
   -ms-user-select: none;
   user-select: none;
   position: relative;
-  
+  border-radius: 4px;
 }
 
 
@@ -43,7 +45,6 @@ body {
 .health-player {
   justify-self: center;
   font-size: 5em; 
-  
 }
 
 .health-monster {
@@ -185,7 +186,7 @@ body {
 .equipment-interface {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  grid-gap: 10px;
 }
 
 .equipment-button {
@@ -215,6 +216,7 @@ body {
 .log {
   padding: 10px;
   text-align: center;
+  border-radius: 4px;
 }
 
 .log-monster-basic {
@@ -443,12 +445,12 @@ body {
 }
 
 .spell-trophy {
-  background: linear-gradient(120deg, #FFCC80 0%, #FFB74D 100%);
+  background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
   color: #F1F8E9;
 }
 
 .spell-achievement {
-  background: linear-gradient(120deg, #90CAF9 0%, #64B5F6 100%);
+  background: linear-gradient(120deg, #90CAF9 0%, rgb(74, 135, 247) 100%);
   color: #F1F8E9;
 }
 
@@ -519,7 +521,7 @@ body {
 
 .square-button {
   border: none;
-  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.10);
+  box-shadow:inset 0 -0.6em 5px -0.35em rgba(0,0,0,0.10);
   border-radius: 4px;
   width: 50px;
   height: 50px;
@@ -536,7 +538,7 @@ body {
 
 .round-button {
   border: none;
-  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.10);
+  box-shadow:inset 0 -0.6em 5px -0.35em rgba(0,0,0,0.10);
   border-radius: 75px;
   width: 50px;
   height: 50px;
@@ -549,6 +551,11 @@ body {
   -ms-transform: scale(1.2);
   transform: scale(1.2);
   cursor: pointer; 
+}
+
+.button-disabled, .button-disabled:disabled {
+  filter: opacity(55%);
+  pointer-events: none;
 }
 
 .modal-title {
@@ -601,11 +608,11 @@ body {
 
 .weapon-unavailable {
   opacity: 0.25;
-  pointer-events: none;
+  /* pointer-events: none; */
 }
 
 .unavailable {
-  opacity: 0.25;
+  opacity: 0.45;
   pointer-events: none;
 }
 
@@ -665,7 +672,7 @@ body {
 }
 
 .item-box {
-  /* background-color: #eff1f5; */
+  background-color: #eff1f5;
   border-radius: 3px;
   height: 56px;
   width: 56px;
@@ -845,18 +852,18 @@ body {
   background-color: #BA68C8;
 }
 
-.ra {
-  margin-left: 1px;
-}
-
 @media (max-width: 667px) {
+  body {
+    margin: 0px;
+  }
+
   .game-interface {
-    background: rgba(255, 255, 255, 0.96);
+    background-image: url('../res/platform/background-1.png');
+    background-repeat: repeat-x;
+    background-position: 0px 0px;
     max-width: 667px;
     margin: 0px;
-    margin-right: 0px !important;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    transition: all 0.1s cubic-bezier(.25,.8,.25,1);
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -864,7 +871,6 @@ body {
     -ms-user-select: none;
     user-select: none;
     position: relative;
-    background-image: none;
   }
 
   .graphics {
@@ -876,11 +882,65 @@ body {
 
   .platform {
     position: absolute;
-    left: -75px;
-    top: -50px;
+    left: -110px;
+    top: -80px;
     z-index: 0;
     pointer-events: none;
     float: right;
-    width: 192px;
+    width: 256px;
   }
+
+  .player-graphic {
+    left: -50px;
+    top: -16px;
+    height: 64px;
+  }
+
+  .monster-graphic {
+    height: 64px;
+    top: -16px;
+  }
+
+  .health-player {
+    font-size: 4em; 
+  }
+
+  .health-label {
+    font-size: 1em;
+  }
+
+  .health-monster {
+    font-size: 4em;
+  }
+
+  .monster-label {
+    font-size: 1em;
+  }
+
+  .player-stats {
+    grid-template-columns: repeat(2, 45px);
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .monster-stats {
+    grid-template-columns: repeat(3, 45px);
+    grid-template-rows: 1fr;
+    grid-gap: 0px;
+  }
+
+  .ability-interface {
+    margin-top: 0px;
+  }
+
+  .tingle-modal-box {
+    width: 100%;
+  }
+
+  .tingle-modal__close {
+    top: 0px;
+    right: 0px;
+    font-size: 3em;
+    color: black;
+  }
+
 }

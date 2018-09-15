@@ -31,9 +31,6 @@ export const amulets = [{
     lore: 'The ring\'s bright ruby color is unmistakable on the battlefield.',
     cost: 50,
     active: true,
-    equip: function() {
-      return FEROCIOUS_RING_CONDITION.active;
-    },
     action: function() {
       resetRing();
       FEROCIOUS_RING_CONDITION.active = true;
@@ -50,9 +47,6 @@ export const amulets = [{
     lore: 'A glimmering ring that defends its bearer.',
     cost: 50,
     active: true,
-    equip: function() {
-      return GUARDIAN_RING_CONDITION.active;
-    },
     action: function() {
       resetRing();
       GUARDIAN_RING_CONDITION.active = true;
@@ -69,7 +63,6 @@ export const amulets = [{
     lore: 'Its gem was once used to channel void realm magic, this ring pulses with energy.',
     cost: 50,
     active: false,
-    equip: false,
     action: function() {
       
     }
@@ -95,7 +88,6 @@ export const amulets = [{
     lore: 'This ring is considered a good luck charm among the elves.',
     cost: 50,
     active: false,
-    equip: false,
     action: function() {
       
     }
@@ -109,7 +101,7 @@ export const armour = [{
     desc: `Increase to 50 ${mana} regeneration per turn.`,
     lore: 'This elegant garment was once worn by a powerful enchantress.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Mantle of the Colossus',
@@ -118,7 +110,7 @@ export const armour = [{
     desc: `Increase max health by 50.`,
     lore: 'Reforged armour made from the metal of the fallen Colossus.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Valkyrie Armour',
@@ -127,7 +119,7 @@ export const armour = [{
     desc: `Heal for 1d4 per turn.`,
     lore: 'Legendary armour worn by the Valkyries known for its regenerative magic.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Daedric Carapace',
@@ -136,7 +128,7 @@ export const armour = [{
     desc: `Grants 10% lifesteal on all attacks.`,
     lore: 'This hellish mail favoured by the Daedra for its dark nature.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Leviathan Chestplate',
@@ -145,7 +137,7 @@ export const armour = [{
     desc: `Grants 15% damage reduction from incoming attacks.`,
     lore: 'Powerful armour that defends its wearer from even the most vicious of attacks.',
     cost: 50,
-    active: true,
+    active: false,
   },
 ]
 
@@ -156,7 +148,7 @@ export const trinkets = [{
     desc: `Increase ${damage} by 20%, but decrease ${ac} by 10%.`,
     lore: 'The boots will make the wearer have no fear of combat.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Achilles Helm',
@@ -165,7 +157,7 @@ export const trinkets = [{
     desc: `Increase ${ac} by 50%, but decrease ${hit} by 25%.`,
     lore: 'The helmet of a legendary warrior who fell in battle.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Asgardian Steel Gauntlet',
@@ -174,7 +166,7 @@ export const trinkets = [{
     desc: `Increase ${hit} by 20%, but decrease ${ac} by 10%.`,
     lore: 'Celestial magic is still remnant from the valkyrie who once wore it.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Amulet of the Fates',
@@ -183,7 +175,7 @@ export const trinkets = [{
     desc: `Your spells will have 100% ${hit}, but have twice the ${mana} cost.`,
     lore: 'A divine amulet used to influence the nature of spells.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Black Star',
@@ -192,7 +184,7 @@ export const trinkets = [{
     desc: `Gain 1 ${runic} per every 20% of missing health.`,
     lore: 'An enigmatic amulet made from a cracked azure crystal, often used in rituals pertaining to dark magics.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Glyph of Elvenkind',
@@ -201,7 +193,7 @@ export const trinkets = [{
     desc: `Grants a 25% chance to lower enemy ${ac} by 1, down by a maximum of 10.`,
     lore: 'An enchanted glyph that the elves wear to bring them good fortune in battle.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Oblivion Stone',
@@ -210,7 +202,7 @@ export const trinkets = [{
     desc: `You will deal double damage, but will also recieve double incoming damage.`,
     lore: 'Rumoured to have been mined from the heart of a dead star, the stone grants the bearer immense power at a mortal cost.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Rune of the Void',
@@ -219,7 +211,7 @@ export const trinkets = [{
     desc: `Enemies are 10% less likely to use spells.`,
     lore: 'A powerful artifact long ago smuggled out of the Void. Or so many believe.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Silverhawk Feather',
@@ -228,7 +220,7 @@ export const trinkets = [{
     desc: `Gain a 5% chance of casting a spell twice.`,
     lore: 'Holding the magic of the Silverhawk, this mystical feather brings limitless dexterity to those that bear it.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Skull of Mystra',
@@ -237,7 +229,7 @@ export const trinkets = [{
     desc: `Increase ${runic} by 20%, but decrease ${ac} by 20%.`,
     lore: 'An artefact of unknown origin which emanates dark magical power.',
     cost: 50,
-    active: true,
+    active: false,
   },
   {
     name: 'Warbelt of Radiance',
@@ -246,7 +238,7 @@ export const trinkets = [{
     desc: `Passively deal bonus 2 ${damage} on succesful hits.`,
     lore: 'A warbelt that causes damage and a bright burning effect that lays waste to nearby enemies.',
     cost: 50,
-    active: true,
+    active: false,
   },
 ]
 
