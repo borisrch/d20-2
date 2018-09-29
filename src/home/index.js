@@ -3,6 +3,9 @@ import 'pretty-checkbox/dist/pretty-checkbox.css';
 import '../../css/tingle.min.css';
 import {Howl, Howler} from 'howler';
 
+// import platform from '../../res/platform/background-4.png';
+// import cloud from '../../res/platform/cloud-3.png';
+
 const settings = [
   {
     label: 'Enable Animations',
@@ -90,4 +93,3 @@ const buildSettingsInterface = function() {
 
 buildSettingsInterface();
 runAudio();
-

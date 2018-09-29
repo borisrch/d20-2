@@ -6,4 +6,6 @@ d20.code-workspace
 .eslintrc.json
 shop.html
 dist/
-res/
+res/item
+res/player
+res/mobs
