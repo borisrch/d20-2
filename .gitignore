@@ -5,7 +5,6 @@ webpack.config.js
 d20.code-workspace
 .eslintrc.json
 shop.html
-dist/
 res/item
 res/player
 res/mobs
