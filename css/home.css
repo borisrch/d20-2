@@ -1,0 +1,108 @@
+.home-interface {
+  background-image: url('../res/platform/background-4.png');
+  background-repeat: repeat-x;
+  background-position: 0px 0px;
+  /* animation: animate-sky 30s linear infinite; */
+  background-color: #0d3450;
+  max-width: 100vw;
+  min-width: 600px;
+  /* height: 97vh; */
+  min-height: 700px;
+  max-height: 776px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  /* transition: all 0.1s cubic-bezier(.25,.8,.25,1); */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.home-graphics {
+  background-image: url('../res/platform/cloud-3.png');
+  background-repeat: repeat-x;
+  height: 249px;
+  width: 100%;
+  top: 0px;
+  position: absolute;
+  animation: animate-sky 75s linear infinite;
+}
+
+.home-logo {
+  background-image: url('../res/common/title.png');
+  height: 150px;
+  width: 375px;
+  position: absolute;
+  top: 150px;
+  left: 50%;
+  animation: bob 2s infinite;
+}
+
+.menu {
+  margin-top: 320px;
+}
+
+.option {
+  font-family: Cabin;
+  font-weight: 700;
+  font-size: 1.5em;
+  letter-spacing: 2px;
+  text-align: center;
+  color: #8db8d8;
+}
+
+.option {
+  margin-top: 10px;
+}
+
+.option:hover {
+  color: #ffdb0f;
+  cursor: pointer;
+}
+
+@-webkit-keyframes animate-sky {
+  0% { 
+    background-position: 0 0; 
+  }
+  100% { 
+    background-position: -750px 0; 
+  }
+}
+
+@keyframes bob {
+  0% {
+    transform: translate(0) translateX(-50%);
+    
+  }
+
+  50% {
+    transform: translateY(-2px) translateX(-50%);
+    
+  }
+  100% {
+    transform: translate(0) translateX(-50%);
+  }
+}
+
+.settings-interface {
+  display: grid;
+  grid-template-columns: 10fr 1fr;
+  grid-template-rows: 40px;
+}
+
+.settings-label {
+  font-family: 'Cabin', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1em;
+  font-weight: 700;
+  color: #292929;
+}
+
+.tingle-modal-box {
+  width: 450px;
+}

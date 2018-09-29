@@ -61,7 +61,7 @@ const setStatus = (buff) => {
     
     const icon = document.createElement('span');
     icon.id = buff.id;
-    icon.classList.add('ra', buff.icon, 'animated', 'flipIn');
+    icon.classList.add('ra', buff.icon, 'animated', 'flipInX');
 
     if (buff.buff) {
       icon.classList.add('colour-buff');
@@ -70,11 +70,11 @@ const setStatus = (buff) => {
       icon.classList.add('colour-debuff');
     }
 
-    icon.setAttribute('title', buff.message);
-
     status.appendChild(icon);    
 
-    tippy(icon);
+    tippy(`#${icon.id}`, {
+      content: buff.message,
+    });
     
     // setTimeout(() => {
     //   icon.classList.remove('bounce');
@@ -153,7 +153,7 @@ export const endTurn = (result) => {
     $('.player-graphic').removeClass('poke-right');
     $('.monster-graphic').removeClass('monster-flail');
     $('.monster-graphic').removeClass('spawn');
-  }, 500);
+  }, 1000);
 
   setTimeout(() => {
     $('.player-mana').removeClass('colour-mana-add');
@@ -215,8 +215,6 @@ export const endTurnMonster = function(result) {
   if (defensePotionCondition.active === false && accuracyPotionCondition.active === false && runicPotionCondition.active === false) {
     removeStatus(status.POTION_ACTIVE);
   }
-
-  console.log(playerDisadvantage.active);
 
   if (playerDisadvantage.active === true) {
     setStatus(status.DISADVANTAGED);

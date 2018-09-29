@@ -4,11 +4,13 @@
 }
 
 .poke-right {
-  animation: poke-right 1s 1;
+  animation: poke-right 0.9s 1;
+  transform-origin: bottom;
 }
 
 .poke-left {
   animation: poke-left 0.5s 1 !important;
+  transform-origin: bottom;
 }
 
 .monster-graphic {
@@ -20,7 +22,7 @@
 }
 
 .monster-flail {
-  animation: flail-right 0.5s 1;
+  animation: flail-right 0.75s 1;
   transform-origin: bottom;
 }
 
@@ -43,15 +45,16 @@
 
 @keyframes bob {
   0% {
-    transform: translate(0)
+    transform: translate(0);
     
   }
 
   50% {
-    transform: translateY(-2px)
+    transform: translateY(-2px);
+    
   }
   100% {
-    transform: translate(0)
+    transform: translate(0);
   }
 }
 
@@ -59,10 +62,10 @@
   0% {
   }
   30% {
-    transform: translateX(5px);
+    transform: rotate(10deg) translateX(5px);
   }
   100% {
-    transform: translateX(-5px);
+    transform: translateX(0);
   }
 }
 
@@ -71,7 +74,7 @@
     
   }
   30% {
-    transform: translateX(-5px);
+    transform: translateX(-5px) rotate(-10deg);
   }
   100% {
     transform: translateX(0);
@@ -83,7 +86,7 @@
 
   }
   50% {
-    transform: rotate(15deg);
+    transform: rotate(10deg);
   }
 
   100% {
@@ -96,7 +99,7 @@
 
   }
   50% {
-    transform: rotate(-15deg);
+    transform: rotate(-5deg) translateX(-5px);
   }
 
   100% {

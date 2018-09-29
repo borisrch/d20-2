@@ -3,6 +3,7 @@ import Hammer from 'hammerjs';
 import tingle from 'tingle.js';
 
 import '../css/tingle.min.css';
+import 'tippy.js/dist/tippy.css';
 // import '../css/game-interface.css';
 
 import { roll, attack, pureAttack, bonus } from './rollattack';
@@ -12,13 +13,6 @@ import { DEV } from './dev';
 import Stats from './stats';
 import { manaCheck } from './check';
 import {
-  selectWeapon,
-  selectAmulet,
-  selectTrinket,
-  wand_desc,
-  amulet_desc,
-  trinket_desc,
-  shop,
   potions,
   setShopItem,
   getGold,
@@ -46,6 +40,7 @@ import { runTutorial, tutorialCondition, tutorialPause } from './tutorial';
 import { endTurn, endTurnMonster, playerHealthHelper } from './turn';
 import { updateStats } from './update';
 import Logger from './logger';
+import { properties } from './properties/properties';
 
 import Goblin from './mobs/goblin';
 import { armour } from './equipment-store';
@@ -133,12 +128,12 @@ const dwarf = {
 }
 
 const ent = {
-  name: 'Radagast, the Ent',
+  name: 'Shrekt, the Ogre',
   monsterHealth: 40,
   monsterArmour: 6,
   monsterDamage: 10,
   monsterRage: 0,
-  src: 'res/mobs/ent.png',
+  src: 'res/mobs/ogre.png',
   turn() {
     if (Stats.monsterRage > 50) {
       this.growth();
@@ -158,10 +153,10 @@ const ent = {
     let result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
     if (result != null) {
       playerHealthHelper(result);
-      log('Ent hits for ' + result + ' damage!', 'mb');
+      log('Ogre hits for ' + result + ' damage!', 'mb');
     } 
     else {
-      log('Ent missed.', 'miss');
+      log('Ogre missed.', 'miss');
     }
     endTurnMonster(result);
   },
@@ -181,7 +176,7 @@ const ent = {
       }
 
       Stats.monsterRage = 0;
-      log(`Ent uses <i>Growth</i> and heals for ${extra} damage!`,'ms');
+      log(`Ogre uses <i>Battle Cry</i> and heals for ${extra} damage!`,'ms');
       endTurnMonster();
     }
     else {
@@ -191,7 +186,7 @@ const ent = {
   vine() {
     Stats.monsterRage += 20;
     playerDisadvantage.active = true;
-    log('Ent uses <i>Vine Trip</i> and makes you disadvantaged for next turn!', 'ms');
+    log('Ogre uses <i>Earth Shaker</i> and makes you Disadvantaged!', 'ms');
     endTurnMonster();
   },
 }
@@ -251,9 +246,9 @@ const init = function (mode) {
     default:
     console.log('Error in init');
   }
-  updateStats();
   tippyInit();
-  setMobileEvents();
+  // setMobileEvents();
+  updateStats();
 }
 
 const mageInit = function () {
@@ -281,28 +276,6 @@ const mageInit = function () {
   $('.r').addClass('spell spell-fire-shield');
   $('.ri').addClass('ra ra-fire-shield icon');
 
-  // Shop logic starts. Move to general init later.
-
-  // document.getElementById('buy-health').addEventListener('click', () => {
-  //   buyHealth();
-  // });
-
-  // document.getElementById('buy-defense').addEventListener('click', () => {
-  //   buyDefense();
-  // });
-
-  // document.getElementById('buy-accuracy').addEventListener('click', () => {
-  //   buyAccuracy();
-  // });
-
-  // document.getElementById('buy-pp').addEventListener('click', () => {
-  //   buyPp();
-  // });
-
-  // document.getElementById('buy-runic').addEventListener('click', () => {
-  //   buyRunic();
-  // });
-
   document.getElementById('basic-attack').addEventListener('click', () => {
     if (tutorialCondition.a) {
       tutorialCondition.a = false;
@@ -322,13 +295,20 @@ const mageInit = function () {
     manaCheck(75, scorch);
   });
 
-  document.getElementById('w').addEventListener('click', () => {
-    if (tutorialCondition.b) {
-      tutorialCondition.b = false;
-      tutorialPause(3);
-    }
-    manaCheck(100, alzurs_thunder);
-  });
+
+  const _W = document.getElementById('w');
+  const W = new Hammer(_W);
+  W.on('tap', function(e) {
+    manaCheck(75, alzurs_thunder);
+  });  
+
+  // document.getElementById('w').addEventListener('click', () => {
+  //   if (tutorialCondition.b) {
+  //     tutorialCondition.b = false;
+  //     tutorialPause(3);
+  //   }
+  //   manaCheck(100, alzurs_thunder);
+  // });
 
   document.getElementById('e').addEventListener('click', () => {
     if (tutorialCondition.b) {
@@ -346,20 +326,6 @@ const mageInit = function () {
     manaCheck(25, runic_echoes);
   });
 }
-
-// const updateStats = function () {
-//   $('.player-health').text(Stats.playerHealth);
-//   $('.player-damage').text(Stats.playerDamage);
-//   $('.player-armour').text(Stats.playerArmour);
-//   $('.player-runic').text(Stats.playerRunic);
-//   $('.player-mana').text(Stats.playerMana);
-
-//   $('.monster-health').text(Stats.monsterHealth);
-//   $('.monster-armour').text(Stats.monsterArmour);
-//   $('.monster-damage').text(Stats.monsterDamage);
-//   $('.monster-rage').text(Stats.monsterRage);
-//   $('.monster-label').text(Stats.monsterName);
-// }
 
 const tippyInit = function () {
 
@@ -414,43 +380,39 @@ const tippyInit = function () {
     },
   ];
 
-  const tippyElements = [];
-
   tippyMessages.forEach((item) => {
-    let c = document.querySelector(item.el);
-    c.setAttribute('title', item.tip);
-    tippyElements.push(c);
-  })
-
-  tippy(tippyElements);
+    tippy(item.el, {
+      content: item.tip,
+    });
+  });
 
 }
 
 const tippyMage = function() {  
-  const title = 'title';
+  const title = 'data-tippy';
 
   const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
   const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
   const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
   const manaIcon = '<span class="ra ra-lightning-bolt colour-mana-tip"></span>';
 
-  const basicAttackTip = '<b>Basic Attack</b> - Deal 1d' + Stats.playerDamage + ' ' + damageIcon + ' .';
+  const basicAttackTip = '<b>Basic Attack</b> - Deal 1-' + Stats.playerDamage + ' ' + damageIcon + ' .';
   $('.basic-attack').prop(title, basicAttackTip);
   tippy('.basic-attack');
 
-  const mageSpellQ = `<b>Scorch (${manaIcon}75 )</b> - Deal 1d10 ${damageIcon} while ignoring 1d2 ${armourIcon}. Ignore an additional 1d2 ${armourIcon} per ${runicIcon} level.`;
-  $('.q').prop(title, mageSpellQ);
+  const mageSpellQ = properties.spells.wizard.q;
+  $('.q').prop('data-tippy', mageSpellQ);
   tippy('.q');
 
-  const mageSpellW =`<b>Alzur's Thunder (${manaIcon}100 )</b> - Deal 2d4 ${damageIcon} and apply <i>Shocked</i>, which deals bonus 1d4 ${damageIcon} for ${runicIcon} turns.`;
+  const mageSpellW = properties.spells.wizard.w;
   $('.w').prop(title, mageSpellW);
   tippy('.w');
 
-  const mageSpellE = `<b>Malevolence (${manaIcon}50 )</b> - Deal 1d10 ${damageIcon} . Consecutive casts of Malevolence deals additional 1d2 ${damageIcon} per ${runicIcon} level.`;
+  const mageSpellE = properties.spells.wizard.e;
   $('.e').prop(title, mageSpellE);
   tippy('.e');
 
-  const mageSpellR = `<b>Runic Echoes (${manaIcon}25 )</b> - Increase ${armourIcon} by 1d2 per ${runicIcon} level for the next turn.`;
+  const mageSpellR = properties.spells.wizard.r;
   $('.r').prop(title, mageSpellR);
   tippy('.r');
 }
@@ -518,33 +480,16 @@ const deathfire_grasp = function() {
 
   Stats.playerMana = Stats.playerMana - 50;
 
-  if (DEV) {
-    Logger.info('@DeathfireGrasp');
-    Logger.info('Active: ' + deathfireGraspCondition.active);
-    Logger.info('Stack: ' + deathfireGraspCondition.stack);
-  }
+  const total = Stats.playerDamage + Stats.playerRunic;
 
-  let result;
-
-  if (deathfireGraspCondition.active == true) {
-    const stackRunic = Stats.playerRunic + deathfireGraspCondition.stack;
-    deathfireGraspCondition.stack += 1;
-
-    let bonusRes = bonus(stackRunic, 2);
-    result = attack(10, Stats.playerHitChanceModifier, bonusRes, 1, Stats.monsterArmour);
-
-  } else {
-    result = attack(10, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour);
-    deathfireGraspCondition.stack = 1;
-  }
-  
-  deathfireGraspCondition.active = true;
+  const result = attack(total, Stats.playerHitChanceModifier, 5, 1, Stats.monsterArmour);
+  console.log(result);
 
   if(result != null) {
-    log('You invoke <i>Malevolence</i> for ' + result + ' damage!', 'ps-grasp');
+    log('You invoke <i>Anima Surge</i> for ' + result + ' damage!', 'ps-grasp');
     monsterHealthHelper(result);
   } else {
-    log('You missed Malevolence!', 'miss-player');
+    log('You missed Surge!', 'miss-player');
   }
   endTurn(result);
 };
@@ -614,9 +559,10 @@ const setMobileEvents = () => {
   q.on('press', function(e) {
     qElement._tippy.show();
   });
-  q.on('tap', function(e) {
-    manaCheck(75, scorch);
-  })
+  // q.on('tap', function(e) {
+  //   console.log('tap fired for scorch');
+  //   manaCheck(75, scorch);
+  // });
 }
 
 const getNextMonster = function(level) {
@@ -644,10 +590,7 @@ const getNextMonster = function(level) {
   }
 }
 
-
-
 init('mage');
-
 
 window.onload = () => {
   const game = document.getElementById('game-interface');
@@ -664,19 +607,6 @@ window.onload = () => {
   }, 700);
 }
 
-// Disable to save CPU usage.
-// let skyX = 0;
-// const el = document.getElementById('game-interface');
-// const anim = setInterval(function () {
-//   if (skyX < 375) {
-//     el.style.backgroundPositionX = skyX + 'px';
-//     skyX = skyX + 1;
-//   } else {
-//     skyX = 0;
-//     el.style.backgroundPositionX = '0px';
-//   }
-// }, 50);
-
 // runTutorial();
 
 // Turn simulator
@@ -692,5 +622,5 @@ window.onload = () => {
 // }, 2500);
 
 // Skip to monsters. Function still +1 to level 
-// Stats.playerLevel = 1;
+// Stats.playerLevel = 2;
 // advance();
