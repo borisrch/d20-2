@@ -21,7 +21,7 @@ const settings = [
 
 const runAudio = function() {
   const sound = new Howl({
-    src: ['../../res/audio/home.mp3'],
+    src: ['/res/audio/home.mp3'],
     preload: true,
     autoplay: true,
     loop: true,
