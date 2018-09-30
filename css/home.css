@@ -6,7 +6,6 @@
   background-color: #0d3450;
   max-width: 100vw;
   min-width: 600px;
-  min-height: 680px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   /* transition: all 0.1s cubic-bezier(.25,.8,.25,1); */
   -webkit-touch-callout: none;
@@ -18,7 +17,7 @@
   position: relative;
   border-radius: 4px;
   overflow: hidden;
-
+  height: 93vh;
 }
 
 .home-graphics {
@@ -111,22 +110,43 @@ html {
   background-color: #141414;
 }
 
+.footer-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 13px;
+}
+
+.personal {
+  color: white;
+  font-size: 0.8em;
+  opacity: 0.3;
+  font-family: 'Roboto', sans-serif;
+  
+}
+
 .license {
-  text-align: center;
-  margin-top: 10px;
+  text-align: end;
 }
 
 .license-group {
   color: white;
-  font-size: 1.1em;
-  opacity: 0.5;
+  font-size: 1em;
+  opacity: 0.3;
   text-decoration: none;
-  
 }
 
 .license-group:hover {
   color: #03a9f4;
   opacity: 1;
+}
+
+body {
+  height: 100%;
+}
+
+.off {
+  pointer-events: none;
+  opacity: 0.2;
 }
 
 @media (max-width: 667px) {

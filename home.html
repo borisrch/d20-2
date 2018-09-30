@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Home</title>
-  <link href="https://fonts.googleapis.com/css?family=Cabin:400,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Cabin:400,700|Roboto:300" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <link rel="stylesheet" href="./css/home.css">
   
@@ -15,14 +15,17 @@
     <div class="home-graphics" id="home-graphics"></div>
     <div class="home-logo"></div>
     <div class="menu">
-      <div class="option">START</div>
-      <div class="option">LOAD</div>
-      <div class="option">HELP</div>
+      <div class="option off">START</div>
+      <div class="option off">LOAD</div>
+      <div class="option off">HELP</div>
       <div class="option" id="settings">SETTINGS</div>
     </div>
   </div>
 
-  <footer>
+  <footer class="footer-container">
+      <div class="personal">
+          <i class="far fa-copyright"></i> <span>2018 Boris Chan. All rights reserved.</span>
+        </div>
     <div class="license">
         <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="license-group">
           <i class="fab fa-creative-commons"></i>
@@ -30,6 +33,7 @@
           <i class="fab fa-creative-commons-nc"></i>
         </a>
     </div>
+
   </footer>
 
   <script src="dist/home.bundle.js"></script>
