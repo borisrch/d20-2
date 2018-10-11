@@ -1,6 +1,7 @@
 import tippy from 'tippy.js';
 import Hammer from 'hammerjs';
 import tingle from 'tingle.js';
+import { Howl } from 'howler';
 
 import '../css/tingle.min.css';
 import 'tippy.js/dist/tippy.css';
@@ -41,6 +42,7 @@ import { endTurn, endTurnMonster, playerHealthHelper } from './turn';
 import { updateStats } from './update';
 import Logger from './logger';
 import { properties } from './properties/properties';
+import { SoundManager } from './soundmanager';
 
 import Goblin from './mobs/goblin';
 import { armour } from './equipment-store';
@@ -220,6 +222,7 @@ const playerTurnBasicAttack = function() {
   if (result != null) {
     log('You hit for ' + result + ' damage!', 'pb');
     monsterHealthHelper(result);
+    sm.playBasic();
   } else {
     log('You missed.', 'miss-player');
   }
@@ -240,7 +243,8 @@ const init = function (mode) {
     case 'mage':
     Stats.playerClass = 'mage';
     mageInit();
-    tippyMage();    
+    tippyMage();
+
     break;
 
     default:
@@ -249,6 +253,7 @@ const init = function (mode) {
   tippyInit();
   // setMobileEvents();
   updateStats();
+  
 }
 
 const mageInit = function () {
@@ -445,6 +450,7 @@ const scorch = function() {
 
   if(result != null) {
     log('You <i>Scorch</i> for ' + result + ' damage!', 'ps-scorch');
+    sm.playQSound();
     monsterHealthHelper(result);
   } else {
     log('You missed Scorch!', 'miss-player');
@@ -591,6 +597,8 @@ const getNextMonster = function(level) {
 }
 
 init('mage');
+
+const sm = new SoundManager();
 
 window.onload = () => {
   const game = document.getElementById('game-interface');
