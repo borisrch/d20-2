@@ -191,7 +191,7 @@ export const trinkets = [{
     id: 'elven-trinket',
     src: 'res/item/trinket/elven-trinket.png',
     desc: `Grants a 25% chance to lower enemy ${ac} by 1, down by a maximum of 10.`,
-    lore: 'An enchanted glyph that the elves wear to bring them good fortune in battle.',
+    lore: 'An enchanted glyph worn by the elves to bring good fortune in battle.',
     cost: 50,
     active: false,
   },
