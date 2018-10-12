@@ -91,6 +91,9 @@
   background: rgba(0, 0, 0, .6);
 }
 
+.tingle-modal-box {
+}
+
 .settings-interface {
   display: grid;
   grid-template-columns: 10fr 1fr;
@@ -169,19 +172,23 @@ body {
   letter-spacing: 1px;
   text-align: center;
   margin-bottom: 20px;
-  font-size: 1.2em;
+  font-size: 1.5em;
 }
 
 .help-item-guide {
-  font-size: 1.2em;
+  font-size: 1.15em;
   text-align: center;
   color: #0363f4;
+  font-family: 'Cabin', sans-serif;
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .help-text {
   margin-bottom: 20px;
   text-align: justify;
   line-height: 1.5;
+  font-size: 1.15em;
 }
 
 .help-icons {
@@ -227,25 +234,25 @@ body {
 }
 
 .colour-ac {
-  background-image: linear-gradient(to right, #4facfe 0%, #00cbfe 100%);
+  background-image: linear-gradient(to right, #4facfe 0%, #0098fe 100%);
   color:transparent; -webkit-background-clip: text;
   background-clip: text;  
 }
 
 .colour-mana {
-  background-image: linear-gradient(120deg, #f6d365 0%, #fda085 100%);
+  background-image: linear-gradient(120deg, #f7be04 0%, #ff8564 100%);
   color:transparent; -webkit-background-clip: text;
   background-clip: text;  
 }
 
 .colour-wyvern, .colour-hit {
-  background-image: linear-gradient(-60deg, #16a085 0%, #f4d03f 100%);
+  background-image: linear-gradient(0deg, #16a085 0%, #abdd22 100%);
   color:transparent; -webkit-background-clip: text;
   background-clip: text;  
 }
 
 .colour-disadvantage {
-  background-image: linear-gradient(-225deg, #CBBACC 0%, #2580B3 100%);
+  background-image: linear-gradient(180deg, rgb(201, 134, 204) 0%, #2580B3 100%);
   color:transparent; -webkit-background-clip: text;
   background-clip: text;  
 }
@@ -264,14 +271,14 @@ body {
 }
 
 .colour-item {
-  background-image: linear-gradient(60deg, #3d3393 0%, #2b76b9 37%, #2cacd1 65%, #35eb93 100%);
+  background-image: linear-gradient(60deg, #3d3393 0%, #2b76b9 37%, #2cacd1 65%, #0ad171 100%);
   color:transparent; -webkit-background-clip: text;
   background-clip: text;  
 }
 
 .spell {
   background-color: #42A5F5;
-  font-size: 1em;
+  font-size: 0.9em;
   padding-top: 0px;
   padding-bottom: 0px;
 }
@@ -279,7 +286,6 @@ body {
 .spell-amulet {
   background: linear-gradient(135deg, rgb(188, 252, 115) 0%, #009688 100%);
   color: #F1F8E9;
-
 }
 
 .spell-trinket {
@@ -294,23 +300,24 @@ body {
 
 .icon {
   font-size: 2em;
-  margin-left: 1px;
+  margin-left: 0px;
 }
 
 .square-button {
   border: none;
   box-shadow:inset 0 -0.6em 5px -0.35em rgba(0,0,0,0.10);
-  border-radius: 4px;
+  border-radius: 25px;
   width: 50px;
   height: 50px;
   transition:all 0.25s ease;
+  outline:none;
 }
 
 .square-button:hover {
-  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
-  -webkit-transform: scale(1.2);
-  -ms-transform: scale(1.2);
-  transform: scale(1.2);
+  /* box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1); */
+  /* -webkit-transform: scale(1.2);
+  -ms-transform: scale(1.2); */
+  filter: brightness(110%);
   cursor: pointer; 
 }
 
@@ -330,6 +337,7 @@ body {
 .item-interface-upper {
   display: grid;
   grid-template-columns: 0.8fr 1fr;
+  gap: 15px;
 }
 
 .item-interface-left-container {
@@ -357,7 +365,8 @@ body {
 }
 
 .item-box {
-  background-color: #eff1f5;
+  background: radial-gradient(#eff1f5 60%, #dde3f0);
+  /* background-color: #eff1f5; */
   border-radius: 3px;
   height: 56px;
   width: 56px;
@@ -386,7 +395,7 @@ body {
   justify-items: center;
   width: 100%;
   height: 250px;
-  background-color: #eff1f5;
+  background: radial-gradient(#eff1f5 60%, #dde3f0);
   border-radius: 3px;
 }
 
@@ -423,6 +432,23 @@ body {
   top: 1px;
 }
 
+.help-navigation {
+  text-align: center;
+}
+
+.help-navigation > i {
+  padding-top: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.help-navigation > i:hover {
+  color: #0363f4;
+}
+
+.shadow {
+  text-shadow: 0px 1px 0px rgba(150, 150, 150, 1);
+}
 
 @media (max-width: 667px) {
   body {

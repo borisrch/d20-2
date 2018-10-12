@@ -78,50 +78,55 @@ const setWeaponInterface = function () {
 
 }
 
-const setHelpInterface = function () {
+const setHelpInterface = function(itemModal, helpModal) {
 
   const el = document.getElementById('help-interface');
-
-  // Section 1
-  const img = document.createElement('img');
-  img.src = 'res/common/intro.png';
-  img.className = 'help-image';
-
-  const intro = document.createElement('div');
-  intro.className = 'help-title';
-  intro.innerText = 'Intro';
-
-  const introText = document.createElement('div');
-  introText.className = 'help-text';
-  introText.innerText = `Stride is a turn-based RPG where the hero battles against a variety of mobs. Classes define the hero's skillset, where each class has unqiue spells, stats, and weapons.`;
-
-  el.appendChild(img);
-  el.appendChild(intro);
-  el.appendChild(introText);
-
-  // Section 2
-  const stats = document.createElement('div');
-  stats.className = 'help-title';
-  stats.innerText = 'Stats';
-
-  const statIcons = document.createElement('div');
-  statIcons.className = 'help-icons';
-  statIcons.innerHTML = `
-  <span class="ra ra-sword colour-damage help-icon"></span>
-  <span class="ra ra-crystals colour-runic help-icon"></span>
-  <span class="ra ra-shield colour-ac help-icon"></span>
-  <span class="ra ra-lightning-bolt colour-mana help-icon"></span>
-  `;
-
-  el.appendChild(stats);
-  el.appendChild(statIcons);
+  const nav = document.getElementById('help-navigation');
 
   const damageIcon = '<span class="ra ra-sword colour-damage mini-icon"></span>';
   const runicIcon = '<span class="ra ra-crystals colour-runic mini-icon"></span>';
   const armourIcon = '<span class="ra ra-shield colour-ac mini-icon"></span>';
   const manaIcon = '<span class="ra ra-lightning-bolt colour-mana mini-icon"></span>';
 
+  const buildSection1 = function () {
+
+    const img = document.createElement('img');
+    img.src = 'res/common/intro.png';
+    img.className = 'help-image';
+
+    const intro = document.createElement('div');
+    intro.className = 'help-title';
+    intro.innerText = 'Intro';
+
+    const introText = document.createElement('div');
+    introText.className = 'help-text';
+    introText.innerText = `Stride is a turn-based RPG where the hero battles against a variety of mobs. Classes define the hero's skillset, where each class has unqiue spells, stats, and weapons.`;
+
+    el.appendChild(img);
+    el.appendChild(intro);
+    el.appendChild(introText);
+  }
+
+  
+
+
   const buildSection2 = function () {
+
+    const stats = document.createElement('div');
+    stats.className = 'help-title';
+    stats.innerText = 'Stats';
+
+    const statIcons = document.createElement('div');
+    statIcons.className = 'help-icons';
+    statIcons.innerHTML = `
+        <span class="ra ra-sword colour-damage help-icon"></span>
+        <span class="ra ra-crystals colour-runic help-icon"></span>
+        <span class="ra ra-shield colour-ac help-icon"></span>
+        <span class="ra ra-lightning-bolt colour-mana help-icon"></span>
+        `;
+
+    el.appendChild(stats);
+    el.appendChild(statIcons);
 
     const statText = document.createElement('div');
     statText.className = 'help-text';
@@ -129,25 +134,25 @@ const setHelpInterface = function () {
     const damage = document.createElement('div');
     damage.className = 'help-stat-text';
     damage.innerHTML = `
-    ${damageIcon} - <b>Damage level</b> affects your basic attacks and spells. For example, if you have 6 ${damageIcon} , your basic attacks will do anywhere from 1-6 damage.
+    ${damageIcon} - <b class="colour-damage">Damage level</b> affects your basic attacks and spells. For example, if you have 6 ${damageIcon} , your basic attacks will do anywhere from 1-6 damage.
     `;
 
     const runic = document.createElement('div');
     runic.className = 'help-stat-text';
     runic.innerHTML = `
-    ${runicIcon} - <b>Runic level</b> gives your spells more power and bonus effects. For example, the spell <i>Alzur’s Thunder</i> will do 1-8 ${damageIcon} , but will also do additional 1-4 extra ${damageIcon} per level of ${runicIcon}.
+    ${runicIcon} - <b class="colour-runic">Runic level</b> gives your spells more power and bonus effects. For example, the spell <i>Alzur’s Thunder</i> will do 1-8 ${damageIcon} , but will also do additional 1-4 extra ${damageIcon} per level of ${runicIcon}.
     `;
 
     const armour = document.createElement('div');
     armour.className = 'help-stat-text';
     armour.innerHTML = `
-    ${armourIcon} - <b>Armour class</b> represents how hard it will be for enemies to hit you. The higher your ${armourIcon}, the higher enemies will have to roll to be able to hit you (see hit chance).
+    ${armourIcon} - <b class="colour-ac">Armour class</b> represents how hard it will be for enemies to hit you. The higher your ${armourIcon}, the higher enemies will have to roll to be able to hit you (see hit chance).
     `;
 
     const mana = document.createElement('div');
     mana.className = 'help-stat-text';
     mana.innerHTML = `
-    ${manaIcon} - <b>Mana</b> is used as the cost of using your spells. Most classes regenerate 25 ${manaIcon}each turn and have a base maximum of 100 ${manaIcon}.
+    ${manaIcon} - <b class="colour-mana">Mana</b> is used as the cost of using your spells. Most classes regenerate 25 ${manaIcon}each turn and have a base maximum of 100 ${manaIcon}.
     `;
 
     statText.appendChild(damage);
@@ -156,29 +161,25 @@ const setHelpInterface = function () {
     statText.appendChild(mana);
 
     el.appendChild(statText);
-
   }
 
-  buildSection2();
-
-  // Section 3
-  const gameplay = document.createElement('div');
-  gameplay.className = 'help-title';
-  gameplay.innerText = 'Gameplay';
-
-  const gameplayIcons = document.createElement('div');
-  gameplayIcons.className = 'help-icons';
-  gameplayIcons.innerHTML = `
-  <span class="ra ra-perspective-dice-five colour-dice help-icon"></span>
-  <span class="ra ra-burning-embers colour-embers help-icon"></span>
-  <span class="ra ra-wyvern colour-wyvern help-icon"></span>
-  <span class="ra ra-player-despair colour-disadvantage help-icon"></span>
-  `;
-
-  el.appendChild(gameplay);
-  el.appendChild(gameplayIcons);
-
   const buildSection3 = function () {
+
+    const gameplay = document.createElement('div');
+    gameplay.className = 'help-title';
+    gameplay.innerText = 'Gameplay';
+
+    const gameplayIcons = document.createElement('div');
+    gameplayIcons.className = 'help-icons';
+    gameplayIcons.innerHTML = `
+    <span class="ra ra-perspective-dice-five colour-dice help-icon"></span>
+    <span class="ra ra-burning-embers colour-embers help-icon"></span>
+    <span class="ra ra-wyvern colour-wyvern help-icon"></span>
+    <span class="ra ra-player-despair colour-disadvantage help-icon"></span>
+    `;
+
+    el.appendChild(gameplay);
+    el.appendChild(gameplayIcons);
 
     const hitIcon = '<span class="ra ra-on-target colour-wyvern mini-icon"></span>';
     const itemIcon = '<span class="ra ra-flat-hammer colour-item mini-icon"></span>';
@@ -191,25 +192,25 @@ const setHelpInterface = function () {
     const dice = document.createElement('div');
     dice.className = 'help-stat-text';
     dice.innerHTML = `
-    ${hitIcon} - <b>Hit chance</b> determines if your attacks will hit. On basic attack or spell cast, you will roll a number from 1-20. If that number is greater than your foe’s ${armourIcon} , you will land a hit. You then will roll for damage, which depends on the type of ${damageIcon} or ${runicIcon}.
+    ${hitIcon} - <b class="colour-wyvern">Hit chance</b> determines if your attacks will hit. On basic attack or spell cast, you will roll a number from 1-20. If that number is greater than your foe’s ${armourIcon} , you will land a hit. You then will roll for damage, which depends on the type of ${damageIcon} or ${runicIcon}.
     `;
 
     const item = document.createElement('div');
     item.className = 'help-stat-text';
     item.innerHTML = `
-    ${itemIcon} - <b>Items</b> can affect all sort of stats and gameplay, such as hit chance, maximum mana, health regeneration, and even grant double damage! Items can be very powerful if used in the correct situations. See <b>Item Guide</b> for more on items.
+    ${itemIcon} - <b class="colour-item">Items</b> can affect all sort of stats and gameplay, such as hit chance, maximum mana, health regeneration, and even grant double damage! Items can be very powerful if used in the correct situations. See <b>Item Guide</b> for more on items.
     `;
 
     const rage = document.createElement('div');
     rage.className = 'help-stat-text';
     rage.innerHTML = `
-    ${rageIcon} - <b>Rage</b> allows some monsters to cast their own spells, or do a special attack against you. See <b>Bestiary</b> for more on monsters.
+    ${rageIcon} - <b class="colour-runic">Rage</b> allows some monsters to cast their own spells, or do a special attack against you. See <b>Bestiary</b> for more on monsters.
     `;
 
     const condition = document.createElement('div');
     condition.className = 'help-stat-text';
     condition.innerHTML = `
-    ${conditionIcon} - <b>Conditions</b> are buffs or debuffs which can affect your stats for a certain period of time.  Monsters can cast buffs on themselves, and debuffs on you. Examples of conditions are <i>Bleeding</i>, <i>Scared<i/>, <i>Disadvantage</i>.
+    ${conditionIcon} - <b class="colour-disadvantage">Conditions</b> are buffs or debuffs which can affect your stats for a certain period of time.  Monsters can cast buffs on themselves, and debuffs on you. Examples of conditions are <i>Bleeding</i>, <i>Scared<i/>, <i>Disadvantage</i>.
     `;
 
     statText.appendChild(dice);
@@ -218,26 +219,101 @@ const setHelpInterface = function () {
     statText.appendChild(condition);
 
     el.appendChild(statText);
-
   }
 
-  buildSection3();
+  const buildSection4 = function() {
 
-  const more = document.createElement('div');
-  more.className = 'help-title';
-  more.innerText = 'More';
+    const more = document.createElement('div');
+    more.className = 'help-title';
+    more.innerText = 'More';
+    
+    const itemguide = document.createElement('div');
+    itemguide.className = 'help-item-guide';
+    itemguide.innerText = 'Item Guide';
+    itemguide.id = 'help-item-guide';
+    el.appendChild(more);
+    el.appendChild(itemguide);
 
-  const itemguide = document.createElement('div');
-  itemguide.className = 'help-item-guide';
-  itemguide.innerText = 'Item Guide';
-  itemguide.id = 'help-item-guide';
+    itemguide.addEventListener('click', () => {
+      helpModal.close();
+      itemModal.open();
+    });
+  }
 
-  el.appendChild(more);
-  el.appendChild(itemguide);
+  const screens = [buildSection1, buildSection2, buildSection3, buildSection4];  
+
+  let current = 0;
+
+  const clearScreen = function() {
+    while (el.firstChild) {
+      el.removeChild(el.firstChild);
+    }
+  }
+
+  const buildNavigation = function() {
+
+    const left = document.createElement('i');
+    left.classList.add('fa', 'fa-angle-left', 'fa-2x', 'off');
+    left.id = 'help-nav-left';
+    const right = document.createElement('i');
+    right.classList.add('fa', 'fa-angle-right', 'fa-2x');
+    right.id = 'help-nav-right';
+
+    const updatePointers = function() {
+      if (current == 0) {
+        left.classList.add('off');
+        right.classList.remove('off');
+      } 
+      else if (current == screens.length - 1) {
+        right.classList.add('off');
+        left.classList.remove('off');
+      }
+      else {
+        right.classList.remove('off');
+        left.classList.remove('off');
+      }
+    }
+
+    nav.appendChild(left);
+    nav.appendChild(right);
+
+    left.addEventListener('click', () => {
+
+      if (current > 0) {
+        current = current - 1;
+        clearScreen();
+        const fn = screens[current];
+        fn();
+        updatePointers();
+      } else if (current == 0) {
+        updatePointers();
+      }
+    });
+
+    right.addEventListener('click', () => {
+
+      if (current < screens.length) {
+        current = current + 1;
+        clearScreen();
+        const fn = screens[current];
+        fn();
+        updatePointers();
+      }
+      else if (current == screens.length) {
+        updatePointers();
+      }
+    });
+
+  }  
+
+  buildNavigation();
+
+  const fn = screens[current];
+  fn();
 
 }
 
-const buildHelpInterface = function () {
+const buildHelpInterface = function (itemModal) {
   const helpModal = new tingle.modal({
     footer: false,
     stickyFooter: false,
@@ -247,8 +323,8 @@ const buildHelpInterface = function () {
       return true;
     }
   });
-  helpModal.setContent('<div class="help-interface" id="help-interface"></div>');
-  setHelpInterface();
+  helpModal.setContent('<div class="help-interface" id="help-interface"></div><div class="help-navigation" id="help-navigation"></div>');
+  setHelpInterface(itemModal, helpModal);
 
   const help = document.getElementById('help');
   help.addEventListener('click', () => {
@@ -342,8 +418,19 @@ const mountItemGuideInterface = function () {
 
   const mountInterface = function (equipment) {
 
-    const equipmentInterface = document.createElement('div');
-    equipmentInterface.className = 'equipment-interface';
+    let equipmentInterface = document.getElementById('equipment-interface');
+    
+    if (equipmentInterface != null) {
+      // Remove all elements under equipment interface.
+      while (equipmentInterface.firstChild) {
+        equipmentInterface.removeChild(equipmentInterface.firstChild);
+      }
+    }
+    else {
+      equipmentInterface = document.createElement('div');
+      equipmentInterface.className = 'equipment-interface';
+      equipmentInterface.id = 'equipment-interface';
+    }
 
     const upper = document.createElement('div');
     upper.className = 'item-interface-upper';
@@ -438,12 +525,19 @@ const mountItemGuideInterface = function () {
   mountInterface(amulets);
 
   armourButton.addEventListener('click', () => {
-    
+    mountInterface(armour);
   });
 
+  ringButton.addEventListener('click', () => {
+    mountInterface(amulets);
+  });
+
+  trinketButton.addEventListener('click', () => {
+    mountInterface(trinkets);
+  })
 }
 
-const buildItemGuideInterface = function (modal) {
+const buildItemGuideInterface = function () {
   const itemModal = new tingle.modal({
     footer: false,
     stickyFooter: false,
@@ -456,17 +550,15 @@ const buildItemGuideInterface = function (modal) {
   itemModal.setContent('<div class="item-guide-interface" id="item-guide-interface"></div>');
   mountItemGuideInterface();
 
-  const itemGuide = document.getElementById('help-item-guide');
-  itemGuide.addEventListener('click', () => {
-    modal.close();
-    itemModal.open();
-  });
+  return itemModal;
 }
 
 const render = function () {
   buildSettingsInterface();
-  const helpModal = buildHelpInterface();
-  buildItemGuideInterface(helpModal);
+  const itemModal = buildItemGuideInterface();
+  const helpModal = buildHelpInterface(itemModal);
+  
+
   backgroundMusic.play();
 }
 

@@ -20,6 +20,16 @@ export class SoundManager {
       preload: true,
       volume: this.globalVolume,
     });
+    this.goblin = new Howl({
+      src: ['res/audio/mob/goblin.wav'],
+      preload: true,
+      volume: this.globalVolume,
+    });
+    this.chicken = new Howl({
+      src: ['res/audio/mob/chicken.wav'],
+      preload: true,
+      volume: this.globalVolume,
+    });
 
     this.basic = basic;
   }
@@ -72,6 +82,15 @@ export class SoundManager {
 
   playBasic() {
     this.basic.play();
+  }
+
+
+  playGoblin() {
+    this.goblin.play();
+  }
+
+  playChicken() {
+    this.chicken.play();
   }
 
 }
