@@ -7,14 +7,13 @@ const mel = document.getElementById('particles-monster-js');
 const pel = document.getElementById('particles-player-js');
 const path = 'src/particles/';
 
-export class ParticlesManager {
-  
+class ParticlesManager {
   constructor() {
     this.particlesJS = particlesJS;
   }
 
-  showParticles(path) {
-    particlesJS.load('particles-js', path, function() {
+  showParticles(zpath) {
+    particlesJS.load('particles-js', zpath, function() {
       setTimeout(() => {
         el.classList.add('animated', 'fadeOut');
         setTimeout(() => {
@@ -24,8 +23,9 @@ export class ParticlesManager {
       }, 1000);
     });
   }
-  showMonsterParticles(path) {
-    particlesJS.load('particles-monster-js', path, function() {});
+
+  showMonsterParticles(zpath) {
+    particlesJS.load('particles-monster-js', zpath, function() {});
   }
 
   hideMonsterParticles() {
@@ -36,8 +36,8 @@ export class ParticlesManager {
     }, 1000);
   }
 
-  showPlayerParticles(path) {
-    particlesJS.load('particles-player-js', path, function() {});
+  showPlayerParticles(zpath) {
+    particlesJS.load('particles-player-js', zpath, function() {});
   }
 
   hidePlayerParticles() {
@@ -50,40 +50,42 @@ export class ParticlesManager {
 
   /* Spells */
   showScorch() {
-    this.showParticles(path + 'scorch.json');
+    this.showParticles(`${path}scorch.json`);
   }
 
   showThunder() {
-    this.showParticles(path + 'thunder.json');
+    this.showParticles(`${path}thunder.json`);
   }
 
   showDeathfire() {
-    this.showParticles(path + 'deathfire.json');
+    this.showParticles(`${path}deathfire.json`);
   }
 
   showRunicEchoes() {
-    this.showParticles(path + 'runicechoes.json');
+    this.showParticles(`${path}runicechoes.json`);
   }
 
   /* Mob Spells */
   showGoblinSpit() {
-    this.showParticles(path + 'goblinspit.json');
+    this.showParticles(`${path}goblinspit.json`);
   }
-  
+
   /* Conditions/Buffs */
   showDwarfTank() {
-    this.showMonsterParticles(path + 'dwarftank.json');
+    this.showMonsterParticles(`${path}dwarftank.json`);
   }
 
   showShocked() {
-    this.showMonsterParticles(path + 'shocked.json');
+    this.showMonsterParticles(`${path}shocked.json`);
   }
 
   showDisadvantaged() {
-    this.showPlayerParticles(path + 'shocked.json');
+    this.showPlayerParticles(`${path}shocked.json`);
   }
 
   showPotionActive() {
-    this.showPlayerParticles(path + 'potionactive.json');
+    this.showPlayerParticles(`${path}potionactive.json`);
   }
 }
+
+export default ParticlesManager;
