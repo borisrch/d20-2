@@ -44,155 +44,15 @@ import { updateStats } from './update';
 import Logger from './logger';
 import { properties } from './properties/properties';
 import { SoundManager } from './soundmanager';
-import { ParticlesManager } from './particles/particlesmanager';
+import ParticlesManager from './particles/particlesmanager';
 import Globals from './globals';
 
 import Goblin from './mobs/goblin';
 import Chicken from './mobs/chicken';
+import Dwarf from './mobs/dwarf';
+import Ent from './mobs/ent';
 
 import { armour } from './equipment-store';
-
-// const chicken = {
-//   name: 'Cuck, the Chicken',
-//   monsterHealth: 10,
-//   monsterArmour: 0,
-//   monsterDamage: 2,
-//   monsterRage: 0,
-//   src: 'res/mobs/chicken.png',
-//   turn() {
-//     this.basicAttack();
-//   },
-//   basicAttack() {
-//     const result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
-//     if (result != null) {
-//       playerHealthHelper(result);
-//       log(`Chicken hits for ${result} damage!`, 'mb');
-//       sm.playChicken();
-//     } else {
-//       log('Chicken missed.', 'miss');
-//     }
-//     endTurnMonster(result);
-//   },
-// };
-
-const dwarf = {
-  name: 'Gimli, the Dwarf',
-  monsterHealth: 30,
-  monsterArmour: 8,
-  monsterDamage: 6,
-  monsterRage: 0,
-  src: 'res/mobs/dwarf-animated.gif',
-  turn() {
-    if (Stats.monsterRage > 40) {
-      Stats.monsterRage = 0;
-      this.dwarfSmash();
-    } else {
-      Stats.monsterRage = Stats.monsterRage + 10;
-      let result = roll(100);
-      if (DEV) {
-        console.log('@DwarfTurn');
-        console.log('Dwarf ability chance ' + result);
-      }
-      if (result > 75) { 
-        this.dwarfTank();
-      } else {
-        this.basicAttack();
-      }    
-    }
-  },
-  basicAttack() {
-    let result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
-    if (result != null) {
-      playerHealthHelper(result);
-      log('Dwarf hits for ' + result + ' damage!', 'mb');
-    } else {
-      log('Dwarf missed.', 'miss');
-    }
-    endTurnMonster(result);
-  },
-  dwarfTank() {
-    dwarfTankCondition.bonusArmour = 4;
-    dwarfTankCondition.active = true;
-    Stats.monsterArmour = Stats.monsterArmour + dwarfTankCondition.bonusArmour;
-
-    log('Dwarf uses <i>Dwarven Resilience</i> and buffs AC by 4!', 'ms');
-    endTurnMonster();
-  },
-  dwarfSmash() {
-    let result = pureAttack(Stats.monsterDamage + 4, 0, 0, 1, Stats.playerArmour);
-    if (result != null) {
-      playerHealthHelper(result);
-      log('Dwarf uses <i>Dwarven Smash</i> for ' + result + ' damage!', 'ms');
-    } else {
-      log('Dwarf missed.', 'miss');
-    }
-    endTurnMonster(result);
-  }
-}
-
-const ent = {
-  name: 'Shrekt, the Ogre',
-  monsterHealth: 40,
-  monsterArmour: 6,
-  monsterDamage: 10,
-  monsterRage: 0,
-  src: 'res/mobs/ogre.png',
-  turn() {
-    if (Stats.monsterRage > 50) {
-      this.growth();
-    } 
-    else {
-      let result = roll(100);
-      if (result > 50) {
-        this.vine();
-      }
-      else {
-        this.basicAttack();
-      }  
-    }
-  },
-  basicAttack() {
-    Stats.monsterRage += 20;
-    let result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
-    if (result != null) {
-      playerHealthHelper(result);
-      log('Ogre hits for ' + result + ' damage!', 'mb');
-    } 
-    else {
-      log('Ogre missed.', 'miss');
-    }
-    endTurnMonster(result);
-  },
-  growth() {
-    // Chance of not using growth when rage > 50
-
-    let result = roll(2);
-    if (Stats.monsterRage === 100){
-      result = 2;
-    }
-    if (result === 2) {
-      let extra = (Stats.monsterRage / 10);
-      Stats.monsterHealth = Stats.monsterHealth + extra
-
-      if (DEV) {
-        console.log(`Extra: ${extra}`);
-      }
-
-      Stats.monsterRage = 0;
-      log(`Ogre uses <i>Battle Cry</i> and heals for ${extra} damage!`,'ms');
-      endTurnMonster();
-    }
-    else {
-      this.basicAttack();
-    }
-  },
-  vine() {
-    Stats.monsterRage += 20;
-    playerDisadvantage.active = true;
-    log('Ogre uses <i>Earth Shaker</i> and makes you Disadvantaged!', 'ms');
-    endTurnMonster();
-  },
-}
 
 const monsterHealthHelper = function(result) {
   if (DEV) {
@@ -565,7 +425,7 @@ const setMobileEvents = () => {
 }
 
 const getNextMonster = function(level) {
-  switch(level) {
+  switch (level) {
     case 0:
     return Chicken;
     break;
@@ -575,11 +435,11 @@ const getNextMonster = function(level) {
     break;
 
     case 2:
-    return dwarf;
+    return Dwarf;
     break;
 
     case 3:
-    return ent;
+    return Ent;
     break;
 
     default:

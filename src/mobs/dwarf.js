@@ -1,0 +1,59 @@
+import { log } from '../log';
+import { roll, pureAttack } from '../rollattack';
+import { endTurnMonster, playerHealthHelper } from '../turn';
+import { dwarfTankCondition } from '../conditions';
+
+import Stats from '../stats';
+import Globals from '../globals';
+
+const dwarf = {
+  name: 'Gimli, the Dwarf',
+  monsterHealth: 30,
+  monsterArmour: 8,
+  monsterDamage: 6,
+  monsterRage: 0,
+  src: 'res/mobs/dwarf-animated.gif',
+  turn() {
+    if (Stats.monsterRage > 40) {
+      Stats.monsterRage = 0;
+      this.dwarfSmash();
+    } else {
+      Stats.monsterRage += 10;
+      const result = roll(100);
+      if (result > 75) {
+        this.dwarfTank();
+      } else {
+        this.basicAttack();
+      }
+    }
+  },
+  basicAttack() {
+    const result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
+    if (result != null) {
+      playerHealthHelper(result);
+      log(`Dwarf hits for ${result} damage!`, 'mb');
+    } else {
+      log('Dwarf missed.', 'miss');
+    }
+    endTurnMonster(result);
+  },
+  dwarfTank() {
+    dwarfTankCondition.bonusArmour = 4;
+    dwarfTankCondition.active = true;
+    Stats.monsterArmour += dwarfTankCondition.bonusArmour;
+    log('Dwarf uses <i>Dwarven Resilience</i> and buffs AC by 4!', 'ms');
+    endTurnMonster();
+  },
+  dwarfSmash() {
+    const result = pureAttack(Stats.monsterDamage + 4, 0, 0, 1, Stats.playerArmour);
+    if (result != null) {
+      playerHealthHelper(result);
+      log(`Dwarf uses <i>Dwarven Smash</i> for ${result} damage!`, 'ms');
+    } else {
+      log('Dwarf missed.', 'miss');
+    }
+    endTurnMonster(result);
+  },
+};
+
+export default dwarf;

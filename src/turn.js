@@ -87,12 +87,11 @@ const setStatus = (buff) => {
       icon.classList.add('colour-debuff');
     }
 
-    status.appendChild(icon);    
+    status.appendChild(icon);
 
     tippy(`#${icon.id}`, {
       content: buff.message,
     });
-    
     // setTimeout(() => {
     //   icon.classList.remove('bounce');
     // }, 1001);
