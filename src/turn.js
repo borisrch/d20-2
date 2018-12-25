@@ -14,6 +14,9 @@ import {
 } from './conditions';
 import { updateStats } from './update';
 import tippy from 'tippy.js';
+import { DEV } from './dev';
+
+import Globals from './globals';
 
 const status = {
   SHOCKED: {
@@ -22,6 +25,9 @@ const status = {
     buff: false,
     icon: 'ra-player-thunder-struck',
     message: '<b>Shocked</b> - This monster will take additional damage on your next attack.',
+    particles() {
+      Globals.particles.showShocked();
+    },
   },
   DISADVANTAGED: {
     id: 'player-disadvantaged',
@@ -29,6 +35,9 @@ const status = {
     buff: false,
     icon: 'ra-player-despair',
     message: '<b>Disadvantaged</b> - You are less likely to hit on your next attack.',
+    particles() {
+      Globals.particles.showDisadvantaged();
+    },
   },
   DWARF_TANK: {
     id: 'monster-dwarf-tank',
@@ -36,6 +45,9 @@ const status = {
     buff: true,
     icon: 'ra-muscle-fat',
     message: '<b>Dwarven Resilience</b> - Armour class is buffed by 4 for this turn.',
+    particles() {
+      Globals.particles.showDwarfTank();
+    },
   },
   POTION_ACTIVE: {
     id: 'player-potion-buff',
@@ -43,6 +55,9 @@ const status = {
     buff: true,
     icon: 'ra-fizzing-flask',
     message: `<b>Potion Active</b> - A potion buff is currently affecting your stats.`,
+    particles() {
+      Globals.particles.showPotionActive();
+    },
   }
 }
 
@@ -58,6 +73,8 @@ const setStatus = (buff) => {
     else if (buff.unit === 'player') {
       status = document.getElementById('player-status');
     }
+
+    buff.particles();
     
     const icon = document.createElement('span');
     icon.id = buff.id;
@@ -86,6 +103,14 @@ const removeStatus = (buff) => {
   const el = document.getElementById(buff.id);
   if (el !== null) {
     el.classList.add('fadeOut');
+
+    if (buff.unit === 'monster') {
+      Globals.particles.hideMonsterParticles();
+    }
+    else if (buff.unit === 'player') {
+      Globals.particles.hidePlayerParticles();
+    }
+
     setTimeout(() => {
       el.parentNode.removeChild(el);
     }, 1000)
@@ -115,18 +140,18 @@ export const endTurn = (result) => {
     $('.monster-graphic').addClass('monster-flail');
   }  
 
-  if (sapphireAmuletCondition.active == true) {
-    Stats.playerMaxMana = 125;
-  } else {
-    Stats.playerMaxMana = 100;
-  }
+  // if (sapphireAmuletCondition.active == true) {
+  //   Stats.playerMaxMana = 125;
+  // } else {
+  //   Stats.playerMaxMana = 100;
+  // }
   
-  if (Stats.playerMana + 25 >= Stats.playerMaxMana) {
-    Stats.playerMana = Stats.playerMaxMana;
-  } else {
-    Stats.playerMana = Stats.playerMana + 25;
-    $('.player-mana').addClass('colour-mana-add');
-  }
+  // if (Stats.playerMana + 25 >= Stats.playerMaxMana) {
+  //   Stats.playerMana = Stats.playerMaxMana;
+  // } else {
+  //   Stats.playerMana = Stats.playerMana + 25;
+  //   $('.player-mana').addClass('colour-mana-add');
+  // }
 
   if (alzursThunderCondition.turns > 0) {
     setStatus(status.SHOCKED);
@@ -156,7 +181,7 @@ export const endTurn = (result) => {
   }, 1000);
 
   setTimeout(() => {
-    $('.player-mana').removeClass('colour-mana-add');
+    // $('.player-mana').removeClass('colour-mana-add');
     $('.player-armour').removeClass('colour-mana-add');
   }, 1000);
 
@@ -167,12 +192,38 @@ export const endTurn = (result) => {
   }, 1500);
 }
 
+const beginTurnPlayer = () => {
+  // Item Conditions
+  if (sapphireAmuletCondition.active === true) {
+    Stats.playerMaxMana = 125;
+  } else {
+    Stats.playerMaxMana = 100;
+  }
+
+  // Mana Conditions
+  if (Stats.playerMana + 25 >= Stats.playerMaxMana) {
+    Stats.playerMana = Stats.playerMaxMana;
+  } else {
+    Stats.playerMana += 25;
+    $('.player-mana').addClass('colour-mana-add');
+    
+    if (DEV) {
+      Stats.playerMana = Stats.playerMaxMana;
+    }
+  }
+  updateStats();
+
+  setTimeout(() => {
+    $('.player-mana').removeClass('colour-mana-add');
+  }, 1000);
+}
+
 export const endTurnMonster = function(result) {
   if (result) {
     $('.player-health').addClass('animated jello');
   }
 
-  if(Stats.monsterRage > 0) {
+  if (Stats.monsterRage > 0) {
     $('.monster-rage').addClass('colour-rage-add');
   }
   
@@ -230,7 +281,6 @@ export const endTurnMonster = function(result) {
     removeStatus(status.DWARF_TANK);
   }
 
-
   $('.monster-graphic').addClass('poke-left');
   $('.player-graphic').addClass('player-flail');
 
@@ -246,6 +296,7 @@ export const endTurnMonster = function(result) {
   }, 750);
 
   setTimeout(() => {
+    beginTurnPlayer();
     enable();
   }, 500);
 }

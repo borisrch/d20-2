@@ -3,6 +3,7 @@ import Hammer from 'hammerjs';
 import tingle from 'tingle.js';
 import { Howl } from 'howler';
 
+
 import '../css/tingle.min.css';
 import 'tippy.js/dist/tippy.css';
 // import '../css/game-interface.css';
@@ -43,33 +44,36 @@ import { updateStats } from './update';
 import Logger from './logger';
 import { properties } from './properties/properties';
 import { SoundManager } from './soundmanager';
+import { ParticlesManager } from './particles/particlesmanager';
+import Globals from './globals';
 
 import Goblin from './mobs/goblin';
+import Chicken from './mobs/chicken';
+
 import { armour } from './equipment-store';
 
-const noop = () => {};
-
-const chicken = {
-  name: 'Cuck, the Chicken',
-  monsterHealth: 10,
-  monsterArmour: 0,
-  monsterDamage: 2,
-  monsterRage: 0,
-  src: 'res/mobs/chicken.png',
-  turn() {
-    this.basicAttack();
-  },
-  basicAttack() {
-    const result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
-    if (result != null) {
-      playerHealthHelper(result);
-      log(`Chicken hits for ${result} damage!`, 'mb');
-    } else {
-      log('Chicken missed.', 'miss');
-    }
-    endTurnMonster(result);
-  },
-};
+// const chicken = {
+//   name: 'Cuck, the Chicken',
+//   monsterHealth: 10,
+//   monsterArmour: 0,
+//   monsterDamage: 2,
+//   monsterRage: 0,
+//   src: 'res/mobs/chicken.png',
+//   turn() {
+//     this.basicAttack();
+//   },
+//   basicAttack() {
+//     const result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
+//     if (result != null) {
+//       playerHealthHelper(result);
+//       log(`Chicken hits for ${result} damage!`, 'mb');
+//       sm.playChicken();
+//     } else {
+//       log('Chicken missed.', 'miss');
+//     }
+//     endTurnMonster(result);
+//   },
+// };
 
 const dwarf = {
   name: 'Gimli, the Dwarf',
@@ -80,9 +84,6 @@ const dwarf = {
   src: 'res/mobs/dwarf-animated.gif',
   turn() {
     if (Stats.monsterRage > 40) {
-      if(DEV) {
-        console.log('@Dwarf Rage')
-      }
       Stats.monsterRage = 0;
       this.dwarfSmash();
     } else {
@@ -300,7 +301,6 @@ const mageInit = function () {
     manaCheck(75, scorch);
   });
 
-
   const _W = document.getElementById('w');
   const W = new Hammer(_W);
   W.on('tap', function(e) {
@@ -423,12 +423,12 @@ const tippyMage = function() {
 }
 
 const monsterInit = function() {
-  Stats.monsterArmour = chicken.monsterArmour;
-  Stats.monsterDamage = chicken.monsterDamage;
-  Stats.monsterHealth = chicken.monsterHealth;
+  Stats.monsterArmour = Chicken.monsterArmour;
+  Stats.monsterDamage = Chicken.monsterDamage;
+  Stats.monsterHealth = Chicken.monsterHealth;
   Stats.monsterRage = 0;
-  Stats.monsterName = chicken.name;
-  currentMonster = chicken;
+  Stats.monsterName = Chicken.name;
+  currentMonster = Chicken;
   Stats.currentMonster = currentMonster;
 }
 
@@ -451,6 +451,7 @@ const scorch = function() {
   if(result != null) {
     log('You <i>Scorch</i> for ' + result + ' damage!', 'ps-scorch');
     sm.playQSound();
+    pm.showScorch();
     monsterHealthHelper(result);
   } else {
     log('You missed Scorch!', 'miss-player');
@@ -475,7 +476,8 @@ const alzurs_thunder = function() {
   if(result != null) {
     log('You summon <i>Alzur\'s Thunder</i> for ' + result + ' damage!', 'ps-thunder');
     monsterHealthHelper(result);
-    
+    sm.playWSound();
+    pm.showThunder();
   } else {
     log('You missed Alzur\'s Thunder!', 'miss-player');
   }
@@ -491,9 +493,11 @@ const deathfire_grasp = function() {
   const result = attack(total, Stats.playerHitChanceModifier, 5, 1, Stats.monsterArmour);
   console.log(result);
 
-  if(result != null) {
+  if (result != null) {
     log('You invoke <i>Anima Surge</i> for ' + result + ' damage!', 'ps-grasp');
     monsterHealthHelper(result);
+    sm.playESound();
+    pm.showDeathfire();
   } else {
     log('You missed Surge!', 'miss-player');
   }
@@ -511,33 +515,22 @@ const runic_echoes = function() {
 
   Stats.playerArmour = Stats.playerArmour + bonusRes;
 
+  sm.playRSound();
+  pm.showRunicEchoes();
+
   log('You cast <i>Runic Echoes</i> and boost armour by ' + bonusRes + '!', 'ps-echoes');
 
   endTurn();
 }
 
 // Incomplete function. Add item types to this.
-const advance = function() {
-  
-  if (DEV) {
-    console.log('@Advance');
-  }
-
+const advance = function () {
   Stats.playerLevel += 1;
 
-  // NEED TO ADD CHECK FOR LAST MONSTERS !! if (Stats.playerLevel > 10) or whatever.
-
+  // Temporary Monster Limit
   if (Stats.playerLevel > 10) {
     throw new Error('playerLevel exceeds 10. No more monsters');
   }
-
-  // Handles gold income and logging. 
-  // if (item.gold > 0) {
-  //   Stats.gold += item.gold;
-  //   log('Loot: ' + item.name + ' (' + item.type + ') and ' + item.gold + ' gold.', 'victory');
-  // } else {
-  //   log('Loot: ' + item.name + ' (' + item.type + ').', 'victory');
-  // }
 
   currentMonster = getNextMonster(Stats.playerLevel);
 
@@ -574,7 +567,7 @@ const setMobileEvents = () => {
 const getNextMonster = function(level) {
   switch(level) {
     case 0:
-    return chicken;
+    return Chicken;
     break;
 
     case 1:
@@ -599,6 +592,10 @@ const getNextMonster = function(level) {
 init('mage');
 
 const sm = new SoundManager();
+Globals.sound = sm;
+
+const pm = new ParticlesManager();
+Globals.particles = pm;
 
 window.onload = () => {
   const game = document.getElementById('game-interface');
@@ -611,6 +608,8 @@ window.onload = () => {
     // Need to add sky animation now, or else it will interfere with fadeInUp.
     setTimeout(() => {
       game.setAttribute('style', 'animation: animate-sky 25s linear infinite;');
+      // Do not remove... Particles need this.
+      window.dispatchEvent(new Event('resize'));
     }, 1050);
   }, 700);
 }

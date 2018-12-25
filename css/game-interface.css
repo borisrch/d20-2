@@ -494,6 +494,33 @@ body {
   top: -2px;
 }
 
+.particle-graphic {
+  position: absolute;
+  height: 75px;
+  width: 170px;
+  left: -80px;
+  top: 15px;
+  z-index: 4;
+}
+
+.particles-monster-graphic {
+  position: absolute;
+  height: 75px;
+  width: 75px;
+  left: 15px;
+  top: 17px;
+  z-index: 3;
+}
+
+.particles-player-graphic {
+  position: absolute;
+  height: 75px;
+  width: 75px;
+  left: -90px;
+  top: 17px;
+  z-index: 3;
+}
+
 .upper-container {
   display: grid;
   grid-template-columns: 1fr 0.5fr 1fr;
