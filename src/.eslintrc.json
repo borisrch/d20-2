@@ -1,9 +1,12 @@
 {
   "env": {
-    "jquery": true
+    "jquery": true,
+    "browser": true,
+    "node": true
   },
   "extends": "airbnb",
   "rules": {
-    "func-names": ["error", "never"]
+    "func-names": ["error", "never"],
+    "prefer-destructuring": ["error", {"object": false, "array": false}]
   }
 }
