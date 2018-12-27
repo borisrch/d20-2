@@ -36,6 +36,13 @@ class ParticlesManager {
     }, 1000);
   }
 
+  chainMonsterParticles(zpath) {
+    this.showMonsterParticles(zpath);
+    setTimeout(() => {
+      this.hideMonsterParticles(zpath);
+    }, 2000);
+  }
+
   showPlayerParticles(zpath) {
     particlesJS.load('particles-player-js', zpath, function() {});
   }
@@ -68,6 +75,14 @@ class ParticlesManager {
   /* Mob Spells */
   showGoblinSpit() {
     this.showParticles(`${path}goblinspit.json`);
+  }
+
+  showEntTrip() {
+    this.showParticles(`${path}enttrip.json`);
+  }
+
+  showMobHeal() {
+    this.chainMonsterParticles(`${path}heal.json`);
   }
 
   /* Conditions/Buffs */
