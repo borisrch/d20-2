@@ -114,7 +114,6 @@ const init = function (mode) {
   tippyInit();
   // setMobileEvents();
   updateStats();
-  
 }
 
 const mageInit = function () {
@@ -248,6 +247,7 @@ const tippyInit = function () {
   tippyMessages.forEach((item) => {
     tippy(item.el, {
       content: item.tip,
+      duration: 0,
     });
   });
 
@@ -262,24 +262,37 @@ const tippyMage = function() {
   const manaIcon = '<span class="ra ra-lightning-bolt colour-mana-tip"></span>';
 
   const basicAttackTip = '<b>Basic Attack</b> - Deal 1-' + Stats.playerDamage + ' ' + damageIcon + ' .';
-  $('.basic-attack').prop(title, basicAttackTip);
-  tippy('.basic-attack');
 
-  const mageSpellQ = properties.spells.wizard.q;
-  $('.q').prop('data-tippy', mageSpellQ);
-  tippy('.q');
+  const messages = [
+    {
+      el: '#basic-attack',
+      tip: basicAttackTip,
+    },
+    {
+      el: '#q',
+      tip: properties.spells.wizard.q,
+    },
+    {
+      el: '#w',
+      tip: properties.spells.wizard.w,
+    },
+    {
+      el: '#e',
+      tip: properties.spells.wizard.e,
+    },
+    {
+      el: '#r',
+      tip: properties.spells.wizard.r,
+    },
+  ];
 
-  const mageSpellW = properties.spells.wizard.w;
-  $('.w').prop(title, mageSpellW);
-  tippy('.w');
+  messages.forEach((item) => {
+    tippy(item.el, {
+      content: item.tip,
+      duration: 0,
+    });
+  });
 
-  const mageSpellE = properties.spells.wizard.e;
-  $('.e').prop(title, mageSpellE);
-  tippy('.e');
-
-  const mageSpellR = properties.spells.wizard.r;
-  $('.r').prop(title, mageSpellR);
-  tippy('.r');
 }
 
 const monsterInit = function() {
@@ -456,6 +469,10 @@ Globals.sound = sm;
 
 const pm = new ParticlesManager();
 Globals.particles = pm;
+
+if (DEV) {
+  Stats.playerHealth = 1000;
+}
 
 window.onload = () => {
   const game = document.getElementById('game-interface');
