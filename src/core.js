@@ -91,6 +91,13 @@ const playerTurnBasicAttack = function() {
     log('You missed.', 'miss-player');
     sm.playMiss();
   }
+
+  Stats.playerLastSpell = {
+    name: 'Basic Attack',
+    result: result,
+    anim: 'poke-right',
+  }
+
   endTurn(result);
 }
 
@@ -334,8 +341,15 @@ const scorch = function() {
     log('You missed Scorch!', 'miss-player');
     sm.playMiss();
   }
+
+  Stats.playerLastSpell = {
+    name: 'Scorch',
+    result,
+    anim: 'poke-right',
+  };
+
   endTurn(result);
-}
+};
 
 const alzurs_thunder = function() {
 
@@ -360,6 +374,13 @@ const alzurs_thunder = function() {
     log('You missed Alzur\'s Thunder!', 'miss-player');
     sm.playMiss();
   }
+
+  Stats.playerLastSpell = {
+    name: 'Alzur\'s Thunder',
+    result,
+    anim: 'poke-right',
+  };
+  console.log(Stats.playerLastSpell);
   endTurn(result);  
 }
 
@@ -381,6 +402,13 @@ const deathfire_grasp = function() {
     log('You missed Surge!', 'miss-player');
     sm.playMiss();
   }
+
+  Stats.playerLastSpell = {
+    name: 'Anima Surge',
+    result,
+    anim: 'poke-right',
+  };
+
   endTurn(result);
 };
 
@@ -399,6 +427,12 @@ const runic_echoes = function() {
   pm.showRunicEchoes();
 
   log('You cast <i>Runic Echoes</i> and boost armour by ' + bonusRes + '!', 'ps-echoes');
+
+  Stats.playerLastSpell = {
+    name: 'Runic Echoes',
+    result: null,
+    anim: 'poke-up',
+  };
 
   endTurn();
 }

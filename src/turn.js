@@ -129,10 +129,14 @@ export const endTurn = (result) => {
     dwarfTankCondition.active = false;
     Stats.monsterArmour = Stats.monsterArmour - dwarfTankCondition.bonusArmour;
   }
-  
-  $('.player-graphic').addClass('poke-right');
 
-  if (monsterDead.active == true) {
+  if (Stats.playerLastSpell.anim === 'poke-up') {
+    $('.player-graphic').addClass('poke-up');
+  } else {
+    $('.player-graphic').addClass('poke-right');
+  }
+
+  if (monsterDead.active === true) {
     $('.monster-graphic').addClass('spawn');
     monsterDead.active = false;
   } else {
@@ -175,12 +179,12 @@ export const endTurn = (result) => {
 
   setTimeout(() => {
     $('.player-graphic').removeClass('poke-right');
+    $('.player-graphic').removeClass('poke-up');
     $('.monster-graphic').removeClass('monster-flail');
     $('.monster-graphic').removeClass('spawn');
   }, 1000);
 
   setTimeout(() => {
-    // $('.player-mana').removeClass('colour-mana-add');
     $('.player-armour').removeClass('colour-mana-add');
   }, 1000);
 
