@@ -1,22 +1,24 @@
-import { Howler } from 'howler';
+import { Howl, Howler } from 'howler';
 import Stats from './stats';
 
-
-export class SoundManager {
-
+class SoundManager {
   constructor() {
-    
     this.globalVolume = 0.5;
     this.setDefault();
 
-    if (Stats.playerClass == 'mage') {
+    if (Stats.playerClass === 'mage') {
       this.setMage();
     }
   }
 
   setDefault() {
-    const basic = new Howl({
+    this.basic = new Howl({
       src: ['res/audio/spells/basic-attack.wav'],
+      preload: true,
+      volume: this.globalVolume,
+    });
+    this.miss = new Howl({
+      src: ['res/audio/interaction/miss.ogg'],
       preload: true,
       volume: this.globalVolume,
     });
@@ -30,38 +32,54 @@ export class SoundManager {
       preload: true,
       volume: this.globalVolume,
     });
-
-    this.basic = basic;
+    this.dwarf = new Howl({
+      src: ['res/audio/mob/dwarf.wav'],
+      preload: true,
+      volume: this.globalVolume,
+    });
+    this.dwarfTank = new Howl({
+      src: ['res/audio/mob/dwarf-tank.wav'],
+      preload: true,
+      volume: this.globalVolume,
+    });
+    this.ent = new Howl({
+      src: ['res/audio/mob/ent.wav'],
+      preload: true,
+      volume: this.globalVolume,
+    });
+    this.entTrip = new Howl({
+      src: ['res/audio/mob/ent-trip.wav'],
+      preload: true,
+      volume: this.globalVolume,
+    });
+    this.entHeal = new Howl({
+      src: ['res/audio/mob/ent-heal.wav'],
+      preload: true,
+      volume: this.globalVolume,
+    });
   }
 
   setMage() {
-
-    const qSound = new Howl({
+    this.q = new Howl({
       src: ['res/audio/spells/scorch.wav'],
       preload: true,
       volume: this.globalVolume,
     });
-    const wSound = new Howl({
+    this.w = new Howl({
       src: ['res/audio/spells/alzurs-thunder.wav'],
       preload: true,
       volume: this.globalVolume,
     });
-    const eSound = new Howl({
+    this.e = new Howl({
       src: ['res/audio/spells/deathfire-grasp.wav'],
       preload: true,
       volume: this.globalVolume,
     });
-    const rSound = new Howl({
+    this.r = new Howl({
       src: ['res/audio/spells/runic-echoes.wav'],
       preload: true,
       volume: this.globalVolume,
     });
-
-    this.q = qSound; 
-    this.w = wSound;
-    this.e = eSound;
-    this.r = rSound;
-
   }
 
   playQSound() {
@@ -84,6 +102,9 @@ export class SoundManager {
     this.basic.play();
   }
 
+  playMiss() {
+    this.miss.play();
+  }
 
   playGoblin() {
     this.goblin.play();
@@ -93,4 +114,25 @@ export class SoundManager {
     this.chicken.play();
   }
 
+  playDwarf() {
+    this.dwarf.play();
+  }
+
+  playDwarfTank() {
+    this.dwarfTank.play();
+  }
+
+  playEnt() {
+    this.ent.play();
+  }
+
+  playEntTrip() {
+    this.entTrip.play();
+  }
+
+  playEntHeal() {
+    this.entHeal.play();
+  }
 }
+
+export default SoundManager;

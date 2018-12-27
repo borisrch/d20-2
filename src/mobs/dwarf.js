@@ -32,8 +32,10 @@ const dwarf = {
     if (result != null) {
       playerHealthHelper(result);
       log(`Dwarf hits for ${result} damage!`, 'mb');
+      Globals.sound.playDwarf();
     } else {
       log('Dwarf missed.', 'miss');
+      Globals.sound.playMiss();
     }
     endTurnMonster(result);
   },
@@ -42,6 +44,7 @@ const dwarf = {
     dwarfTankCondition.active = true;
     Stats.monsterArmour += dwarfTankCondition.bonusArmour;
     log('Dwarf uses <i>Dwarven Resilience</i> and buffs AC by 4!', 'ms');
+    Globals.sound.playDwarfTank();
     endTurnMonster();
   },
   dwarfSmash() {
@@ -51,6 +54,7 @@ const dwarf = {
       log(`Dwarf uses <i>Dwarven Smash</i> for ${result} damage!`, 'ms');
     } else {
       log('Dwarf missed.', 'miss');
+      Globals.sound.playMiss();
     }
     endTurnMonster(result);
   },

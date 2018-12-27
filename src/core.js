@@ -37,13 +37,14 @@ import {
   defensePotionCondition,
   accuracyPotionCondition,
   runicPotionCondition,
+  resetMonsterConditions,
 } from './conditions';
 import { runTutorial, tutorialCondition, tutorialPause } from './tutorial';
 import { endTurn, endTurnMonster, playerHealthHelper } from './turn';
 import { updateStats } from './update';
 import Logger from './logger';
 import { properties } from './properties/properties';
-import { SoundManager } from './soundmanager';
+import SoundManager from './soundmanager';
 import ParticlesManager from './particles/particlesmanager';
 import Globals from './globals';
 
@@ -54,6 +55,7 @@ import Ent from './mobs/ent';
 
 import { armour } from './equipment-store';
 
+
 const monsterHealthHelper = function(result) {
   if (DEV) {
     console.log('@monsterHealthHelper result:' + result);
@@ -62,6 +64,7 @@ const monsterHealthHelper = function(result) {
   if(Stats.monsterHealth - result <= 0) {
     Stats.monsterHealth = 0;
     log('You have slain ' + Stats.monsterName + '!', 'victory');
+
     advance();
 
     monsterDead.active = true;    
@@ -86,6 +89,7 @@ const playerTurnBasicAttack = function() {
     sm.playBasic();
   } else {
     log('You missed.', 'miss-player');
+    sm.playMiss();
   }
   endTurn(result);
 }
@@ -328,6 +332,7 @@ const scorch = function() {
     monsterHealthHelper(result);
   } else {
     log('You missed Scorch!', 'miss-player');
+    sm.playMiss();
   }
   endTurn(result);
 }
@@ -353,6 +358,7 @@ const alzurs_thunder = function() {
     pm.showThunder();
   } else {
     log('You missed Alzur\'s Thunder!', 'miss-player');
+    sm.playMiss();
   }
   endTurn(result);  
 }
@@ -373,6 +379,7 @@ const deathfire_grasp = function() {
     pm.showDeathfire();
   } else {
     log('You missed Surge!', 'miss-player');
+    sm.playMiss();
   }
   endTurn(result);
 };
@@ -399,26 +406,26 @@ const runic_echoes = function() {
 // Incomplete function. Add item types to this.
 const advance = function () {
   Stats.playerLevel += 1;
-
-  // Temporary Monster Limit
-  if (Stats.playerLevel > 10) {
-    throw new Error('playerLevel exceeds 10. No more monsters');
+  // Level Complete
+  if (Stats.playerLevel > 3) {
+    
   }
 
   currentMonster = getNextMonster(Stats.playerLevel);
 
-  // This is only used for external turn.js module. Highly likely Null Pointers
+  resetMonsterConditions();
   Stats.currentMonster = currentMonster;
-
   Stats.monsterHealth = currentMonster.monsterHealth;
   Stats.monsterDamage = currentMonster.monsterDamage;
   Stats.monsterArmour = currentMonster.monsterArmour;
   Stats.monsterName = currentMonster.name;
   Stats.monsterRage = 0;
-  $('#monster-graphic').addClass('animated zoomOut');
-  $('#monster-graphic').attr('src', currentMonster.src);
+
+  const el = document.getElementById('monster-graphic');
+  el.classList.add('animated', 'zoomOut');
+  el.src = currentMonster.src;
   setTimeout(() => {
-    $('#monster-graphic').removeClass('animated zoomOut');
+    el.classList.remove('animated', 'zoomOut');
   }, 750);
 
   updateStats();

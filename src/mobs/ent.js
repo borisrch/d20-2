@@ -31,8 +31,10 @@ const ent = {
     if (result != null) {
       playerHealthHelper(result);
       log(`Ogre hits for ${result} damage!`, 'mb');
+      Globals.sound.playEnt();
     } else {
       log('Ogre missed.', 'miss');
+      Globals.sound.playMiss();
     }
     endTurnMonster(result);
   },
@@ -45,6 +47,8 @@ const ent = {
       const extra = (Stats.monsterRage / 10);
       Stats.monsterHealth += extra;
       Stats.monsterRage = 0;
+      Globals.sound.playEntHeal();
+      Globals.particles.showMobHeal();
       log(`Ogre uses <i>Battle Cry</i> and heals for ${extra} damage!`, 'ms');
       endTurnMonster();
     } else {
@@ -54,6 +58,8 @@ const ent = {
   vine() {
     Stats.monsterRage += 20;
     playerDisadvantage.active = true;
+    Globals.sound.playEntTrip();
+    Globals.particles.showEntTrip();
     log('Ogre uses <i>Earth Shaker</i> and makes you Disadvantaged!', 'ms');
     endTurnMonster();
   },

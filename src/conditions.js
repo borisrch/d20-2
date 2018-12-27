@@ -15,6 +15,10 @@ export const runicEchoesCondition = {
   bonusArmour: 0,
 }
 
+export const resetMonsterConditions = () => {
+  alzursThunderCondition.turns = 0;
+}
+
 // Equipment conditions
 export const sapphireAmuletCondition = {
   active: false

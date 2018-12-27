@@ -37,6 +37,7 @@ const goblin = {
     } 
     else {
       log('Goblin missed.', 'miss');
+      Globals.sound.playMiss();
     }
     endTurnMonster(result);
   }

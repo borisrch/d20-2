@@ -22,6 +22,7 @@ const chicken = {
       Globals.sound.playChicken();
     } else {
       log('Chicken missed.', 'miss');
+      Globals.sound.playMiss();
     }
     endTurnMonster(result);
   },
