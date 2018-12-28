@@ -46,6 +46,7 @@ import Logger from './logger';
 import { properties } from './properties/properties';
 import SoundManager from './soundmanager';
 import ParticlesManager from './particles/particlesmanager';
+import LevelManager from './levelmanager';
 import Globals from './globals';
 
 import Goblin from './mobs/goblin';
@@ -56,21 +57,14 @@ import Ent from './mobs/ent';
 import { armour } from './equipment-store';
 
 
-const monsterHealthHelper = function(result) {
-  if (DEV) {
-    console.log('@monsterHealthHelper result:' + result);
-  }
-
-  if(Stats.monsterHealth - result <= 0) {
+const monsterHealthHelper = function (result) {
+  if (Stats.monsterHealth - result <= 0) {
     Stats.monsterHealth = 0;
     log('You have slain ' + Stats.monsterName + '!', 'victory');
-
     advance();
-
-    monsterDead.active = true;    
-
-  } else {    
-    Stats.monsterHealth = Stats.monsterHealth - result;
+    monsterDead.active = true;
+  } else {
+    Stats.monsterHealth -= result;
   }
 };
 
@@ -78,11 +72,10 @@ const monsterHealthHelper = function(result) {
 
 let currentMonster;
 
-const playerTurnBasicAttack = function() {
-
+const playerTurnBasicAttack = function () {
   deathfireGraspCondition.active = false;
 
-  let result = attack(Stats.playerDamage, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour);
+  const result = attack(Stats.playerDamage, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour);
   if (result != null) {
     log('You hit for ' + result + ' damage!', 'pb');
     monsterHealthHelper(result);
@@ -330,9 +323,9 @@ const scorch = function() {
     console.log('Scorch bonus AC-ignore roll: ' + bonusRes);
   }
 
-  let result = attack(10, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour - total);
+  const result = attack(Stats.playerDamage, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour - total);
 
-  if(result != null) {
+  if (result != null) {
     log('You <i>Scorch</i> for ' + result + ' damage!', 'ps-scorch');
     sm.playQSound();
     pm.showScorch();
@@ -360,13 +353,14 @@ const alzurs_thunder = function() {
     console.log('Extra turns: ' + alzursThunderCondition.turns)
   }
 
-  let result = attack(4, Stats.playerHitChanceModifier, 0, 2, Stats.monsterArmour);
+  const result = attack(4, Stats.playerHitChanceModifier, 0, 2, Stats.monsterArmour);
 
   alzursThunderCondition.turns = Stats.playerRunic;
   deathfireGraspCondition.active = false;
 
-  if(result != null) {
-    log('You summon <i>Alzur\'s Thunder</i> for ' + result + ' damage!', 'ps-thunder');
+  if (result != null) {
+    // log(`You summon <i>Alzur's Thunder</i> for ${result} damage! <i class="ra ra-lightning-trio ra-log"></i>`, 'ps-thunder');
+    log(`You summon <i>Alzur's Thunder</i> for ${result} damage!`, 'ps-thunder');
     monsterHealthHelper(result);
     sm.playWSound();
     pm.showThunder();
@@ -442,7 +436,7 @@ const advance = function () {
   Stats.playerLevel += 1;
   // Level Complete
   if (Stats.playerLevel > 3) {
-    
+    lm.setGraveyard();
   }
 
   currentMonster = getNextMonster(Stats.playerLevel);
@@ -463,53 +457,50 @@ const advance = function () {
   }, 750);
 
   updateStats();
-}
+};
 
-const setMobileEvents = () => {
-    // mobile - touch/press.
-  const qElement = document.getElementById('q');
-  const q = new Hammer(qElement);
-  q.on('press', function(e) {
-    qElement._tippy.show();
-  });
-  // q.on('tap', function(e) {
-  //   console.log('tap fired for scorch');
-  //   manaCheck(75, scorch);
-  // });
-}
+// const setMobileEvents = () => {
+//     // mobile - touch/press.
+//   const qElement = document.getElementById('q');
+//   const q = new Hammer(qElement);
+//   q.on('press', function(e) {
+//     qElement._tippy.show();
+//   });
+//   // q.on('tap', function(e) {
+//   //   console.log('tap fired for scorch');
+//   //   manaCheck(75, scorch);
+//   // });
+// }
 
 const getNextMonster = function(level) {
   switch (level) {
     case 0:
-    return Chicken;
-    break;
+      return Chicken;
 
     case 1:
-    return Goblin;
-    break;
+      return Goblin;
 
     case 2:
-    return Dwarf;
-    break;
+      return Dwarf;
 
     case 3:
-    return Ent;
-    break;
+      return Ent;
+    
+    case 4:
+      return Ent;
 
     default:
-    console.log('@Error at getNextMonster');
-    return goblin;
-    break;
+      throw new Error('getNextMonster: Out of monsters');
   }
-}
+};
 
 init('mage');
 
 const sm = new SoundManager();
 Globals.sound = sm;
-
 const pm = new ParticlesManager();
 Globals.particles = pm;
+const lm = new LevelManager();
 
 if (DEV) {
   Stats.playerHealth = 1000;
@@ -526,6 +517,7 @@ window.onload = () => {
     // Need to add sky animation now, or else it will interfere with fadeInUp.
     setTimeout(() => {
       game.setAttribute('style', 'animation: animate-sky 25s linear infinite;');
+      game.classList.remove('animated', 'fadeInUp');
       // Do not remove... Particles need this.
       window.dispatchEvent(new Event('resize'));
     }, 1050);
@@ -547,5 +539,5 @@ window.onload = () => {
 // }, 2500);
 
 // Skip to monsters. Function still +1 to level 
-// Stats.playerLevel = 2;
-// advance();
+Stats.playerLevel = 2;
+advance();

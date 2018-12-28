@@ -33,46 +33,43 @@
       </div>
 
       
-  <div class="game-interface hidden" id="game-interface">
-
+  <div class="game-interface hidden level-1" id="game-interface">
+    <img src="" alt="" id="platform-clouds">
     <div class="health-interface">
-      <div class="player-health health-player">0</div>
-      
+      <div class="player-health health-player" id="player-health">0</div>
       <div class="space"></div>
-      
-      <div class="monster-health health-monster">0</div>
-      
-      <div class="player-label health-player health-label">You</div>
+      <div class="monster-health health-monster" id="monster-health">0</div>
+      <div class="player-label health-player health-label" id="player-label">You</div>
       
       <div class="graphics">
-          
+          <img src="" alt="" id="platform-clouds">
           <img src="res/mobs/mage.png" class="player-graphic" alt="" srcset="" id="player-graphic">
           <img src="res/mobs/chicken.png" class="mob-fast monster-graphic" alt="" srcset="" id="monster-graphic">
-          <img src="res/platform/platform-1.png" alt="" srcset="" class="platform">
+          <img src="res/platform/platform-1.png" alt="" srcset="" class="platform" id="platform">
+          
           <div class="particle-graphic"id="particles-js"></div>
           <div class="particles-monster-graphic" id="particles-monster-js"></div>
           <div class="particles-player-graphic" id="particles-player-js"></div>
-
-        </div>
+      </div>
      
-      <div class="monster-label health-monster health-label">Monster</div>
+      <div class="monster-label health-monster health-label" id="monster-label">Monster</div>
 
       <div class="player-stats">
         <div class="info-item player-damage-tip" id="">
-            <span class="ra ra-sword colour-damage info-icon-dmg"></span>
-            <div class="player-damage">0</div>
+            <span class="ra ra-sword colour-damage info-icon-dmg" id="player-damage-icon"></span>
+            <div class="player-damage" id="player-damage">0</div>
         </div>
         <div class="info-item player-armour-tip">
-            <span class="ra ra-shield colour-ac info-icon"></span>
-            <div class="player-armour" id="">0</div>
+            <span class="ra ra-shield colour-ac info-icon" id="player-armour-icon"></span>
+            <div class="player-armour" id="player-armour">0</div>
         </div>
         <div class="info-item player-runic-tip">
-            <span class="ra ra-crystals colour-runic info-icon"></span>
-            <div class="player-runic">0</div>
+            <span class="ra ra-crystals colour-runic info-icon" id="player-runic-icon"></span>
+            <div class="player-runic" id="player-runic">0</div>
         </div>
         <div class="info-item player-mana-tip">
-            <span class="ra ra-lightning-bolt colour-mana info-icon"></span>
-            <div class="player-mana">0</div>
+            <span class="ra ra-lightning-bolt colour-mana info-icon" id="player-mana-icon"></span>
+            <div class="player-mana" id="player-mana">0</div>
         </div>
 
       </div>
@@ -83,16 +80,16 @@
 
       <div class="monster-stats">
         <div class="info-item player-damage-tip">
-          <span class="ra ra-sword colour-damage info-icon-dmg"></span>
-          <div class="monster-damage">0</div>
+          <span class="ra ra-sword colour-damage info-icon-dmg" id="monster-damage-icon"></span>
+          <div class="monster-damage" id="monster-damage">0</div>
         </div>
         <div class="info-item player-armour-tip">
-          <span class="ra ra-shield colour-ac info-icon"></span>
-          <div class="monster-armour">0</div>
+          <span class="ra ra-shield colour-ac info-icon" id="monster-armour-icon"></span>
+          <div class="monster-armour" id="monster-armour">0</div>
         </div>
         <div class="info-item monster-rage-tip">
-          <span class="ra ra-player-pyromaniac colour-rage info-icon"></span>
-          <div class="monster-rage">0</div>
+          <span class="ra ra-player-pyromaniac colour-rage info-icon" id="monster-rage-icon"></span>
+          <div class="monster-rage" id="monster-rage">0</div>
         </div>
       </div>
 

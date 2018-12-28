@@ -7,7 +7,6 @@ body {
 }
 
 .game-interface {
-  background-image: url('../res/platform/background-1.png');
   background-repeat: repeat-x;
   background-position: 0px 0px;
   /* animation: animate-sky 30s linear infinite; */
@@ -38,17 +37,18 @@ body {
   grid-gap: 5px;
   justify-items: center;  
   color: #1d1d1d;
-  z-index: 3;
 }
 
 .health-player {
   justify-self: center;
-  font-size: 5em; 
+  font-size: 5em;
+  z-index: 99; 
 }
 
 .health-monster {
   justify-self: center;
   font-size: 5em; 
+  z-index: 99; 
 }
 
 .health-label {
@@ -61,6 +61,7 @@ body {
   grid-template-rows: 1fr;
   justify-items: center;  
   margin-top: 10px;
+  z-index: 99; 
 }
 
 .monster-stats {
@@ -68,8 +69,8 @@ body {
   grid-template-columns: repeat(3, 45px);
   grid-template-rows: 1fr;
   grid-gap: 5px;
-  justify-items: center;  
   margin-top: 10px;  
+  z-index: 99; 
 }
 
 .info-item {
@@ -221,35 +222,53 @@ body {
 }
 
 .log-monster-basic {
-  border-left: 5px solid #e53935;
-  color: #e53935;
+  border-left: 5px solid #f44336;
+  color: #f44336;
+}
+
+.log-monster-basic-light {
+  border-left: 5px solid #fc6257;
+  color: #fc6257;
 }
 
 .log-monster-spell {
-  border-left: 5px solid #e53935;
-  background-color: #ffebee;
-  color: #e53935;
+  border-left: 5px solid #f44336;
+  color: #f44336;
+}
+
+.log-monster-spell-light {
+  border-left: 5px solid #fc6257;
+  color: #fc6257;
 }
 
 .log-miss {
-  border-left: 5px solid #e53935;
-  color: #ef9a9a;
+  border-left: 5px solid #ff493c;
+  color: #ff493cad;
 }
 
 .log-player-basic {
-  border-right: 5px solid #3498DB;
-  color: #3498DB;
+  border-right: 5px solid #2196F3;
+  color: #2196F3;
+}
+
+.log-player-basic-light {
+  border-right: 5px solid #4FC3F7;
+  color: #4FC3F7;
 }
 
 .log-player-spell {
-  background-color: #D6EAF8;
-  border-right: 5px solid #3498DB;
-  color: #3498DB;
+  border-right: 5px solid #2196F3;
+  color: #2196F3;
+}
+
+.log-player-spell-light {
+  border-right: 5px solid #4FC3F7;
+  color: #4FC3F7;
 }
 
 .log-player-miss {
   border-right: 5px solid #3498DB;
-  color: #90CAF9;
+  color: #3498DB94;
 }
 
 .log-info {
@@ -501,6 +520,7 @@ body {
   left: -80px;
   top: 15px;
   z-index: 4;
+  filter: brightness(125%);
 }
 
 .particles-monster-graphic {
@@ -867,6 +887,43 @@ body {
 
 .fill-runic {
   background-color: #BA68C8;
+}
+
+@-webkit-keyframes animate-sky {
+  0% { 
+    background-position: 0 0; 
+  }
+  100% { 
+    background-position: -100% 0; 
+  }
+}
+
+.level-1 {
+  background-image: url('../res/platform/background-1.png');
+  background-color: #fffcf3;
+}
+
+.level-2 {
+  background-image: url('../res/platform/background-5.png');
+  background-color: #233e65;
+}
+
+.cloud-body { 
+  background-repeat: repeat-x;
+  height: 249px;
+  width: 100%;
+  top: 0px;
+  position: absolute;
+}
+
+.cloud-2 {
+  background-image: url('../res/platform/cloud-5.png');
+  animation: animate-sky 75s linear infinite;
+}
+
+.light-ui {
+  color: #fff;
+  text-shadow: 0 3px 3px rgba(0,0,0,0.16);
 }
 
 @media (max-width: 667px) {
