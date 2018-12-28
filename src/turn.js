@@ -134,7 +134,7 @@ const removeStatus = (buff) => {
 
     setTimeout(() => {
       el.parentNode.removeChild(el);
-    }, 1000)
+    }, 1000);
   }
 }
 

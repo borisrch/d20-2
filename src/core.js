@@ -76,8 +76,16 @@ let currentMonster;
 const playerTurnBasicAttack = function () {
   deathfireGraspCondition.active = false;
 
-  const result = attack(Stats.playerDamage, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour);
-  if (result != null) {
+  let result = attack(Stats.playerDamage, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour);
+  if (Stats.currentMonster.type === 'undead' && result !== null) {
+    if (result - 2 <= 0) {
+      result = 0;
+    } else {
+      result -= 2;
+    }
+  }
+
+  if (result !== null) {
     log('You hit for ' + result + ' damage!', 'pb');
     monsterHealthHelper(result);
     sm.playBasic();
@@ -324,7 +332,15 @@ const scorch = function() {
     console.log('Scorch bonus AC-ignore roll: ' + bonusRes);
   }
 
-  const result = attack(Stats.playerDamage, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour - total);
+  let result = attack(Stats.playerDamage, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour - total);
+
+  if (Stats.currentMonster.type === 'undead' && result !== null) {
+    if (result - 2 <= 0) {
+      result = 0;
+    } else {
+      result -= 2;
+    }
+  }
 
   if (result != null) {
     log('You <i>Scorch</i> for ' + result + ' damage!', 'ps-scorch');
@@ -354,7 +370,15 @@ const alzurs_thunder = function() {
     console.log('Extra turns: ' + alzursThunderCondition.turns)
   }
 
-  const result = attack(4, Stats.playerHitChanceModifier, 0, 2, Stats.monsterArmour);
+  let result = attack(4, Stats.playerHitChanceModifier, 0, 2, Stats.monsterArmour);
+
+  if (Stats.currentMonster.type === 'undead' && result !== null) {
+    if (result - 2 <= 0) {
+      result = 0;
+    } else {
+      result -= 2;
+    }
+  }
 
   alzursThunderCondition.turns = Stats.playerRunic;
   deathfireGraspCondition.active = false;
@@ -385,8 +409,14 @@ const deathfire_grasp = function() {
 
   const total = Stats.playerDamage + Stats.playerRunic;
 
-  const result = attack(total, Stats.playerHitChanceModifier, 5, 1, Stats.monsterArmour);
-  console.log(result);
+  let result = attack(total, Stats.playerHitChanceModifier, 5, 1, Stats.monsterArmour);
+  if (Stats.currentMonster.type === 'undead' && result !== null) {
+    if (result - 2 <= 0) {
+      result = 0;
+    } else {
+      result -= 2;
+    }
+  }
 
   if (result != null) {
     log('You invoke <i>Anima Surge</i> for ' + result + ' damage!', 'ps-grasp');
