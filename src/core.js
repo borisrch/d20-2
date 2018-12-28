@@ -42,7 +42,7 @@ import {
 import { runTutorial, tutorialCondition, tutorialPause } from './tutorial';
 import { endTurn, endTurnMonster, playerHealthHelper } from './turn';
 import { updateStats } from './update';
-import Logger from './logger';
+
 import { properties } from './properties/properties';
 import SoundManager from './soundmanager';
 import ParticlesManager from './particles/particlesmanager';
@@ -53,6 +53,7 @@ import Goblin from './mobs/goblin';
 import Chicken from './mobs/chicken';
 import Dwarf from './mobs/dwarf';
 import Ent from './mobs/ent';
+import Skeleton from './mobs/skeleton';
 
 import { armour } from './equipment-store';
 
@@ -485,9 +486,12 @@ const getNextMonster = function(level) {
 
     case 3:
       return Ent;
-    
+
     case 4:
-      return Ent;
+      return Skeleton;
+
+    case 5:
+      return Skeleton;
 
     default:
       throw new Error('getNextMonster: Out of monsters');

@@ -95,3 +95,13 @@ export const playerDisadvantage = {
 export const monsterDead = {
   active: false,
 }
+
+export const skeletonFrightenCondition = {
+  active: false,
+  turns: 0,
+  reduction: 0,
+}
+
+export const undeadCondition = {
+  active: false,
+}

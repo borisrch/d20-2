@@ -13,6 +13,7 @@ const dwarf = {
   monsterDamage: 6,
   monsterRage: 0,
   src: 'res/mobs/dwarf-animated.gif',
+  type: 'normal',
   turn() {
     if (Stats.monsterRage > 40) {
       Stats.monsterRage = 0;

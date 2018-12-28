@@ -11,6 +11,7 @@ const chicken = {
   monsterDamage: 2,
   monsterRage: 0,
   src: 'res/mobs/chicken.png',
+  type: 'normal',
   turn() {
     this.basicAttack();
   },

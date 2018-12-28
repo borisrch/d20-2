@@ -10,7 +10,9 @@ import {
   playerDisadvantage,
   defensePotionCondition,
   accuracyPotionCondition,
-  runicPotionCondition
+  runicPotionCondition,
+  skeletonFrightenCondition,
+  undeadCondition
 } from './conditions';
 import { updateStats } from './update';
 import tippy from 'tippy.js';
@@ -49,6 +51,16 @@ const status = {
       Globals.particles.showDwarfTank();
     },
   },
+  FRIGHTENED: {
+    id: 'player-frightened',
+    unit: 'player',
+    buff: false,
+    icon: 'ra-player-pain',
+    message: '<b>Frightened</b> - Armour class is reduced by 4 for this turn.',
+    particles() {
+      Globals.particles.showDisadvantaged();
+    },
+  },
   POTION_ACTIVE: {
     id: 'player-potion-buff',
     unit: 'player',
@@ -58,7 +70,16 @@ const status = {
     particles() {
       Globals.particles.showPotionActive();
     },
-  }
+  },
+  UNDEAD: {
+    id: 'monster-undead',
+    unit: 'monster',
+    buff: true,
+    icon: 'ra-skull',
+    message: `<b>Undead</b> - This monster is undead and will take 2 less damage from all attacks.`,
+    particles() {
+    },
+  },
 }
 
 const setStatus = (buff) => {
@@ -101,7 +122,8 @@ const setStatus = (buff) => {
 const removeStatus = (buff) => {
   const el = document.getElementById(buff.id);
   if (el !== null) {
-    el.classList.add('fadeOut');
+    el.classList.remove('flipInX');
+    el.classList.add('flipOutX');
 
     if (buff.unit === 'monster') {
       Globals.particles.hideMonsterParticles();
@@ -165,7 +187,13 @@ export const endTurn = (result) => {
 
   if (defensePotionCondition.active || accuracyPotionCondition.active || runicPotionCondition.active) {
     setStatus(status.POTION_ACTIVE);
-  } 
+  }
+
+  if (skeletonFrightenCondition.turns === 0 && skeletonFrightenCondition.active) {
+    skeletonFrightenCondition.active = false;
+    Stats.playerArmour += skeletonFrightenCondition.reduction;
+    removeStatus(status.FRIGHTENED);
+  }
 
   updateStats();
 
@@ -214,6 +242,11 @@ const beginTurnPlayer = () => {
       Stats.playerMana = Stats.playerMaxMana;
     }
   }
+
+  if (skeletonFrightenCondition.turns > 0) {
+    skeletonFrightenCondition.turns -= 1;
+  }
+
   updateStats();
 
   setTimeout(() => {
@@ -221,7 +254,7 @@ const beginTurnPlayer = () => {
   }, 1000);
 }
 
-export const endTurnMonster = function(result) {
+export const endTurnMonster = function (result) {
   if (result) {
     $('.player-health').addClass('animated jello');
   }
@@ -279,9 +312,16 @@ export const endTurnMonster = function(result) {
 
   if (dwarfTankCondition.active === true) {
     setStatus(status.DWARF_TANK);
-  }
-  else if (dwarfTankCondition.active === false) {
+  } else if (dwarfTankCondition.active === false) {
     removeStatus(status.DWARF_TANK);
+  }
+
+  if (skeletonFrightenCondition.turns > 0) {
+    setStatus(status.FRIGHTENED);
+  }
+
+  if (Stats.currentMonster.type === 'undead') {
+    setStatus(status.UNDEAD);
   }
 
   $('.monster-graphic').addClass('poke-left');

@@ -57,6 +57,16 @@ class SoundManager {
       preload: true,
       volume: this.globalVolume,
     });
+    this.skeleton = new Howl({
+      src: ['res/audio/mob/skeleton.wav'],
+      preload: true,
+      volume: this.globalVolume,
+    });
+    this.skeletonFrighten = new Howl({
+      src: ['res/audio/mob/skeleton-frighten.wav'],
+      preload: true,
+      volume: this.globalVolume,
+    });
   }
 
   setMage() {
@@ -132,6 +142,14 @@ class SoundManager {
 
   playEntHeal() {
     this.entHeal.play();
+  }
+
+  playSkeleton() {
+    this.skeleton.play();
+  }
+
+  playSkeletonFrighten() {
+    this.skeletonFrighten.play();
   }
 }
 

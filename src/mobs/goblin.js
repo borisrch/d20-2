@@ -11,6 +11,7 @@ const goblin = {
   monsterDamage: 4,
   monsterRage: 0,
   src: 'res/mobs/goblin.png',
+  type: 'normal',
   names: ['Wormface', 'Grubhead', 'Fartbreath', 'Poopnose', 'Wormhair'],
   turn() {
     const result = roll(100);
