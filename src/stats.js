@@ -18,6 +18,7 @@ export default {
     result: '',
     anim: '',
   },
+  playerLevelName: 'forest',
   currentMonster: null,
   monsterHealth: 0,
   monsterArmour: 0,

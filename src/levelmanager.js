@@ -1,4 +1,5 @@
 import tingle from 'tingle.js';
+import { clearLog } from './log';
 import Globals from './globals';
 
 const platform = document.getElementById('platform');
@@ -110,6 +111,7 @@ class LevelManager {
     game.setAttribute('style', '');
     game.classList.add('animated', 'fadeOutLeft');
     setTimeout(() => {
+      clearLog();
       platform.src = 'res/platform/platform-2.png';
       game.classList.remove('level-1');
       game.classList.add('level-2');

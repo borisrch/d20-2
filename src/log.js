@@ -78,5 +78,8 @@ export const log = function(message, style) {
     $('.list li').last().remove();
     $('ul.list').prepend(prepared);
   }
-
 }
+
+export const clearLog = () => {
+  $('.list').empty();
+};

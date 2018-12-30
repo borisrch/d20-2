@@ -6,6 +6,7 @@ const el = document.getElementById('particles-js');
 const els = document.getElementById('particles-monster-spell-js');
 const mel = document.getElementById('particles-monster-js');
 const pel = document.getElementById('particles-player-js');
+const mbel = document.getElementById('particles-monster-bonus-js');
 const path = 'src/particles/';
 
 class ParticlesManager {
@@ -60,6 +61,18 @@ class ParticlesManager {
     }, 2000);
   }
 
+  showMonsterBonusParticles(zpath) {
+    particlesJS.load('particles-monster-bonus-js', zpath, function() {});
+  }
+
+  hideMonsterBonusParticles() {
+    mbel.classList.add('animated', 'fadeOut');
+    setTimeout(() => {
+      mbel.classList.remove('animated', 'fadeOut');
+      particlesJS.load('particles-monster-js', 'src/particles/noop.json', function() {});
+    }, 1000);
+  }
+
   showPlayerParticles(zpath) {
     particlesJS.load('particles-player-js', zpath, function() {});
   }
@@ -106,6 +119,10 @@ class ParticlesManager {
     this.showMonsterSpellParticles(`${path}skeletonfrighten.json`);
   }
 
+  showCaretakerSpell() {
+    this.showMonsterSpellParticles(`${path}caretakerspell.json`);
+  }
+
   /* Conditions/Buffs */
   showDwarfTank() {
     this.showMonsterParticles(`${path}dwarftank.json`);
@@ -121,6 +138,11 @@ class ParticlesManager {
 
   showPotionActive() {
     this.showPlayerParticles(`${path}potionactive.json`);
+  }
+
+  /* Bonus Effects */
+  showCaretaker() {
+    this.showMonsterBonusParticles(`${path}caretaker.json`);
   }
 }
 

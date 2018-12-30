@@ -67,6 +67,16 @@ class SoundManager {
       preload: true,
       volume: this.globalVolume,
     });
+    this.caretakerSpell = new Howl({
+      src: ['res/audio/mob/caretaker-spell.ogg'],
+      preload: true,
+      volume: this.globalVolume,
+    });
+    this.caretakerLastrite = new Howl({
+      src: ['res/audio/mob/caretaker-lastrite.ogg'],
+      preload: true,
+      volume: this.globalVolume,
+    }); 
   }
 
   setMage() {
@@ -150,6 +160,14 @@ class SoundManager {
 
   playSkeletonFrighten() {
     this.skeletonFrighten.play();
+  }
+
+  playCaretakerSpell() {
+    this.caretakerSpell.play();
+  }
+
+  playCaretakerLastrite() {
+    this.caretakerLastrite.play();
   }
 }
 

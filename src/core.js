@@ -54,6 +54,7 @@ import Chicken from './mobs/chicken';
 import Dwarf from './mobs/dwarf';
 import Ent from './mobs/ent';
 import Skeleton from './mobs/skeleton';
+import Caretaker from './mobs/caretaker';
 
 import { armour } from './equipment-store';
 
@@ -466,7 +467,8 @@ const runic_echoes = function() {
 const advance = function () {
   Stats.playerLevel += 1;
   // Level Complete
-  if (Stats.playerLevel > 3) {
+  if (Stats.playerLevel > 3 && Stats.playerLevelName == 'forest') {
+    Stats.playerLevelName = 'graveyard';
     lm.setGraveyard();
   }
 
@@ -521,7 +523,10 @@ const getNextMonster = function(level) {
       return Skeleton;
 
     case 5:
-      return Skeleton;
+      return Caretaker;
+    
+    case 6:
+      return Caretaker;  
 
     default:
       throw new Error('getNextMonster: Out of monsters');
@@ -573,5 +578,7 @@ window.onload = () => {
 // }, 2500);
 
 // Skip to monsters. Function still +1 to level 
-Stats.playerLevel = 2;
+Stats.playerLevel = 4;
 advance();
+lm.setGraveyard();
+Stats.playerLevelName = 'graveyard';

@@ -80,7 +80,16 @@ const status = {
     particles() {
     },
   },
-}
+  BOSS: {
+    id: 'monster-boss',
+    unit: 'monster',
+    buff: null,
+    icon: 'ra-monster-skull',
+    message: `<b>Boss</b> - This monster has particularly strong spells and stats.`,
+    particles() {
+    },
+  },
+};
 
 const setStatus = (buff) => {
   const el = document.getElementById(buff.id);
@@ -103,9 +112,10 @@ const setStatus = (buff) => {
 
     if (buff.buff) {
       icon.classList.add('colour-buff');
-    }
-    else {
+    } else if (buff.buff === false) {
       icon.classList.add('colour-debuff');
+    } else {
+      icon.classList.add('colour-boss');
     }
 
     status.appendChild(icon);
@@ -220,8 +230,8 @@ export const endTurn = (result) => {
 
   setTimeout(() => {
     currentMonster.turn();         
-  }, 1500);
-}
+  }, 1300);
+};
 
 const beginTurnPlayer = () => {
   // Item Conditions
@@ -320,8 +330,12 @@ export const endTurnMonster = function (result) {
     setStatus(status.FRIGHTENED);
   }
 
-  if (Stats.currentMonster.type === 'undead') {
+  if (Stats.currentMonster.type.includes('undead')) {
     setStatus(status.UNDEAD);
+  }
+  
+  if (Stats.currentMonster.type.includes('boss')) {
+    setStatus(status.BOSS);
   }
 
   $('.monster-graphic').addClass('poke-left');
@@ -341,7 +355,7 @@ export const endTurnMonster = function (result) {
   setTimeout(() => {
     beginTurnPlayer();
     enable();
-  }, 500);
+  }, 800);
 }
 
 export const playerHealthHelper = (result) => {
