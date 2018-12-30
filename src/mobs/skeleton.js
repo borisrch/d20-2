@@ -8,12 +8,12 @@ import Globals from '../globals';
 
 const skeleton = {
   name: 'Jack, the Skeleton',
-  monsterHealth: 50,
+  monsterHealth: 45,
   monsterArmour: 0,
   monsterDamage: 6,
   monsterRage: 0,
   src: 'res/mobs/skeleton.png',
-  type: 'undead',
+  type: ['undead'],
   turn() {
     if (Stats.monsterRage > 20) {
       this.frighten();
