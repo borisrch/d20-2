@@ -8,12 +8,12 @@ import Globals from '../globals';
 
 const caretaker = {
   name: 'Yorick, the Caretaker',
-  monsterHealth: 65,
+  monsterHealth: 40,
   monsterArmour: 10,
   monsterDamage: 10,
   monsterRage: 0,
   src: 'res/mobs/caretaker.png',
-  type: ['undead', 'boss'],
+  type: ['undead', 'elite'],
   init: false,
   turn() {
     if(!this.init) {
@@ -23,7 +23,7 @@ const caretaker = {
 
     const result = roll(3);
 
-    if (result == 3 || Stats.monsterHealth < 20) {
+    if (result == 3 || Stats.monsterHealth < 10) {
       this.desecrate();
     } else if (Stats.monsterRage >= 60) {
       this.lastRite();
@@ -51,8 +51,8 @@ const caretaker = {
     const result = roll(3) + roll(3) + roll(3);
     playerHealthHelper(result);
     log(`Caretaker conjures <i>Last Rite</i> and hits for ${result} damage!`, 'ms');
-    Globals.sound.playCaretakerSpell();
-    Globals.particles.showCaretakerSpell();
+    Globals.sound.playCaretakerLastrite();
+    Globals.particles.showCaretakerLastrite();
     endTurnMonster(result);
   },
   desecrate() {

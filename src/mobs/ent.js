@@ -13,7 +13,7 @@ const ent = {
   monsterDamage: 10,
   monsterRage: 0,
   src: 'res/mobs/ogre.png',
-  type: ['normal', 'boss'],
+  type: ['normal', 'elite'],
   turn() {
     if (Stats.monsterRage > 50) {
       this.growth();
