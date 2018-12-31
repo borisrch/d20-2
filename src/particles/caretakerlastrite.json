@@ -8,7 +8,7 @@
       }
     },
     "color": {
-      "value": ["#64FFDA", "#69F0AE"]
+      "value": ["#B388FF", "#EA80FC"]
     },
     "shape": {
       "type": "edge",
@@ -49,16 +49,16 @@
     },
     "move": {
       "enable": true,
-      "speed": 5,
-      "direction": "left",
+      "speed": 8,
+      "direction": "right",
       "random": true,
       "straight": false,
       "out_mode": "bounce",
       "bounce": false,
       "attract": {
         "enable": true,
-        "rotateX": 5,
-        "rotateY": 10000
+        "rotateX": 10000,
+        "rotateY": 5
       }
     }
   },
