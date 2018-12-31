@@ -123,6 +123,10 @@ class ParticlesManager {
     this.showMonsterSpellParticles(`${path}caretakerspell.json`);
   }
 
+  showCaretakerLastrite() {
+    this.showMonsterSpellParticles(`${path}caretakerlastrite.json`);
+  }
+
   /* Conditions/Buffs */
   showDwarfTank() {
     this.showMonsterParticles(`${path}dwarftank.json`);
