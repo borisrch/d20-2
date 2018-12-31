@@ -526,7 +526,7 @@ const getNextMonster = function(level) {
       return Caretaker;
     
     case 6:
-      return Caretaker;  
+      return Caretaker;
 
     default:
       throw new Error('getNextMonster: Out of monsters');
