@@ -26,7 +26,7 @@ const status = {
     unit: 'monster',
     buff: false,
     icon: 'ra-player-thunder-struck',
-    message: '<b>Shocked</b> - This monster will take additional damage on your next attack.',
+    message: '<b>Shocked</b><br/>This monster will take bonus damage on your next attack.',
     particles() {
       Globals.particles.showShocked();
     },
@@ -36,7 +36,7 @@ const status = {
     unit: 'player',
     buff: false,
     icon: 'ra-player-despair',
-    message: '<b>Disadvantaged</b> - You are less likely to hit on your next attack.',
+    message: '<b>Disadvantaged</b><br/>You are less likely to hit on your next attack.',
     particles() {
       Globals.particles.showDisadvantaged();
     },
@@ -46,7 +46,7 @@ const status = {
     unit: 'monster',
     buff: true,
     icon: 'ra-muscle-fat',
-    message: '<b>Dwarven Resilience</b> - Armour class is buffed by 4 for this turn.',
+    message: '<b>Dwarven Resilience</b><br/>Armour class is buffed by 4 for this turn.',
     particles() {
       Globals.particles.showDwarfTank();
     },
@@ -56,7 +56,7 @@ const status = {
     unit: 'player',
     buff: false,
     icon: 'ra-player-pain',
-    message: '<b>Frightened</b> - Armour class is reduced by 4 for this turn.',
+    message: '<b>Frightened</b><br/>Armour class is reduced by 4 for this turn.',
     particles() {
       Globals.particles.showDisadvantaged();
     },
@@ -66,7 +66,7 @@ const status = {
     unit: 'player',
     buff: true,
     icon: 'ra-fizzing-flask',
-    message: `<b>Potion Active</b> - A potion buff is currently affecting your stats.`,
+    message: `<b>Potion Active</b><br/>A potion buff is currently affecting your stats.`,
     particles() {
       Globals.particles.showPotionActive();
     },
@@ -76,16 +76,16 @@ const status = {
     unit: 'monster',
     buff: true,
     icon: 'ra-skull',
-    message: `<b>Undead</b> - This monster is undead and will take 2 less damage from all attacks.`,
+    message: `<b>Undead</b><br/>This monster will take 2 less damage from all attacks.`,
     particles() {
     },
   },
-  BOSS: {
-    id: 'monster-boss',
+  ELITE: {
+    id: 'monster-elite',
     unit: 'monster',
     buff: null,
     icon: 'ra-monster-skull',
-    message: `<b>Boss</b> - This monster has particularly strong spells and stats.`,
+    message: `<b>Elite</b><br/>This monster has particularly strong spells and stats.`,
     particles() {
     },
   },
@@ -115,7 +115,7 @@ const setStatus = (buff) => {
     } else if (buff.buff === false) {
       icon.classList.add('colour-debuff');
     } else {
-      icon.classList.add('colour-boss');
+      icon.classList.add('colour-elite');
     }
 
     status.appendChild(icon);
@@ -334,8 +334,8 @@ export const endTurnMonster = function (result) {
     setStatus(status.UNDEAD);
   }
   
-  if (Stats.currentMonster.type.includes('boss')) {
-    setStatus(status.BOSS);
+  if (Stats.currentMonster.type.includes('elite')) {
+    setStatus(status.ELITE);
   }
 
   $('.monster-graphic').addClass('poke-left');
