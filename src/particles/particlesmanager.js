@@ -24,7 +24,7 @@ class ParticlesManager {
           particlesJS.load('particles-js', 'src/particles/noop.json', function() {});
           el.classList.remove('animated', 'fadeOut');
         }, 1000);
-      }, 1250);
+      }, 1000);
     });
   }
   showMonsterSpellParticles(zpath) {
