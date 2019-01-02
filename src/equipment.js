@@ -1,6 +1,7 @@
 import tingle from 'tingle.js';
 
 import Stats from './stats';
+import { updateStats } from './update';
 import {
   sapphireAmuletCondition
 } from './conditions';
@@ -30,96 +31,22 @@ let SELECTED_AMULET = null;
 let SELECTED_POTION = null;
 let SELECTED_ARMOUR = null;
 
-export const selectWeapon = function (weapon) {
-  switch (weapon) {
-    case 'Oak Wand':
-      Stats.playerRunic = 2;
-      Stats.playerHitChanceModifier = 0;
-      break;
-
-    case 'Ebony Wand':
-      Stats.playerRunic = 3;
-      Stats.playerHitChanceModifier = 2;
-      break;
-
-    case 'Elder Wand':
-      Stats.playerRunic = 4;
-      Stats.playerHitChanceModifier = 3;
-      break;
-
-    default:
-      throw new Error('Error at selectWeapon');
-      break;
-  }
-}
-
-export const selectAmulet = function (amulet) {
-  switch (amulet) {
-    case 'None':
-      sapphireAmuletCondition.active = false;
-      break;
-
-    case 'Sapphire Amulet':
-      sapphireAmuletCondition.active = true;
-      break;
-
-    case 'Emerald Amulet':
-      sapphireAmuletCondition.active = false;
-      Stats.playerArmour = Stats.playerArmour + 2;
-      break;
-
-    case 'Ruby Amulet':
-      break;
-
-    default:
-      throw new Error('Error at selectAmulet');
-      break;
-  }
-}
-
-export const selectTrinket = function (trinket) {
-  switch (trinket) {
-    case 'None':
-
-      break;
-
-    case 'Magical Stick':
-
-      break;
-
-    case 'Cursed Locket':
-
-      break;
-
-    case 'Ancient Coin':
-      break;
-
-
-    case 'Null Sphere':
-      break;
-
-    default:
-      throw new Error('Error at selectTrinket');
-      break;
-  }
-}
-
 export const getGold = () => {
   return '<div>Current gold: ' + Stats.gold + '</div>';
 }
 
 export const setShopItem = (potionName, potionDescription, ra, style, potionCost, id) => {
 
-  let shopDesc = document.createElement('div');
+  const shopDesc = document.createElement('div');
   shopDesc.classList.add('shop-desc');
 
-  let potion = document.createElement('p');
+  const potion = document.createElement('p');
   potion.innerText = potionName + '';
 
-  let description = document.createElement('p');
-  description.innerText = potionDescription
+  const description = document.createElement('p');
+  description.innerText = potionDescription;
 
-  let icon = document.createElement('span');
+  const icon = document.createElement('span');
   icon.classList.add('ra');
   icon.classList.add(ra);
   icon.classList.add(style);
@@ -229,8 +156,7 @@ export const updateEquipmentInterface = () => {
 }
 
 // Use for initial construction of weapon interface.
-const setWeaponInterface = () => {
-
+const setWeaponInterface = (modal) => {
   const weaponInterface = document.getElementById('weapon-interface');
 
   const upperContainer = document.createElement('div');
@@ -238,7 +164,6 @@ const setWeaponInterface = () => {
   upperContainer.id = 'upper-container-weapon';
 
   wizardItems.forEach((weapon) => {
-
     const weaponGroup = document.createElement('div');
     weaponGroup.className = 'weapon-group';
     weaponGroup.id = weapon.id;
@@ -258,7 +183,6 @@ const setWeaponInterface = () => {
     weaponGroup.appendChild(img);
     weaponGroup.appendChild(stats);
     upperContainer.appendChild(weaponGroup);
-
   });
 
   const lowerContainer = document.createElement('div');
@@ -269,7 +193,7 @@ const setWeaponInterface = () => {
   button.innerText = 'SELECT WEAPON';
   lowerContainer.appendChild(button);
 
-  // Append elements before adding logic.  
+  // Append elements before adding logic.
   weaponInterface.appendChild(upperContainer);
   weaponInterface.appendChild(lowerContainer);
 
@@ -282,28 +206,61 @@ const setWeaponInterface = () => {
 
       // TODO: Add button select logic. May need to move modal logic to here for close() function.
       const button = document.getElementById('weapon-interface-button');
-      button.disabled = false;
-      button.innerText = `Equip ${weapon.name}`;
+      const newButton = document.createElement('button');
+      newButton.className = 'weapon-interface-button';
+      newButton.id = 'weapon-interface-button';
+
+      // Checks to see if it is currently equipped.
+      if (Stats.playerWeapon === SELECTED_WEAPON) {
+        newButton.disabled = true;
+        newButton.classList.add('button-disabled');
+        newButton.innerText = `${weapon.name} already equipped.`;
+      } else if (weapon.active === false) {
+        newButton.disabled = true;
+        newButton.classList.add('button-disabled');
+        newButton.innerText = 'Item not owned';
+      } else {
+        newButton.disabled = false;
+        newButton.innerText = `Equip ${weapon.name}`;
+        newButton.addEventListener('click', () => {
+          weapon.action();
+          updateStats();
+          modal.close();
+        });
+      }
+
+      button.remove();
+      lowerContainer.appendChild(newButton);
 
       const container = document.getElementById('upper-container-weapon');
       Array.from(container.children).forEach((item) => {
-        if (item.id != weapon.id) {
+        if (item.id !== weapon.id) {
           item.classList.remove('weapon-selected');
         }
       });
     });
   });
-}
+};
 
 // Use to check if weapon is owned.
 export const updateWeaponInterface = () => {
   wizardItems.forEach((weapon) => {
-    if (weapon.active == false) {
+    if (weapon.active === false) {
       const wep = document.getElementById(weapon.id);
       wep.classList.add('weapon-unavailable');
     }
-  })
-}
+  });
+  const button = document.getElementById('weapon-interface-button');
+  if (SELECTED_WEAPON === Stats.playerWeapon) {
+    button.disabled = true;
+    button.classList.add('button-disabled');
+    button.innerText = 'Item already equipped.';
+  } else if (SELECTED_WEAPON === null) {
+    button.disabled = true;
+    button.classList.add('button-disabled');
+    button.innerText = 'Select item to equip.';
+  }
+};
 
 const setAmuletInterface = (modal) => {
 
@@ -326,7 +283,7 @@ const setAmuletInterface = (modal) => {
 
     box.appendChild(img);
     left.appendChild(box);
-  })
+  });
 
   const right = document.createElement('div');
   right.className = 'item-interface-right';
@@ -418,14 +375,13 @@ const setAmuletInterface = (modal) => {
 
       const container = document.getElementById('amulet-left');
       Array.from(container.children).forEach((item) => {
-        if (item.id != amulet.id) {
+        if (item.id !== amulet.id) {
           item.classList.remove('item-selected');
         }
       });
-
     });
   });
-}
+};
 
 export const updateAmuletInterface = () => {
   amulets.forEach((amulet) => {
@@ -540,7 +496,7 @@ const setArmourInterface = () => {
         newButton.disabled = false;
         newButton.innerText = `Equip ${_armour.name}`;
         newButton.addEventListener('click', () => {
-          amulet.action();
+          _armour.action();
           modal.close();
         });
       }
@@ -866,7 +822,7 @@ export const buildInterface = () => {
 
   // Build interfaces.
   weaponModal.setContent('<div id="weapon-interface"></div>');
-  setWeaponInterface();
+  setWeaponInterface(weaponModal);
 
   amuletModal.setContent('<div id="amulet-interface"></div>');
   setAmuletInterface(amuletModal);

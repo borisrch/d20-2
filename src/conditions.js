@@ -60,6 +60,85 @@ export const resetRing = () => {
   ARTEMISIAN_RING_CONDITION.active = false;
 };
 
+export const WIZARD_WEAPON_1 = {
+  active: false,
+  stats: {
+    runic: 2,
+    damage: 6,
+    hit: null,
+  },
+};
+
+export const WIZARD_WEAPON_2 = {
+  active: false,
+  stats: {
+    runic: 3,
+    damage: 8,
+    hit: null,
+  },
+};
+
+export const WIZARD_WEAPON_3 = {
+  active: false,
+  stats: {
+    runic: 4,
+    damage: 10,
+    hit: 1,
+  },
+};
+
+
+export const WIZARD_WEAPON_4 = {
+  active: false,
+  stats: {
+    runic: 5,
+    damage: 11,
+    hit: 2,
+  },
+};
+
+
+export const WIZARD_WEAPON_5 = {
+  active: false,
+  stats: {
+    runic: 6,
+    damage: 12,
+    hit: 3,
+  },
+};
+
+export const resetWizardWeapon = () => {
+  if (WIZARD_WEAPON_1.active) {
+    Stats.playerDamage -= WIZARD_WEAPON_1.stats.damage;
+    Stats.playerRunic -= WIZARD_WEAPON_1.stats.runic;
+  }
+  if (WIZARD_WEAPON_2.active) {
+    Stats.playerDamage -= WIZARD_WEAPON_2.stats.damage;
+    Stats.playerRunic -= WIZARD_WEAPON_2.stats.runic;
+  }
+  if (WIZARD_WEAPON_3.active) {
+    Stats.playerDamage -= WIZARD_WEAPON_3.stats.damage;
+    Stats.playerRunic -= WIZARD_WEAPON_3.stats.runic;
+    Stats.playerHitChanceModifier -= WIZARD_WEAPON_3.stats.hit;
+  }
+  if (WIZARD_WEAPON_4.active) {
+    Stats.playerDamage -= WIZARD_WEAPON_4.stats.damage;
+    Stats.playerRunic -= WIZARD_WEAPON_4.stats.runic;
+    Stats.playerHitChanceModifier -= WIZARD_WEAPON_4.stats.hit;
+  }
+  if (WIZARD_WEAPON_5.active) {
+    Stats.playerDamage -= WIZARD_WEAPON_5.stats.damage;
+    Stats.playerRunic -= WIZARD_WEAPON_5.stats.runic;
+    Stats.playerHitChanceModifier -= WIZARD_WEAPON_5.stats.hit;
+  }
+
+  WIZARD_WEAPON_1.active = false;
+  WIZARD_WEAPON_2.active = false;
+  WIZARD_WEAPON_3.active = false;
+  WIZARD_WEAPON_4.active = false;
+  WIZARD_WEAPON_5.active = false;
+};
+
 // Potion conditions
 export const defensePotionCondition = {
   turns: 0,
