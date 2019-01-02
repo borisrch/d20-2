@@ -4,7 +4,7 @@ button:focus {
 
 button:disabled {
   filter: opacity(35%);
-  
+  pointer-events: none;
 }
 
 .ability-interface > button {
