@@ -336,6 +336,8 @@ export const endTurnMonster = function (result) {
   
   if (Stats.currentMonster.type.includes('elite')) {
     setStatus(status.ELITE);
+  } else {
+    removeStatus(status.ELITE);
   }
 
   $('.monster-graphic').addClass('poke-left');
