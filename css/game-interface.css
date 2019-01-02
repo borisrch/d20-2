@@ -152,7 +152,7 @@ body {
   color: #26A69A;
 }
 
-.colour-debuff, .colour-buff, .colour-boss {
+.colour-debuff, .colour-buff, .colour-elite {
   color: #fff;
   background-color: #EF6C00;
   padding: 5px;
@@ -162,7 +162,7 @@ body {
   outline: none;
 }
 
-.colour-boss {
+.colour-elite {
   background-color: #fd574b;
 }
 
@@ -271,8 +271,8 @@ body {
 }
 
 .log-player-miss {
-  border-right: 5px solid #3498DB;
-  color: #3498DB94;
+  border-right: 5px solid #2196F3;
+  color: rgba(33, 149, 243, 0.575);
 }
 
 .log-info {
@@ -282,10 +282,10 @@ body {
 }
 
 .log-victory {
-  border-right: 5px solid #009688;
-  border-left: 5px solid #009688;
-  color: #009688;
-  background-color: #DCEDC8;
+  border-right: 5px solid #4CAF50;
+  border-left: 5px solid #4CAF50;
+  color: #4CAF50;
+  background-color: #E8F5E9;
 }
 
 .log-defeat {
@@ -757,7 +757,7 @@ body {
 
 .item-lore {
   font-style: italic;
-  color: #90A4AE;
+  color: rgb(107, 125, 134);
   font-size: 0.8em;
   width: 90%;
   margin-left: 5%;
@@ -893,12 +893,12 @@ body {
   background-color: #BA68C8;
 }
 
-@-webkit-keyframes animate-sky {
+@-webkit-keyframes animate-sky-2 {
   0% { 
     background-position: 0 0; 
   }
   100% { 
-    background-position: -100% 0; 
+    background-position: -750px 0; 
   }
 }
 
@@ -922,7 +922,7 @@ body {
 
 .cloud-2 {
   background-image: url('../res/platform/cloud-5.png');
-  animation: animate-sky 75s linear infinite;
+  animation: animate-sky-2 60s linear infinite;
 }
 
 .light-ui {
