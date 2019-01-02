@@ -15,15 +15,6 @@ import { DEV } from './dev';
 import Stats from './stats';
 import { manaCheck } from './check';
 import {
-  potions,
-  setShopItem,
-  getGold,
-  setEquipmentInterface,
-  setWeaponInterface,
-  updateWeaponInterface,
-  updateEquipmentInterface,
-  setAmuletInterface,
-  updateAmuletInterface,
   buildInterface,
 } from './equipment';
 import {
@@ -57,7 +48,7 @@ import Skeleton from './mobs/skeleton';
 import Caretaker from './mobs/caretaker';
 
 import { armour } from './equipment-store';
-
+import { wizardItems } from './equipment-weapons';
 
 const monsterHealthHelper = function (result) {
   if (Stats.monsterHealth - result <= 0) {
@@ -131,13 +122,9 @@ const init = function (mode) {
 }
 
 const mageInit = function () {
-  
   buildInterface();
-
   Stats.playerHealth = 100;
-  Stats.playerDamage = 6;
   Stats.playerArmour = 8;
-  Stats.playerRunic = 2;
   Stats.playerMana = 100;
 
   const playerGraphic = document.getElementById('player-graphic');
@@ -203,6 +190,8 @@ const mageInit = function () {
     }
     manaCheck(25, runic_echoes);
   });
+
+  wizardItems[0].action();
 }
 
 const tippyInit = function () {
@@ -561,24 +550,24 @@ window.onload = () => {
       window.dispatchEvent(new Event('resize'));
     }, 1050);
   }, 700);
-}
+};
 
 // runTutorial();
 
 // Turn simulator
 
 // let turnCount = 0;
-// const sim = setInterval(function(){  
+// const sim = setInterval(function(){
 //   if(turnCount < 10) {
 //     turnCount++;
 //     playerTurnBasicAttack();
 //   } else {
 //     clearInterval(sim);
-//   }  
+//   }
 // }, 2500);
 
 // Skip to monsters. Function still +1 to level 
-Stats.playerLevel = 4;
-advance();
-lm.setGraveyard();
-Stats.playerLevelName = 'graveyard';
+// Stats.playerLevel = 4;
+// advance();
+// lm.setGraveyard();
+// Stats.playerLevelName = 'graveyard';
