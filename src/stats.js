@@ -8,6 +8,7 @@ export default {
   playerLevel: 0,
   playerClass: 'null',
   playerMaxMana: 100,
+  playerMaxHealth: 100,
   playerGraphic: '/res/player/wizard/wizard-1-animated.gif',
   playerWeapon: '',
   playerRing: '',
@@ -18,6 +19,7 @@ export default {
     result: '',
     anim: '',
   },
+  playerSpells: [],
   playerLevelName: 'forest',
   currentMonster: null,
   monsterHealth: 0,
@@ -26,4 +28,5 @@ export default {
   monsterRage: 0,
   monsterName: null,
   gold: 100,
-}
+  turnCount: 0,
+};
