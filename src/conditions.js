@@ -87,7 +87,6 @@ export const WIZARD_WEAPON_3 = {
   },
 };
 
-
 export const WIZARD_WEAPON_4 = {
   active: false,
   stats: {
@@ -96,7 +95,6 @@ export const WIZARD_WEAPON_4 = {
     hit: 2,
   },
 };
-
 
 export const WIZARD_WEAPON_5 = {
   active: false,

@@ -33,7 +33,7 @@ let SELECTED_ARMOUR = null;
 
 export const getGold = () => {
   return '<div>Current gold: ' + Stats.gold + '</div>';
-}
+};
 
 export const setShopItem = (potionName, potionDescription, ra, style, potionCost, id) => {
 
@@ -263,7 +263,6 @@ export const updateWeaponInterface = () => {
 };
 
 const setAmuletInterface = (modal) => {
-
   const amuletInterface = document.getElementById('amulet-interface');
 
   const upper = document.createElement('div');
@@ -424,7 +423,7 @@ const setArmourInterface = () => {
 
     box.appendChild(img);
     left.appendChild(box);
-  })
+  });
 
   const right = document.createElement('div');
   right.className = 'item-interface-right';
@@ -565,7 +564,7 @@ const setTrinketInterface = () => {
 
     box.appendChild(img);
     left.appendChild(box);
-  })
+  });
 
   const right = document.createElement('div');
   right.className = 'item-interface-right';

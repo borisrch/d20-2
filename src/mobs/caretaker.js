@@ -16,18 +16,18 @@ const caretaker = {
   type: ['undead', 'elite'],
   init: false,
   turn() {
-    if(!this.init) {
+    if (!this.init) {
       this.init = true;
       Globals.particles.showCaretaker();
     }
 
     const result = roll(3);
 
-    if (result == 3 || Stats.monsterHealth < 10) {
+    if (result === 3 || Stats.monsterHealth < 10) {
       this.desecrate();
     } else if (Stats.monsterRage >= 60) {
       this.lastRite();
-    } else if (result == 1) {
+    } else if (result === 1) {
       this.basicAttack();
     } else {
       this.basicAttack();
