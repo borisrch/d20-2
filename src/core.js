@@ -6,7 +6,8 @@ import { Howl } from 'howler';
 
 import '../css/tingle.min.css';
 import 'tippy.js/dist/tippy.css';
-// import '../css/game-interface.css';
+import '../css/game-interface.css';
+import '../css/spell-interface.css';
 
 import { roll, attack, pureAttack, bonus } from './rollattack';
 import { log } from './log';
@@ -30,7 +31,7 @@ import {
   runicPotionCondition,
   resetMonsterConditions,
 } from './conditions';
-import { runTutorial, tutorialCondition, tutorialPause } from './tutorial';
+// import { runTutorial, tutorialCondition, tutorialPause } from './tutorial';
 import { endTurn, endTurnMonster, playerHealthHelper } from './turn';
 import { updateStats } from './update';
 
@@ -130,6 +131,31 @@ const mageInit = function () {
   const playerGraphic = document.getElementById('player-graphic');
   playerGraphic.src = Stats.playerGraphic;
 
+  // REFACTOR: Temp stores spell metadata, needs to be changed everytime spells are changed.
+  const spells = [
+    {
+      name: 'Scorch',
+      id: 'q',
+      cost: 75,
+    },
+    {
+      name: 'Alzur\'s Thunder',
+      id: 'w',
+      cost: 100,
+    },
+    {
+      name: 'Anima Surge',
+      id: 'e',
+      cost: 50,
+    },
+    {
+      name: 'Runic Echoes',
+      id: 'r',
+      cost: 25,
+    },
+  ];
+  Stats.playerSpells.push(...spells);
+
   $('.q').addClass('spell spell-dragon-breath');
   $('.qi').addClass('ra ra-dragon-breath icon');
 
@@ -143,28 +169,17 @@ const mageInit = function () {
   $('.ri').addClass('ra ra-fire-shield icon');
 
   document.getElementById('basic-attack').addEventListener('click', () => {
-    if (tutorialCondition.a) {
-      tutorialCondition.a = false;
-      tutorialPause(2);
-      tutorialCondition.b = true;
-    }
-
     playerTurnBasicAttack();
   });
 
   document.getElementById('q').addEventListener('click', () => {
-    if (tutorialCondition.b) {
-      tutorialCondition.b = false;
-      tutorialPause(3);
-    }
-
     manaCheck(75, scorch);
   });
 
   const _W = document.getElementById('w');
   const W = new Hammer(_W);
   W.on('tap', function(e) {
-    manaCheck(75, alzurs_thunder);
+    manaCheck(100, alzurs_thunder);
   });  
 
   // document.getElementById('w').addEventListener('click', () => {
@@ -176,18 +191,10 @@ const mageInit = function () {
   // });
 
   document.getElementById('e').addEventListener('click', () => {
-    if (tutorialCondition.b) {
-      tutorialCondition.b = false;
-      tutorialPause(3);
-    }
     manaCheck(50, deathfire_grasp);
   });
 
   document.getElementById('r').addEventListener('click', () => {
-    if (tutorialCondition.b) {
-      tutorialCondition.b = false;
-      tutorialPause(3);
-    }
     manaCheck(25, runic_echoes);
   });
 
@@ -456,13 +463,13 @@ const runic_echoes = function() {
 const advance = function () {
   Stats.playerLevel += 1;
   // Level Complete
-  if (Stats.playerLevel > 3 && Stats.playerLevelName == 'forest') {
+  if (Stats.playerLevel > 3 && Stats.playerLevelName === 'forest') {
     Stats.playerLevelName = 'graveyard';
-    lm.setGraveyard();
+    currentMonster = getNextMonster(Stats.playerLevel);
+    lm.endForest();
+  } else {
+    currentMonster = getNextMonster(Stats.playerLevel);
   }
-
-  currentMonster = getNextMonster(Stats.playerLevel);
-
   resetMonsterConditions();
   Stats.currentMonster = currentMonster;
   Stats.monsterHealth = currentMonster.monsterHealth;
@@ -530,6 +537,7 @@ const pm = new ParticlesManager();
 Globals.particles = pm;
 const lm = new LevelManager();
 
+
 if (DEV) {
   Stats.playerHealth = 1000;
 }
@@ -567,7 +575,8 @@ window.onload = () => {
 // }, 2500);
 
 // Skip to monsters. Function still +1 to level 
-// Stats.playerLevel = 4;
+// Stats.playerLevel = 2;
 // advance();
+
 // lm.setGraveyard();
 // Stats.playerLevelName = 'graveyard';
