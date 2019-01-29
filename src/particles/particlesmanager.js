@@ -12,6 +12,14 @@ const path = 'src/particles/';
 class ParticlesManager {
   constructor() {
     this.particlesJS = particlesJS;
+    /*  Refactor into array which processes each particle.json file.
+        atm, everytime a particle is used a new xhr is made. preload is better. */
+    const preload = document.createElement('link');
+    preload.rel = 'preload';
+    preload.href = '/src/particles/thunder.json';
+    preload.as = 'fetch';
+    preload.crossOrigin = 'anonymous';
+    document.body.appendChild(preload);
   }
   /* Used for Player spell particles */
   showParticles(zpath) {
@@ -70,7 +78,7 @@ class ParticlesManager {
     setTimeout(() => {
       mbel.classList.remove('animated', 'fadeOut');
       particlesJS.load('particles-monster-js', 'src/particles/noop.json', function() {});
-    }, 1000);
+    }, 900);
   }
 
   showPlayerParticles(zpath) {
@@ -82,7 +90,7 @@ class ParticlesManager {
     setTimeout(() => {
       pel.classList.remove('animated', 'fadeOut');
       particlesJS.load('particles-player-js', 'src/particles/noop.json', function() {});
-    }, 1000);
+    }, 900);
   }
 
   /* Spells */
