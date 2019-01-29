@@ -1,6 +1,7 @@
 import tingle from 'tingle.js';
 import { clearLog } from './log';
 import Globals from './globals';
+import { Stats } from './stats';
 
 const platform = document.getElementById('platform');
 const game = document.getElementById('game-interface');
@@ -107,9 +108,53 @@ class LevelManager {
     });
   }
 
-  setGraveyard() {
-    game.setAttribute('style', '');
+  endForest() {
     game.classList.add('animated', 'fadeOutLeft');
+    this.modal = new tingle.modal({
+      footer: false,
+      stickyFooter: false,
+      closeMethods: [],
+      closeLabel: "Close",
+    });
+    this.modal.setContent('<div id="level-complete-interface"></div>');
+    const el = document.getElementById('level-complete-interface');
+    const container = document.createElement('div');
+    container.className = 'level-complete-container';
+    
+    const title = document.createElement('span');
+    title.innerHTML = 'Level Complete';
+    title.className = 'level-complete-title';
+
+    // const rating = document.createElement('ion-icon');
+    // rating.className = '';
+    // rating.setAttribute('name', 'star');
+    // rating.setAttribute('size', 'large');
+    
+    const reward = document.createElement('span');
+    reward.innerHTML = 'You have unlocked the Faerun Staff.';
+    reward.className = 'level-complete-text';
+    
+    const button = document.createElement('button');
+    button.className = 'weapon-interface-button';
+    button.id = 'level-complete-interface-button';
+    button.innerHTML = 'Advance to next level';
+    
+    container.appendChild(title);
+    // container.appendChild(rating);
+    container.appendChild(reward);
+    container.appendChild(button);
+    el.appendChild(container);
+
+    button.addEventListener('click', () => {
+      this.setGraveyard();
+      this.modal.close();
+    });
+
+    this.modal.open();
+  }
+
+  setGraveyard() {
+    game.style = '';
     setTimeout(() => {
       clearLog();
       platform.src = 'res/platform/platform-2.png';
@@ -122,6 +167,11 @@ class LevelManager {
       game.classList.remove('fadeOutLeft');
       game.classList.add('fadeInRight');
     }, 1000);
+  }
+
+  refreshPlayerStats() {
+    Stats.playerHealth = Stats.playerMaxHealth;
+    Stats.playerMana = Stats.playerMaxMana;
   }
 }
 
