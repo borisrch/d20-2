@@ -41,6 +41,11 @@ const dwarf = {
       log('Dwarf missed.', 'miss');
       Globals.sound.playMiss();
     }
+    Stats.monsterLastSpell = {
+      name: 'Dwarf Basic Attack',
+      result,
+      anim: 'poke-left',
+    };
     endTurnMonster(result);
   },
   dwarfTank() {
@@ -49,6 +54,11 @@ const dwarf = {
     Stats.monsterArmour += dwarfTankCondition.bonusArmour;
     log('Dwarf uses <i>Dwarven Resilience</i> and buffs AC by 4!', 'ms');
     Globals.sound.playDwarfTank();
+    Stats.monsterLastSpell = {
+      name: 'Dwarf Tank',
+      result: null,
+      anim: 'poke-left',
+    };
     endTurnMonster();
   },
   dwarfSmash() {
@@ -60,6 +70,11 @@ const dwarf = {
       log('Dwarf missed.', 'miss');
       Globals.sound.playMiss();
     }
+    Stats.monsterLastSpell = {
+      name: 'Dwarf Smash',
+      result,
+      anim: 'poke-left',
+    };
     endTurnMonster(result);
   },
 };

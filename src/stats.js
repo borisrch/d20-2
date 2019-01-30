@@ -27,6 +27,11 @@ export default {
   monsterDamage: 0,
   monsterRage: 0,
   monsterName: null,
+  monsterLastSpell: {
+    name: '',
+    result: '',
+    anim: '',
+  },
   gold: 100,
   turnCount: 0,
 };

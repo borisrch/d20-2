@@ -37,6 +37,11 @@ const ent = {
       log('Ogre missed.', 'miss');
       Globals.sound.playMiss();
     }
+    Stats.monsterLastSpell = {
+      name: 'Ogre Basic Attack',
+      result,
+      anim: 'poke-left',
+    };
     endTurnMonster(result);
   },
   growth() {
@@ -51,6 +56,11 @@ const ent = {
       Globals.sound.playEntHeal();
       Globals.particles.showMobHeal();
       log(`Ogre uses <i>Battle Cry</i> and heals for ${extra} damage!`, 'ms');
+      Stats.monsterLastSpell = {
+        name: 'Ogre Heal',
+        result: null,
+        anim: 'poke-left',
+      };
       endTurnMonster();
     } else {
       this.basicAttack();
@@ -62,6 +72,11 @@ const ent = {
     Globals.sound.playEntTrip();
     Globals.particles.showEntTrip();
     log('Ogre uses <i>Earth Shaker</i> and makes you Disadvantaged!', 'ms');
+    Stats.monsterLastSpell = {
+      name: 'Ogre Disadvantage',
+      result: null,
+      anim: 'poke-left',
+    };
     endTurnMonster();
   },
 };

@@ -44,6 +44,11 @@ const caretaker = {
       log('Caretaker missed.', 'miss');
       Globals.sound.playMiss();
     }
+    Stats.monsterLastSpell = {
+      name: 'Caretaker Basic Attack',
+      result,
+      anim: 'poke-left',
+    };
     endTurnMonster(result);
   },
   lastRite() {
@@ -53,6 +58,11 @@ const caretaker = {
     log(`Caretaker conjures <i>Last Rite</i> and hits for ${result} damage!`, 'ms');
     Globals.sound.playCaretakerLastrite();
     Globals.particles.showCaretakerLastrite();
+    Stats.monsterLastSpell = {
+      name: 'Caretaker Last Rite',
+      result,
+      anim: 'poke-left',
+    };
     endTurnMonster(result);
   },
   desecrate() {
@@ -64,8 +74,13 @@ const caretaker = {
     Globals.particles.showMobHeal();
     Globals.particles.showCaretakerSpell();
     Globals.sound.playCaretakerSpell();
+    Stats.monsterLastSpell = {
+      name: 'Caretaker Desecrate',
+      result,
+      anim: 'poke-left',
+    };
     endTurnMonster(result);
-  }
+  },
 };
 
 export default caretaker;

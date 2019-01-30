@@ -21,12 +21,16 @@ const goblin = {
     const result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
     if (result !== null) {
       playerHealthHelper(result);
-      log('Goblin hits for ' + result + ' damage!', 'mb');
+      log(`Goblin hits for ${result} damage!`, 'mb');
       Globals.sound.playGoblin();
-    }
-    else {
+    } else {
       log('Goblin missed.', 'miss');
     }
+    Stats.monsterLastSpell = {
+      name: 'Goblin Basic Attack',
+      result,
+      anim: 'poke-right',
+    };
     endTurnMonster(result);
   },
   goblinSpit() {
@@ -40,6 +44,11 @@ const goblin = {
       log('Goblin missed.', 'miss');
       Globals.sound.playMiss();
     }
+    Stats.monsterLastSpell = {
+      name: 'Goblin Spit',
+      result,
+      anim: 'poke-right',
+    };
     endTurnMonster(result);
   }
 }

@@ -25,6 +25,13 @@ const chicken = {
       log('Chicken missed.', 'miss');
       Globals.sound.playMiss();
     }
+
+    Stats.monsterLastSpell = {
+      name: 'Chicken Basic Attack',
+      result,
+      anim: 'poke-left',
+    };
+
     endTurnMonster(result);
   },
 };

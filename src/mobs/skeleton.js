@@ -32,6 +32,11 @@ const skeleton = {
       log('Skeleton missed.', 'miss');
       Globals.sound.playMiss();
     }
+    Stats.monsterLastSpell = {
+      name: 'Skeleton Basic Attack',
+      result,
+      anim: 'poke-left',
+    };
     endTurnMonster(result);
   },
   frighten() {
@@ -45,7 +50,14 @@ const skeleton = {
 
     Globals.sound.playSkeletonFrighten();
     Globals.particles.showSkeletonFrighten();
+
     log(`Skeleton uses <i>Frighten</i> and reduces your armour by 4 for 2 turns.`, 'ms');
+
+    Stats.monsterLastSpell = {
+      name: 'Skeleton Frighten',
+      result: null,
+      anim: 'poke-left',
+    };
     endTurnMonster();
   },
 };
