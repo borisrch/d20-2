@@ -1,11 +1,50 @@
 import tingle from 'tingle.js';
 import { clearLog } from './log';
+
 import Globals from './globals';
-import { Stats } from './stats';
+import Stats from './stats';
+
+import Goblin from './mobs/goblin';
+import Chicken from './mobs/chicken';
+import Dwarf from './mobs/dwarf';
+import Ent from './mobs/ent';
+import Skeleton from './mobs/skeleton';
+import Caretaker from './mobs/caretaker';
+
+import { resetMonsterConditions } from './conditions';
+import { updateStats } from './update';
 
 const platform = document.getElementById('platform');
 const game = document.getElementById('game-interface');
 const cloud = document.getElementById('platform-clouds');
+
+const getNextMonster = function (level) {
+  switch (level) {
+    case 0:
+      return Chicken;
+
+    case 1:
+      return Goblin;
+
+    case 2:
+      return Dwarf;
+
+    case 3:
+      return Ent;
+
+    case 4:
+      return Skeleton;
+
+    case 5:
+      return Caretaker;
+
+    case 6:
+      return Caretaker;
+
+    default:
+      throw new Error('getNextMonster: Out of monsters');
+  }
+};
 
 const ui = {
   player: [
@@ -173,6 +212,62 @@ class LevelManager {
     Stats.playerHealth = Stats.playerMaxHealth;
     Stats.playerMana = Stats.playerMaxMana;
   }
+
+  advance() {
+    Stats.playerLevel += 1;
+    if (Stats.playerLevel > 3 && Stats.playerLevelName === 'forest') {
+      Stats.playerLevelName = 'graveyard';
+      this.endForest();
+    }
+    resetMonsterConditions();
+
+    const mob = getNextMonster(Stats.playerLevel);
+    Stats.currentMonster = mob;
+    Stats.monsterHealth = mob.monsterHealth;
+    Stats.monsterDamage = mob.monsterDamage;
+    Stats.monsterArmour = mob.monsterArmour;
+    Stats.monsterName = mob.name;
+    Stats.monsterRage = 0;
+
+    const el = document.getElementById('monster-graphic');
+    el.classList.add('animated', 'zoomOut');
+    el.src = mob.src;
+    setTimeout(() => {
+      el.classList.remove('animated', 'zoomOut');
+    }, 750);
+
+    updateStats();
+  }
 }
+
+// do MonsterHealthHelper --> spells.js --> fix mob spawning to quickly on next level advance?
+
+// const advance = function () {
+//   Stats.playerLevel += 1;
+//   // Level Complete
+//   if (Stats.playerLevel > 3 && Stats.playerLevelName === 'forest') {
+//     Stats.playerLevelName = 'graveyard';
+//     currentMonster = getNextMonster(Stats.playerLevel);
+//     lm.endForest();
+//   } else {
+//     currentMonster = getNextMonster(Stats.playerLevel);
+//   }
+//   resetMonsterConditions();
+//   Stats.currentMonster = currentMonster;
+//   Stats.monsterHealth = currentMonster.monsterHealth;
+//   Stats.monsterDamage = currentMonster.monsterDamage;
+//   Stats.monsterArmour = currentMonster.monsterArmour;
+//   Stats.monsterName = currentMonster.name;
+//   Stats.monsterRage = 0;
+
+  // const el = document.getElementById('monster-graphic');
+  // el.classList.add('animated', 'zoomOut');
+  // el.src = currentMonster.src;
+  // setTimeout(() => {
+  //   el.classList.remove('animated', 'zoomOut');
+  // }, 750);
+
+//   updateStats();
+// };
 
 export default LevelManager;

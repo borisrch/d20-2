@@ -3,7 +3,6 @@ import Hammer from 'hammerjs';
 import tingle from 'tingle.js';
 import { Howl } from 'howler';
 
-
 import '../css/tingle.min.css';
 import 'tippy.js/dist/tippy.css';
 import '../css/game-interface.css';
@@ -54,8 +53,8 @@ import { wizardItems } from './equipment-weapons';
 const monsterHealthHelper = function (result) {
   if (Stats.monsterHealth - result <= 0) {
     Stats.monsterHealth = 0;
-    log('You have slain ' + Stats.monsterName + '!', 'victory');
-    advance();
+    log(`You have slain ${Stats.monsterName} !`, 'victory');
+    lm.advance();
     monsterDead.active = true;
   } else {
     Stats.monsterHealth -= result;
@@ -89,7 +88,7 @@ const playerTurnBasicAttack = function () {
 
   Stats.playerLastSpell = {
     name: 'Basic Attack',
-    result: result,
+    result,
     anim: 'poke-right',
   }
 
@@ -203,10 +202,6 @@ const mageInit = function () {
 
 const tippyInit = function () {
 
-  const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
-  const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
-  const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
-
   const tippyMessages = [
     {
       el: '.player-damage-tip',
@@ -242,7 +237,7 @@ const tippyInit = function () {
     },
     {
       el: '#equipment-shop',
-      tip: '<b>Browse Shop</b>',
+      tip: '<b>Shop</b>',
     },
     {
       el: '#equipment-armour',
@@ -250,7 +245,7 @@ const tippyInit = function () {
     },
     {
       el: '#equipment-new',
-      tip: '<b>Change Equipment</b>',
+      tip: '<b>Equipment</b>',
     },
   ];
 
@@ -263,16 +258,9 @@ const tippyInit = function () {
 
 }
 
-const tippyMage = function() {  
-  const title = 'data-tippy';
-
-  const armourIcon = '<span class="ra ra-shield colour-ac"></span>';
+const tippyMage = function () {
   const damageIcon = '<span class="ra ra-sword colour-damage-tip"></span>';
-  const runicIcon = '<span class="ra ra-crystals colour-runic-tip"></span>';
-  const manaIcon = '<span class="ra ra-lightning-bolt colour-mana-tip"></span>';
-
-  const basicAttackTip = '<b>Basic Attack</b> - Deal 1-' + Stats.playerDamage + ' ' + damageIcon + ' .';
-
+  const basicAttackTip = `<b>Basic Attack</b> - Deal 1-${Stats.playerDamage} ${damageIcon} .`;
   const messages = [
     {
       el: '#basic-attack',
@@ -302,10 +290,9 @@ const tippyMage = function() {
       duration: 0,
     });
   });
+};
 
-}
-
-const monsterInit = function() {
+const monsterInit = function () {
   Stats.monsterArmour = Chicken.monsterArmour;
   Stats.monsterDamage = Chicken.monsterDamage;
   Stats.monsterHealth = Chicken.monsterHealth;
@@ -313,10 +300,10 @@ const monsterInit = function() {
   Stats.monsterName = Chicken.name;
   currentMonster = Chicken;
   Stats.currentMonster = currentMonster;
-}
+};
 
-const scorch = function() {
-  Stats.playerMana = Stats.playerMana - 75;
+const scorch = function () {
+  Stats.playerMana -= 75;
 
   deathfireGraspCondition.active = false;
 
@@ -459,35 +446,6 @@ const runic_echoes = function() {
   endTurn();
 }
 
-// Incomplete function. Add item types to this.
-const advance = function () {
-  Stats.playerLevel += 1;
-  // Level Complete
-  if (Stats.playerLevel > 3 && Stats.playerLevelName === 'forest') {
-    Stats.playerLevelName = 'graveyard';
-    currentMonster = getNextMonster(Stats.playerLevel);
-    lm.endForest();
-  } else {
-    currentMonster = getNextMonster(Stats.playerLevel);
-  }
-  resetMonsterConditions();
-  Stats.currentMonster = currentMonster;
-  Stats.monsterHealth = currentMonster.monsterHealth;
-  Stats.monsterDamage = currentMonster.monsterDamage;
-  Stats.monsterArmour = currentMonster.monsterArmour;
-  Stats.monsterName = currentMonster.name;
-  Stats.monsterRage = 0;
-
-  const el = document.getElementById('monster-graphic');
-  el.classList.add('animated', 'zoomOut');
-  el.src = currentMonster.src;
-  setTimeout(() => {
-    el.classList.remove('animated', 'zoomOut');
-  }, 750);
-
-  updateStats();
-};
-
 // const setMobileEvents = () => {
 //     // mobile - touch/press.
 //   const qElement = document.getElementById('q');
@@ -501,7 +459,7 @@ const advance = function () {
 //   // });
 // }
 
-const getNextMonster = function(level) {
+const getNextMonster = function (level) {
   switch (level) {
     case 0:
       return Chicken;
@@ -520,7 +478,7 @@ const getNextMonster = function(level) {
 
     case 5:
       return Caretaker;
-    
+
     case 6:
       return Caretaker;
 
