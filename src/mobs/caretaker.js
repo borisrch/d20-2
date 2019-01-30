@@ -8,8 +8,8 @@ import Globals from '../globals';
 
 const caretaker = {
   name: 'Yorick, the Caretaker',
-  monsterHealth: 40,
-  monsterArmour: 10,
+  monsterHealth: 45,
+  monsterArmour: 8,
   monsterDamage: 10,
   monsterRage: 0,
   src: 'res/mobs/caretaker.png',
@@ -35,7 +35,7 @@ const caretaker = {
   },
   basicAttack() {
     Stats.monsterRage += 20;
-    const result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
+    const result = pureAttack(5, 0, 0, 2, Stats.playerArmour);
     if (result != null) {
       playerHealthHelper(result);
       log(`Caretaker hits for ${result} damage!`, 'mb');

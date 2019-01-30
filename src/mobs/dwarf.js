@@ -8,9 +8,9 @@ import Globals from '../globals';
 
 const dwarf = {
   name: 'Gimli, the Dwarf',
-  monsterHealth: 30,
-  monsterArmour: 8,
-  monsterDamage: 6,
+  monsterHealth: 25,
+  monsterArmour: 4,
+  monsterDamage: 4,
   monsterRage: 0,
   src: 'res/mobs/dwarf-animated.gif',
   type: ['normal'],
@@ -18,10 +18,13 @@ const dwarf = {
     if (Stats.monsterRage > 40) {
       Stats.monsterRage = 0;
       this.dwarfSmash();
+    } else if (Stats.monsterHealth < 8) {
+      Stats.monsterRage += 10;
+      this.dwarfTank();
     } else {
       Stats.monsterRage += 10;
       const result = roll(100);
-      if (result > 75) {
+      if (result > 60) {
         this.dwarfTank();
       } else {
         this.basicAttack();
@@ -29,7 +32,7 @@ const dwarf = {
     }
   },
   basicAttack() {
-    const result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
+    const result = pureAttack(Stats.monsterDamage / 2, 0, 0, 2, Stats.playerArmour);
     if (result != null) {
       playerHealthHelper(result);
       log(`Dwarf hits for ${result} damage!`, 'mb');

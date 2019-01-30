@@ -8,9 +8,9 @@ import Globals from '../globals';
 
 const skeleton = {
   name: 'Jack, the Skeleton',
-  monsterHealth: 45,
+  monsterHealth: 30,
   monsterArmour: 0,
-  monsterDamage: 6,
+  monsterDamage: 5,
   monsterRage: 0,
   src: 'res/mobs/skeleton.png',
   type: ['undead'],
@@ -23,7 +23,7 @@ const skeleton = {
   },
   basicAttack() {
     Stats.monsterRage += 10;
-    const result = pureAttack(Stats.monsterDamage, 0, 0, 1, Stats.playerArmour);
+    const result = pureAttack(2, 0, 1, 2, Stats.playerArmour);
     if (result != null) {
       playerHealthHelper(result);
       log(`Skeleton hits for ${result} damage!`, 'mb');

@@ -10,7 +10,7 @@ const ent = {
   name: 'Shrekt, the Ogre',
   monsterHealth: 40,
   monsterArmour: 6,
-  monsterDamage: 10,
+  monsterDamage: 6,
   monsterRage: 0,
   src: 'res/mobs/ogre.png',
   type: ['normal', 'elite'],

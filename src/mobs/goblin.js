@@ -6,8 +6,8 @@ import Globals from '../globals';
 
 const goblin = {
   name: 'Wormface, the Goblin',
-  monsterHealth: 20,
-  monsterArmour: 4,
+  monsterHealth: 15,
+  monsterArmour: 2,
   monsterDamage: 4,
   monsterRage: 0,
   src: 'res/mobs/goblin.png',
