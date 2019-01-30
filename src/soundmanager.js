@@ -42,6 +42,11 @@ class SoundManager {
       preload: true,
       volume: this.globalVolume,
     });
+    this.dwarfSmash = new Howl({
+      src: ['res/audio/mob/dwarf-smash.ogg'],
+      preload: true,
+      volume: this.globalVolume,
+    });
     this.ent = new Howl({
       src: ['res/audio/mob/ent.wav'],
       preload: true,
@@ -140,6 +145,10 @@ class SoundManager {
 
   playDwarfTank() {
     this.dwarfTank.play();
+  }
+
+  playDwarfSmash() {
+    this.dwarfSmash.play();
   }
 
   playEnt() {
