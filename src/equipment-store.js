@@ -256,12 +256,12 @@ export const potions = [
     name: 'Elixir of Fortitude',
     id: 'health-potion',
     src: 'res/item/shop/hp-potion.png',
-    desc: `Gain 2d5 health.`,
+    desc: `Gain 3d3+1 (10) health.`,
     lore: 'A magical elixir that can quickly mend even the deepest of wounds.',
     cost: 10,
     active: true,
     action: function () {
-      const result = roll(5) + roll(5);
+      const result = roll(5) + roll(5) + roll(5) + roll(5);
       if (Stats.playerHealth + result > 100) {
         Stats.playerHealth = 100;
       } else {
