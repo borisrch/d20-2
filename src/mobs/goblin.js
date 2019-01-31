@@ -29,7 +29,7 @@ const goblin = {
     Stats.monsterLastSpell = {
       name: 'Goblin Basic Attack',
       result,
-      anim: 'poke-right',
+      anim: 'poke-left',
     };
     endTurnMonster(result);
   },
@@ -47,7 +47,7 @@ const goblin = {
     Stats.monsterLastSpell = {
       name: 'Goblin Spit',
       result,
-      anim: 'poke-right',
+      anim: 'poke-left',
     };
     endTurnMonster(result);
   }
