@@ -20,7 +20,6 @@ const caretaker = {
       this.init = true;
       Globals.particles.showCaretaker();
     }
-
     const result = roll(3);
 
     if (result === 3 || Stats.monsterHealth < 10) {
