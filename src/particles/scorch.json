@@ -1,9 +1,9 @@
 {
   "particles": {
     "number": {
-      "value": 250,
+      "value": 40,
       "density": {
-        "enable": true,
+        "enable": false,
         "value_area": 100
       }
     },
@@ -31,12 +31,12 @@
       }
     },
     "size": {
-      "value": 8,
+      "value": 6,
       "random": true,
       "anim": {
         "enable": true,
-        "speed": 40,
-        "size_min": 4,
+        "speed": 10,
+        "size_min": 15,
         "sync": false
       }
     },
