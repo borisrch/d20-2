@@ -15,22 +15,21 @@ const dwarf = {
   src: 'res/mobs/dwarf-animated.gif',
   type: ['normal'],
   turn() {
-    this.dwarfSmash();
-    // if (Stats.monsterRage > 40) {
-    //   Stats.monsterRage = 0;
-    //   this.dwarfSmash();
-    // } else if (Stats.monsterHealth < 8) {
-    //   Stats.monsterRage += 10;
-    //   this.dwarfTank();
-    // } else {
-    //   Stats.monsterRage += 10;
-    //   const result = roll(100);
-    //   if (result > 60) {
-    //     this.dwarfTank();
-    //   } else {
-    //     this.basicAttack();
-    //   }
-    // }
+    if (Stats.monsterRage > 40) {
+      Stats.monsterRage = 0;
+      this.dwarfSmash();
+    } else if (Stats.monsterHealth < 8) {
+      Stats.monsterRage += 10;
+      this.dwarfTank();
+    } else {
+      Stats.monsterRage += 10;
+      const result = roll(100);
+      if (result > 60) {
+        this.dwarfTank();
+      } else {
+        this.basicAttack();
+      }
+    }
   },
   basicAttack() {
     const result = pureAttack(Stats.monsterDamage / 2, 0, 0, 2, Stats.playerArmour);
