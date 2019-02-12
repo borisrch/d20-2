@@ -8,3 +8,4 @@ shop.html
 res/item
 res/player
 res/mobs
+dist/*.map
