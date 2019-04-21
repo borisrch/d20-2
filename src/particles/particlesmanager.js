@@ -29,7 +29,7 @@ class ParticlesManager {
         el.classList.add('animated', 'fadeOut');
         setTimeout(() => {
           el.style.display = 'none';
-          particlesJS.load('particles-js', 'src/particles/noop.json', function() {});
+          // particlesJS.load('particles-js', 'src/particles/noop.json', function() {});
           el.classList.remove('animated', 'fadeOut');
         }, 1000);
       }, 1000);
@@ -42,7 +42,7 @@ class ParticlesManager {
         els.classList.add('animated', 'fadeOut');
         setTimeout(() => {
           els.style.display = 'none';
-          particlesJS.load('particles-monster-spell-js', 'src/particles/noop.json', function() {});
+          // particlesJS.load('particles-monster-spell-js', 'src/particles/noop.json', function() {});
           els.classList.remove('animated', 'fadeOut');
         }, 1000);
       }, 1000);
@@ -51,14 +51,16 @@ class ParticlesManager {
 
   /* Show mob effect particles eg. buffs/debuffs */
   showMonsterParticles(zpath) {
+    mel.style.display = '';
     particlesJS.load('particles-monster-js', zpath, function() {});
   }
   /* Hide mob effect particles */
   hideMonsterParticles() {
     mel.classList.add('animated', 'fadeOut');
     setTimeout(() => {
+      mel.style.display = 'none';
       mel.classList.remove('animated', 'fadeOut');
-      particlesJS.load('particles-monster-js', 'src/particles/noop.json', function() {});
+      // particlesJS.load('particles-monster-js', 'src/particles/noop.json', function() {});
     }, 1000);
   }
   /* eg. heal */
@@ -77,19 +79,21 @@ class ParticlesManager {
     mbel.classList.add('animated', 'fadeOut');
     setTimeout(() => {
       mbel.classList.remove('animated', 'fadeOut');
-      particlesJS.load('particles-monster-js', 'src/particles/noop.json', function() {});
+      // particlesJS.load('particles-monster-js', 'src/particles/noop.json', function() {});
     }, 900);
   }
 
   showPlayerParticles(zpath) {
+    pel.style.display = '';
     particlesJS.load('particles-player-js', zpath, function() {});
   }
 
   hidePlayerParticles() {
     pel.classList.add('animated', 'fadeOut');
     setTimeout(() => {
+      pel.style.display = 'none';
       pel.classList.remove('animated', 'fadeOut');
-      particlesJS.load('particles-player-js', 'src/particles/noop.json', function() {});
+      // particlesJS.load('particles-player-js', 'src/particles/noop.json', function() {});
     }, 900);
   }
 
