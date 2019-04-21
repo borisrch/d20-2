@@ -1,6 +1,7 @@
 .player-graphic {
   animation: bob 2s infinite;
   -webkit-user-drag: none;
+  will-change: transform;
 }
 
 .poke-right {
@@ -63,15 +64,16 @@
 
 @keyframes bob {
   0% {
-    transform: translate(0);
+    transform: translate(0) scale3d(1,1,1);
+    
   }
 
   50% {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale3d(1, 1.03, 1);
     
   }
   100% {
-    transform: translate(0);
+    transform: translate(0) scale3d(1, 1, 1);
   }
 }
 
@@ -82,7 +84,7 @@
     transform: rotate(-5deg);
   }
   30% {
-    transform: rotate(10deg) translateX(5px);
+    transform: rotate(10deg) translateX(5px) scale3d(1.05, 1, 1);
   }
   100% {
     transform: translateX(0);
