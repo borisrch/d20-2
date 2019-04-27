@@ -1,4 +1,6 @@
+/* eslint-disable class-methods-use-this */
 import 'particles.js/particles';
+import path from 'path';
 
 // Particles library setup.
 const particlesJS = window.particlesJS;
@@ -7,7 +9,10 @@ const els = document.getElementById('particles-monster-spell-js');
 const mel = document.getElementById('particles-monster-js');
 const pel = document.getElementById('particles-player-js');
 const mbel = document.getElementById('particles-monster-bonus-js');
-const path = 'src/particles/';
+
+// const particlesJSONPath = [
+//   '',
+// ];
 
 class ParticlesManager {
   constructor() {
@@ -21,29 +26,36 @@ class ParticlesManager {
     preload.crossOrigin = 'anonymous';
     document.body.appendChild(preload);
   }
+
   /* Used for Player spell particles */
   showParticles(zpath) {
     el.style.display = '';
-    particlesJS.load('particles-js', zpath, function() {
+    particlesJS.load('particles-js', zpath, () => {
       setTimeout(() => {
         el.classList.add('animated', 'fadeOut');
         setTimeout(() => {
           el.style.display = 'none';
-          // particlesJS.load('particles-js', 'src/particles/noop.json', function() {});
-          el.classList.remove('animated', 'fadeOut');
+          particlesJS.load('particles-js', 'src/particles/noop.json', () => {
+            el.classList.remove('animated', 'fadeOut');
+            // Clear pJSDom cache. A new instance is generated each particles load.
+            this.clearParticles();
+          });
         }, 1000);
       }, 1000);
     });
   }
+
   showMonsterSpellParticles(zpath) {
     els.style.display = '';
-    particlesJS.load('particles-monster-spell-js', zpath, function() {
+    particlesJS.load('particles-monster-spell-js', zpath, () => {
       setTimeout(() => {
         els.classList.add('animated', 'fadeOut');
         setTimeout(() => {
           els.style.display = 'none';
-          // particlesJS.load('particles-monster-spell-js', 'src/particles/noop.json', function() {});
-          els.classList.remove('animated', 'fadeOut');
+          particlesJS.load('particles-monster-spell-js', 'src/particles/noop.json', () => {
+            els.classList.remove('animated', 'fadeOut');
+            this.clearParticles();
+          });
         }, 1000);
       }, 1000);
     });
@@ -52,17 +64,21 @@ class ParticlesManager {
   /* Show mob effect particles eg. buffs/debuffs */
   showMonsterParticles(zpath) {
     mel.style.display = '';
-    particlesJS.load('particles-monster-js', zpath, function() {});
+    particlesJS.load('particles-monster-js', zpath);
   }
+
   /* Hide mob effect particles */
   hideMonsterParticles() {
     mel.classList.add('animated', 'fadeOut');
     setTimeout(() => {
       mel.style.display = 'none';
       mel.classList.remove('animated', 'fadeOut');
-      // particlesJS.load('particles-monster-js', 'src/particles/noop.json', function() {});
+      particlesJS.load('particles-monster-js', 'src/particles/noop.json', () => {
+        this.clearParticles();
+      });
     }, 1000);
   }
+
   /* eg. heal */
   chainMonsterParticles(zpath) {
     this.showMonsterParticles(zpath);
@@ -72,20 +88,20 @@ class ParticlesManager {
   }
 
   showMonsterBonusParticles(zpath) {
-    particlesJS.load('particles-monster-bonus-js', zpath, function() {});
+    particlesJS.load('particles-monster-bonus-js', zpath);
   }
 
   hideMonsterBonusParticles() {
     mbel.classList.add('animated', 'fadeOut');
     setTimeout(() => {
       mbel.classList.remove('animated', 'fadeOut');
-      // particlesJS.load('particles-monster-js', 'src/particles/noop.json', function() {});
+      particlesJS.load('particles-monster-js', 'src/particles/noop.json');
     }, 900);
   }
 
   showPlayerParticles(zpath) {
     pel.style.display = '';
-    particlesJS.load('particles-player-js', zpath, function() {});
+    particlesJS.load('particles-player-js', zpath);
   }
 
   hidePlayerParticles() {
@@ -93,72 +109,78 @@ class ParticlesManager {
     setTimeout(() => {
       pel.style.display = 'none';
       pel.classList.remove('animated', 'fadeOut');
-      // particlesJS.load('particles-player-js', 'src/particles/noop.json', function() {});
+      particlesJS.load('particles-player-js', 'src/particles/noop.json', () => {
+        this.clearParticles();
+      });
     }, 900);
   }
 
-  /* Spells */
+  clearParticles() {
+    window["pJSDom"] = [];
+  }
+
+  /* Player Spells */
   showScorch() {
-    this.showParticles(`${path}scorch.json`);
+    this.showParticles(path.resolve(__dirname, 'src', 'particles', 'scorch.json'));
   }
 
   showThunder() {
-    this.showParticles(`${path}thunder.json`);
+    this.showParticles(path.resolve(__dirname, 'src', 'particles', 'thunder.json'));
   }
 
   showDeathfire() {
-    this.showParticles(`${path}deathfire.json`);
+    this.showParticles(path.resolve(__dirname, 'src', 'particles', 'deathfire.json'));
   }
 
   showRunicEchoes() {
-    this.showParticles(`${path}runicechoes.json`);
+    this.showParticles(path.resolve(__dirname, 'src', 'particles', 'runicechoes.json'));
   }
 
   /* Mob Spells */
   showGoblinSpit() {
-    this.showMonsterSpellParticles(`${path}goblinspit.json`);
+    this.showMonsterSpellParticles(path.resolve(__dirname, 'src', 'particles', 'goblinspit.json'));
   }
 
   showEntTrip() {
-    this.showMonsterSpellParticles(`${path}enttrip.json`);
+    this.showMonsterSpellParticles(path.resolve(__dirname, 'src', 'particles', 'enttrip.json'));
   }
 
   showMobHeal() {
-    this.chainMonsterParticles(`${path}heal.json`);
+    this.chainMonsterParticles(path.resolve(__dirname, 'src', 'particles', 'heal.json'));
   }
 
   showSkeletonFrighten() {
-    this.showMonsterSpellParticles(`${path}skeletonfrighten.json`);
+    this.showMonsterSpellParticles(path.resolve(__dirname, 'src', 'particles', 'skeletonfrighten.json'));
   }
 
   showCaretakerSpell() {
-    this.showMonsterSpellParticles(`${path}caretakerspell.json`);
+    this.showMonsterSpellParticles(path.resolve(__dirname, 'src', 'particles', 'caretakerspell.json'));
   }
 
   showCaretakerLastrite() {
-    this.showMonsterSpellParticles(`${path}caretakerlastrite.json`);
+    this.showMonsterSpellParticles(path.resolve(__dirname, 'src', 'particles', 'caretakerlastrite.json'));
   }
 
   /* Conditions/Buffs */
   showDwarfTank() {
-    this.showMonsterParticles(`${path}dwarftank.json`);
+    this.showMonsterParticles(path.resolve(__dirname, 'src', 'particles', 'dwarftank.json'));
   }
 
   showShocked() {
-    this.showMonsterParticles(`${path}shocked.json`);
+    this.showMonsterParticles(path.resolve(__dirname, 'src', 'particles', 'shocked.json'));
   }
 
   showDisadvantaged() {
-    this.showPlayerParticles(`${path}shocked.json`);
+    this.showPlayerParticles(path.resolve(__dirname, 'src', 'particles', 'shocked.json'));
   }
 
   showPotionActive() {
-    this.showPlayerParticles(`${path}potionactive.json`);
+    this.showPlayerParticles(path.resolve(__dirname, 'src', 'particles', 'potionactive.json'));
   }
 
   /* Bonus Effects */
   showCaretaker() {
-    this.showMonsterBonusParticles(`${path}caretaker.json`);
+    this.showMonsterBonusParticles(path.resolve(__dirname, 'src', 'particles', 'caretaker.json'));
   }
 }
 
