@@ -1,4 +1,8 @@
+import tippy from 'tippy.js';
+
+import Globals from './globals';
 import Stats from './stats';
+
 import { disable, enable } from './disable';
 import {
   alzursThunderCondition,
@@ -15,10 +19,13 @@ import {
   undeadCondition
 } from './conditions';
 import { updateStats } from './update';
-import tippy from 'tippy.js';
 import { DEV } from './dev';
 
-import Globals from './globals';
+// UI elements
+const playerArmour = document.getElementById('player-armour');
+const playerGraphic = document.getElementById('player-graphic');
+const monsterHealth = document.getElementById('monster-health');
+const monsterGraphic = document.getElementById('monster-graphic');
 
 const status = {
   SHOCKED: {
@@ -93,19 +100,21 @@ const status = {
 
 const setStatus = (buff) => {
   const el = document.getElementById(buff.id);
-  if (el === null) {
 
-    let status;
+  // Only add new status if that type isn't already active.
+  if (el === null) {
+    let statusEl;
 
     if (buff.unit === 'monster') {
-      status = document.getElementById('monster-status');
-    }
-    else if (buff.unit === 'player') {
-      status = document.getElementById('player-status');
+      statusEl = document.getElementById('monster-status');
+    } else if (buff.unit === 'player') {
+      statusEl = document.getElementById('player-status');
+    } else {
+      throw new TypeError(`Unit type not recognized: ${buff.unit}`);
     }
 
     buff.particles();
-    
+
     const icon = document.createElement('span');
     icon.id = buff.id;
     icon.classList.add('ra', buff.icon, 'animated', 'flipInX');
@@ -118,7 +127,7 @@ const setStatus = (buff) => {
       icon.classList.add('colour-elite');
     }
 
-    status.appendChild(icon);
+    statusEl.appendChild(icon);
 
     tippy(`#${icon.id}`, {
       content: buff.message,
@@ -127,7 +136,7 @@ const setStatus = (buff) => {
     //   icon.classList.remove('bounce');
     // }, 1001);
   }
-}
+};
 
 const removeStatus = (buff) => {
   const el = document.getElementById(buff.id);
@@ -137,8 +146,7 @@ const removeStatus = (buff) => {
 
     if (buff.unit === 'monster') {
       Globals.particles.hideMonsterParticles();
-    }
-    else if (buff.unit === 'player') {
+    } else if (buff.unit === 'player') {
       Globals.particles.hidePlayerParticles();
     }
 
@@ -146,41 +154,47 @@ const removeStatus = (buff) => {
       el.parentNode.removeChild(el);
     }, 1000);
   }
-}
+};
+
+/*
+  Turn Lifecycle: End Turn (Player) --> End Turn (Mob) --> Begin Turn (Player)
+  End Turn (Player): Apply buffs to player. (Damage is applied in monsterHealthHelper).
+  End Turn (Mob):
+*/
 
 export const endTurn = (result) => {
   if (result) {
-    $('.monster-health').addClass('animated jello');
+    monsterHealth.classList.add('animated', 'jello');
+  }
+  // Player last spell animation. Todo: Refactor to Switch when for new animations.
+  if (Stats.playerLastSpell.anim === 'poke-up') {
+    playerGraphic.classList.add('poke-up');
+  } else {
+    playerGraphic.classList.add('poke-right');
   }
 
   if (runicEchoesCondition.active === true || defensePotionCondition.active === true) {
-    $('.player-armour').addClass('colour-mana-add');
+    playerArmour.classList.add('colour-mana-add');
   }
 
-  if (dwarfTankCondition.active == true) {
+  if (dwarfTankCondition.active === true) {
     dwarfTankCondition.active = false;
-    Stats.monsterArmour = Stats.monsterArmour - dwarfTankCondition.bonusArmour;
-  }
-
-  if (Stats.playerLastSpell.anim === 'poke-up') {
-    $('.player-graphic').addClass('poke-up');
-  } else {
-    $('.player-graphic').addClass('poke-right');
+    Stats.monsterArmour -= dwarfTankCondition.bonusArmour;
   }
 
   if (monsterDead.active === true) {
-    $('.monster-graphic').addClass('spawn');
+    monsterGraphic.classList.add('spawn');
     monsterDead.active = false;
   } else {
-    $('.monster-graphic').addClass('monster-flail');
-  }  
+    monsterGraphic.classList.add('monster-flail');
+  }
 
   // if (sapphireAmuletCondition.active == true) {
   //   Stats.playerMaxMana = 125;
   // } else {
   //   Stats.playerMaxMana = 100;
   // }
-  
+
   // if (Stats.playerMana + 25 >= Stats.playerMaxMana) {
   //   Stats.playerMana = Stats.playerMaxMana;
   // } else {
@@ -190,8 +204,7 @@ export const endTurn = (result) => {
 
   if (alzursThunderCondition.turns > 0) {
     setStatus(status.SHOCKED);
-  } 
-  else if (alzursThunderCondition.turns === 0) {
+  } else if (alzursThunderCondition.turns === 0) {
     removeStatus(status.SHOCKED);
   }
 
@@ -205,31 +218,22 @@ export const endTurn = (result) => {
     removeStatus(status.FRIGHTENED);
   }
 
+  // Update stats.
   updateStats();
 
+  // Disable player spells.
   disable();
 
   // Remove animation classes.
-
   setTimeout(() => {
-    $('.monster-health').removeClass('animated jello');
-  }, 500);
-
-  setTimeout(() => {
-    $('.player-graphic').removeClass('poke-right');
-    $('.player-graphic').removeClass('poke-up');
-    $('.monster-graphic').removeClass('monster-flail');
-    $('.monster-graphic').removeClass('spawn');
+    playerGraphic.classList.remove('poke-right', 'poke-up');
+    playerArmour.classList.remove('colour-mana-add');
+    monsterHealth.classList.remove('animated', 'jello');
+    monsterGraphic.classList.remove('monster-flail', 'spawn');
   }, 1000);
 
   setTimeout(() => {
-    $('.player-armour').removeClass('colour-mana-add');
-  }, 1000);
-
-  let currentMonster = Stats.currentMonster;
-
-  setTimeout(() => {
-    currentMonster.turn();         
+    Stats.currentMonster.turn();
   }, 1300);
 };
 
@@ -340,7 +344,27 @@ export const endTurnMonster = function (result) {
     removeStatus(status.ELITE);
   }
 
-  $('.monster-graphic').addClass('poke-left');
+  // const monsterGraphic = document.getElementById('monster-graphic');
+
+  switch (Stats.monsterLastSpell.anim) {
+    case 'poke-left':
+      monsterGraphic.classList.add('poke-left');
+      setTimeout(() => {
+        monsterGraphic.classList.remove('poke-left');
+      }, 750);
+      break;
+
+    case 'dwarf-smash':
+      monsterGraphic.classList.add('dwarf-smash');
+      setTimeout(() => {
+        monsterGraphic.classList.remove('dwarf-smash');
+      }, 750);
+      break;
+
+    default:
+      throw new Error('monster animation not defined');
+  }
+
   $('.player-graphic').addClass('player-flail');
 
   updateStats();
@@ -350,7 +374,6 @@ export const endTurnMonster = function (result) {
     $('.monster-rage').removeClass('colour-rage-add');
   }, 500);
   setTimeout(() => {
-    $('.monster-graphic').removeClass('poke-left');
     $('.player-graphic').removeClass('player-flail');
   }, 750);
 
