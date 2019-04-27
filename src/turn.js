@@ -22,10 +22,15 @@ import { updateStats } from './update';
 import { DEV } from './dev';
 
 // UI elements
+const playerHealth = document.getElementById('player-health');
 const playerArmour = document.getElementById('player-armour');
+const playerMana = document.getElementById('player-mana');
 const playerGraphic = document.getElementById('player-graphic');
+
 const monsterHealth = document.getElementById('monster-health');
+const monsterArmour = document.getElementById('monster-armour');
 const monsterGraphic = document.getElementById('monster-graphic');
+const monsterRage = document.getElementById('monster-rage');
 
 const status = {
   SHOCKED: {
@@ -250,44 +255,43 @@ const beginTurnPlayer = () => {
     Stats.playerMana = Stats.playerMaxMana;
   } else {
     Stats.playerMana += 25;
-    $('.player-mana').addClass('colour-mana-add');
-    
+    playerMana.classList.add('colour-mana-add');
+    // Unlimited Mana
     if (DEV) {
       Stats.playerMana = Stats.playerMaxMana;
     }
   }
 
+  // Player conditions are removed here.
   if (skeletonFrightenCondition.turns > 0) {
     skeletonFrightenCondition.turns -= 1;
   }
-
-  updateStats();
-
   setTimeout(() => {
-    $('.player-mana').removeClass('colour-mana-add');
+    playerMana.classList.remove('colour-mana-add');
   }, 1000);
-}
+  updateStats();
+};
 
 export const endTurnMonster = function (result) {
   if (result) {
-    $('.player-health').addClass('animated jello');
+    playerHealth.classList.add('animated', 'jello');
   }
 
   if (Stats.monsterRage > 0) {
-    $('.monster-rage').addClass('colour-rage-add');
-  }
-  
-  if (dwarfTankCondition.active == true) {
-    $('.monster-armour').addClass('colour-rage-add');
+    monsterRage.classList.add('colour-rage-add');
   }
 
-  if (runicEchoesCondition.active == true) {
-    Stats.playerArmour = Stats.playerArmour - runicEchoesCondition.bonusArmour;
+  if (dwarfTankCondition.active === true) {
+    monsterArmour.classList.add('colour-rage-add');
+  }
+
+  if (runicEchoesCondition.active === true) {
+    Stats.playerArmour -= runicEchoesCondition.bonusArmour;
     runicEchoesCondition.active = false;
   }
 
   if (defensePotionCondition.turns > 0) {
-    defensePotionCondition.turns = defensePotionCondition.turns - 1;
+    defensePotionCondition.turns -= 1;
   }
 
   if (defensePotionCondition.turns === 0 && defensePotionCondition.active) {
@@ -344,8 +348,6 @@ export const endTurnMonster = function (result) {
     removeStatus(status.ELITE);
   }
 
-  // const monsterGraphic = document.getElementById('monster-graphic');
-
   switch (Stats.monsterLastSpell.anim) {
     case 'poke-left':
       monsterGraphic.classList.add('poke-left');
@@ -362,26 +364,26 @@ export const endTurnMonster = function (result) {
       break;
 
     default:
-      throw new Error('monster animation not defined');
+      throw new TypeError('Monster animation not defined');
   }
 
-  $('.player-graphic').addClass('player-flail');
+  // TODO: Add 'miss' animation.
+  playerGraphic.classList.add('player-flail');
 
-  updateStats();
   setTimeout(() => {
-    $('.player-health').removeClass('animated jello');
-    $('.monster-armour').removeClass('colour-rage-add');
-    $('.monster-rage').removeClass('colour-rage-add');
+    playerHealth.classList.remove('animated', 'jello');
+    monsterArmour.classList.remove('colour-rage-add');
+    monsterRage.classList.remove('colour-rage-add');
   }, 500);
   setTimeout(() => {
-    $('.player-graphic').removeClass('player-flail');
+    playerGraphic.classList.remove('player-flail');
   }, 750);
-
   setTimeout(() => {
     beginTurnPlayer();
     enable();
   }, 800);
-}
+  updateStats();
+};
 
 export const playerHealthHelper = (result) => {
   if (Stats.playerHealth - result <= 0) {
