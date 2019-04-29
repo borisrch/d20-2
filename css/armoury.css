@@ -3,6 +3,15 @@ body {
   margin: 0px;
 }
 
+.c {
+  border: solid 1px red;
+}
+
+.draggable {
+  touch-action: none;
+  user-select: none;
+}
+
 .armoury-background {
   width: 576px;
   height: 576px;
@@ -218,6 +227,30 @@ body {
   color: #00ff93;
 }
 
+.colour-damage, .colour-damage-tip {
+  background-image: linear-gradient(135deg, rgb(255, 173, 21)	 0%, rgb(236, 77, 143) 100%);
+  color:transparent; -webkit-background-clip: text;
+  background-clip: text;  
+}
+
+.colour-runic, .colour-runic-tip {
+  background-image: linear-gradient(to top, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);
+  color:transparent; -webkit-background-clip: text;
+  background-clip: text;  
+}
+
+.colour-ac {
+  background-image: linear-gradient(to right, #4facfe 0%, #0098fe 100%);
+  color:transparent; -webkit-background-clip: text;
+  background-clip: text;  
+}
+
+.colour-mana {
+  background-image: linear-gradient(120deg, #f7be04 0%, #ff8564 100%);
+  color:transparent; -webkit-background-clip: text;
+  background-clip: text;  
+}
+
 .controls-interface {
   position: relative;
   top: 460px;
@@ -302,11 +335,10 @@ body {
   font-size: 2em;
   background-color: transparent;
   position: absolute;
-  cursor: grab;
 }
 
 .spell:active {
-  cursor: grabbing;
+  
 }
 
 .spell-icon {
@@ -386,6 +418,10 @@ body {
   top: 200px;
 }
 
+.spell-selected {
+  box-shadow: 0px 0px 30px #00ffff80;
+}
+
 .spell-desc {
   position: absolute;
   display: grid;
@@ -394,20 +430,89 @@ body {
   top: 230px;
   left: 25px;
   width: 280px;
-  height: 240px;
-  border: 1px solid red;
+  /* height: 240px; */
   z-index: 12;
+}
+
+.spell-desc-upper {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  justify-items: center;
+  font-family: "Upheavtt";
+  width: 220px;
+  margin-top: 10px;
+}
+
+.spell-icon {
+  width: 48px;
+  height: 48px;
+  background-image: url('/res/spell/wizard/scorch.png');
 }
 
 .spell-name {
   display: flex;
-  margin-top: 10px;
-  font-family: "Upheavtt";
-  font-size: 1.65em;
+  font-size: 1.55em;
   text-align: center;
-  color: #00ccff;
   letter-spacing: 1px;
-  height: 100%;
+}
+
+.spell-type {
+  text-align: center;
+  letter-spacing: 1px;
+  font-size: 1.25em;
+  padding-top: 3px;
+  color: #fff;
+}
+
+.spell-desc-main {
+  color: #9bcaff;
+  font-family: 'Cabin', sans-serif;
+  padding: 15px;
+  font-size: 0.95em;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.spell-desc-lore {
+  color: #5e7c9ebb;
+  font-family: 'Cabin', sans-serif;
+  font-style: italic;
+  padding: 15px;
+  font-size: 0.95em;
+  text-align: center;
+}
+
+.fire-spell {
+  animation: fire-spell 4s infinite;
+}
+
+.dragover {
+  box-shadow: inset 0px 0px 15px #00aeffb4;
+}
+
+.grabbable {
+  cursor: grab;
+}
+
+.grabbable:active {
+  cursor: grabbing;
+}
+
+.spellbook {
+  position: absolute;
+  /* border: 1px solid green; */
+  left: 39px;
+  top: 507px;
+  width: 252px;
+  height: 48px;
+  z-index: 12;
+}
+
+.slot-1 {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border-radius: 4px;
 }
 
 @font-face {
@@ -469,5 +574,17 @@ body {
   }
   100% {
     filter: hue-rotate(90deg) drop-shadow(0 0 5px #ff00ea);
+  }
+}
+
+@keyframes fire-spell {
+  0% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.5);
+  }
+  100% {
+    filter: brightness(1);
   }
 }

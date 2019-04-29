@@ -2,7 +2,7 @@ import 'particles.js/particles';
 
 const particlesJS = window.particlesJS;
 
-particlesJS.load('torch-1', 'src/menu/particles/torch.json', () => {});
+particlesJS.load('torch-1', 'src/menu/particles/torch.json');
 
 let currentPosition = 0;
 let cameraLevel = 1;
@@ -57,6 +57,7 @@ class UIManager {
   hideAlchemyInterface() {
     this.alchemyVisible = false;
     mainFocus = true;
+    this.clearParticles();
     this.alchemy.classList.add('hide');
     main.classList.remove('darken');
   }
@@ -77,12 +78,18 @@ class UIManager {
   hideArmouryInterface() {
     this.armouryVisible = false;
     mainFocus = true;
+    this.clearParticles();
     this.armoury.classList.add('hide');
     main.classList.remove('darken');
   }
 
   isArmouryVisible() {
     return this.armouryVisible;
+  }
+
+  clearParticles() {
+    window['pJSDom'] = [];
+    particlesJS.load('torch-1', 'src/menu/particles/torch.json');
   }
 }
 
@@ -195,29 +202,100 @@ armouryIcon.addEventListener('click', () => {
   }
 });
 
-const spellName = document.getElementById('spell-name');
-const spells = [
-  'Scorch',
-  'Incinerate',
-  'Blaze',
-  'Frostbolt',
-  'Ice Spike',
-  'Flurry',
-  'Arcane Blast',
-  'Arcane Blitz',
-  'Arcane Barrage',
-  'Prismatic Shield',
-  'Rune Flux',
-  'Nimbus',
-];
-let c = 0;
+let draggedSpell = null;
 
-const change = () => {
-  if (c >= spells.length) {
-    c = 0;
-  }
-  spellName.innerText = spells[c];
-  c += 1;
+const handleDragStart = (e) => {
+  draggedSpell = e.target.id;
+  const dragImage = new Image();
+  dragImage.src = `/res/spell/wizard/${draggedSpell}.png`;
+  e.dataTransfer.setDragImage(dragImage, 24, 24);
+  e.dataTransfer.effectAllowed = 'move';
 };
 
-setInterval(change, 1000);
+const handleDragOver = (e) => {
+  if (e.preventDefault) {
+    e.preventDefault();
+  }
+  e.dataTransfer.dropEffect = 'move';
+
+
+  return false;
+};
+
+const handleDragEnter = (e) => {
+  e.target.classList.add('dragover');
+};
+
+const handleDragLeave = (e) => {
+  e.target.classList.remove('dragover');
+};
+
+const handleDrop = (e) => {
+  if (e.stopPropagation) {
+    e.stopPropagation();
+  }
+  e.target.style.backgroundImage = `url(/res/spell/wizard/${draggedSpell}.png)`;
+  e.target.setAttribute('data-spell', draggedSpell);
+  e.target.classList.remove('dragover');
+};
+
+const handleDragEnd = (e) => {
+  e.target.classList.remove('dragover');
+};
+
+const spellScorch = document.getElementById('scorch');
+const spellArcaneBlast = document.getElementById('arcane-blast');
+
+const slot1 = document.getElementById('slot-1');
+slot1.addEventListener('dragover', handleDragOver);
+slot1.addEventListener('dragenter', handleDragEnter);
+slot1.addEventListener('dragleave', handleDragLeave);
+slot1.addEventListener('dragend', handleDragEnd);
+slot1.addEventListener('drop', handleDrop);
+
+spellScorch.addEventListener('dragstart', handleDragStart);
+spellArcaneBlast.addEventListener('dragstart', handleDragStart);
+
+// spellScorch.ondragstart = dragStartHandler(event);
+
+// const spellName = document.getElementById('spell-name');
+// const spells = [
+//   'Scorch',
+//   'Incinerate',
+//   'Blaze',
+//   'Frostbolt',
+//   'Ice Spike',
+//   'Flurry',
+//   'Arcane Blast',
+//   'Arcane Blitz',
+//   'Arcane Barrage',
+//   'Prismatic Shield',
+//   'Rune Flux',
+//   'Nimbus',
+// ];
+// let c = 0;
+
+// const change = () => {
+//   if (c >= spells.length) {
+//     c = 0;
+//   }
+//   spellName.innerText = spells[c];
+//   c += 1;
+// };
+
+// setInterval(change, 1000);
+
+const wizardSpells = {
+  scorch: {
+    name: 'Scorch',
+    type: 'Basic',
+    desc: '',
+    icon: '',
+  },
+  incinerate: {
+    name: 'Incinerate',
+    type: 'Basic',
+    desc: 'This evocation is notorious for burning numerous other knights to a crisp.',
+    icon: '',
+  },
+};

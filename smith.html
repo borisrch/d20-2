@@ -9,6 +9,7 @@
   <link href="https://fonts.googleapis.com/css?family=Cabin:400,700|Roboto:300" rel="stylesheet">
   <link rel="stylesheet" href="./css/rpg-awesome.min.css">
   <link rel="stylesheet" href="./css/spell-interface.css">
+  <link rel="stylesheet" href="./css/armoury.css">
 </head>
 
 <body>
@@ -22,7 +23,6 @@
       <div class="furnace-light furnace-lighting"></div>
     </div>
 
-
     <div class="alchemist-interface hide" id="alchemist-interface">
       <img src="./res/platform/alchemist-lg.png" class="alchemist-background" alt="">
       <div class="alchemist-bubble" id="alchemist-bubble"></div>
@@ -32,47 +32,62 @@
       <div class="alchemist-desk" id="alchemist-desk"></div>
       <div class="spell-container">
           <div class="spell spell-0" id="spell-0">
-              <i class="ra ra-sword spell-basic-attack-colour spell-icon"></i>
+            <img src="/res/spell/wizard/basic.png" alt="">
           </div>
           <div class="spell spell-1" id="spell-1" draggable="true">
-            <i class="ra ra-dragon-breath spell-icon"></i>
+            <img draggable="true" class="grabbable" src="/res/spell/wizard/arcane-blast.png" id="arcane-blast" alt="">
           </div>
           <div class="spell spell-2" id="spell-2">
-              <i class="ra ra-burning-meteor spell-fire-colour-icon spell-icon"></i>
+            <img src="/res/spell/wizard/arcane-blitz.png" alt="">
           </div>
           <div class="spell spell-3" id="spell-3">
-              <i class="ra ra-burning-embers spell-fire-colour-icon spell-icon"></i>
+            <img src="/res/spell/wizard/arcane-barrage.png" alt="">
           </div>
-          <div class="spell spell-4" id="spell-4">
-              <i class="ra ra-crystal-cluster spell-ice-colour-icon spell-icon"></i>
+          <div class="spell spell-4 fire-spell spell-selected" id="spell-4">
+            <img draggable="true" class="grabbable" src="/res/spell/wizard/scorch.png" id="scorch" alt="">
           </div>
-          <div class="spell spell-5" id="spell-5">
-              <i class="ra ra-beam-wake spell-ice-colour-icon spell-icon"></i>
+          <div class="spell spell-5 fire-spell" id="spell-5">
+            <img src="/res/spell/wizard/incinerate.png" alt="">
           </div>
-          <div class="spell spell-6" id="spell-6">
-              <i class="ra ra-frost-emblem spell-ice-colour-icon spell-icon"></i>
+          <div class="spell spell-6 fire-spell" id="spell-6">
+            <img src="/res/spell/wizard/blaze.png" alt="">
           </div>
           <div class="spell spell-7" id="spell-7">
-              <i class="ra ra-burst-blob spell-arcane-colour-icon spell-icon"></i>
+            <img src="/res/spell/wizard/ice-spike.png" alt="">
           </div>
           <div class="spell spell-8" id="spell-8">
-              <i class="ra ra-frostfire spell-arcane-colour-icon spell-icon"></i>
+            <img src="/res/spell/wizard/frostbolt.png" alt="">
           </div>
           <div class="spell spell-9" id="spell-9">
-              <i class="ra ra-kaleidoscope spell-arcane-colour-icon spell-icon"></i>
+            <img src="/res/spell/wizard/flurry.png" alt="">
           </div>
           <div class="spell spell-10" id="spell-10">
-              <i class="ra ra-burning-book spell-enchant-colour-icon spell-icon"></i>
+            <img src="/res/spell/wizard/prismatic-shield.png" alt="">
           </div>
           <div class="spell spell-11" id="spell-11">
-              <i class="ra ra-emerald spell-enchant-colour-icon spell-icon"></i>
+            <img src="/res/spell/wizard/nimbus.png" alt="">
           </div>
           <div class="spell spell-12" id="spell-12">
-              <i class="ra ra-health-increase spell-enchant-colour-icon spell-icon"></i>
+            <img src="/res/spell/wizard/rune-flux.png" alt="">
           </div>
       </div>
         <div class="spell-desc">
-          <div class="spell-name" id="spell-name">Arcane Blitz</div>
+          <div class="spell-desc-upper">
+              <div class="spell-icon" id="spell-icon"></div>
+              <div class="spell-name-container">
+                  <div class="spell-name orange" id="spell-name">Scorch</div>
+                  <div class="spell-type" id="spell-type">Basic</div>
+              </div>              
+          </div>
+          <div class="spell-desc-main">
+            Deal (1d6 + <span class="ra ra-crystals colour-runic"></span>) damage whilst ignoring 1d4 <span class="ra ra-shield colour-ac"></span>.
+          </div>
+          <div class="spell-desc-lore">
+              A fiery blast that scorches even the strongest armour.
+          </div>
+        </div>
+        <div class="spellbook" id="spellbook">
+          <div class="slot-1" id="slot-1"></div>
         </div>
     </div>
 
@@ -97,7 +112,7 @@
 
 
   <script src="dist/menu.bundle.js"></script>
-  <link rel="stylesheet" href="./css/armoury.css">
+  
 
 </body>
 
