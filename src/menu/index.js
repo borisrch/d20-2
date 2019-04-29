@@ -203,13 +203,29 @@ armouryIcon.addEventListener('click', () => {
 });
 
 let draggedSpell = null;
+let draggedSpellElement = null;
+
+// Replaces spell selected visual.
+const handleClick = (e) => {
+  const selected = document.getElementsByClassName('spell-selected');
+  if (selected !== null) {
+    Array.from(selected).forEach((el) => {
+      el.classList.remove('spell-selected');
+    });
+  }
+  e.target.parentElement.classList.add('spell-selected');
+};
+
 
 const handleDragStart = (e) => {
   draggedSpell = e.target.id;
+  draggedSpellElement = e.target;
+  e.target.classList.add('mini');
   const dragImage = new Image();
   dragImage.src = `/res/spell/wizard/${draggedSpell}.png`;
   e.dataTransfer.setDragImage(dragImage, 24, 24);
   e.dataTransfer.effectAllowed = 'move';
+  handleClick(e);
 };
 
 const handleDragOver = (e) => {
@@ -237,24 +253,35 @@ const handleDrop = (e) => {
   e.target.style.backgroundImage = `url(/res/spell/wizard/${draggedSpell}.png)`;
   e.target.setAttribute('data-spell', draggedSpell);
   e.target.classList.remove('dragover');
+
+  draggedSpellElement.classList.remove('mini');
 };
 
 const handleDragEnd = (e) => {
   e.target.classList.remove('dragover');
+  draggedSpellElement.classList.remove('mini');
 };
 
 const spellScorch = document.getElementById('scorch');
+const spell4 = document.getElementById('spell-4');
+
+const spell1 = document.getElementById('spell-1');
 const spellArcaneBlast = document.getElementById('arcane-blast');
 
 const slot1 = document.getElementById('slot-1');
 slot1.addEventListener('dragover', handleDragOver);
 slot1.addEventListener('dragenter', handleDragEnter);
 slot1.addEventListener('dragleave', handleDragLeave);
-slot1.addEventListener('dragend', handleDragEnd);
+
 slot1.addEventListener('drop', handleDrop);
 
 spellScorch.addEventListener('dragstart', handleDragStart);
+spellScorch.addEventListener('dragend', handleDragEnd);
+spell4.addEventListener('click', handleClick);
+
 spellArcaneBlast.addEventListener('dragstart', handleDragStart);
+spellArcaneBlast.addEventListener('dragend', handleDragEnd);
+spell1.addEventListener('click', handleClick);
 
 // spellScorch.ondragstart = dragStartHandler(event);
 
@@ -289,13 +316,19 @@ const wizardSpells = {
   scorch: {
     name: 'Scorch',
     type: 'Basic',
-    desc: '',
-    icon: '',
+    desc: 'A fiery blast that scorches even the strongest armour.',
+    src: '/res/spell/wizard/scorch.png',
   },
   incinerate: {
     name: 'Incinerate',
     type: 'Basic',
     desc: 'This evocation is notorious for burning numerous other knights to a crisp.',
-    icon: '',
+    src: '',
+  },
+  arcaneBlast: {
+    name: 'Arcane Blast',
+    type: 'Basic',
+    desc: '',
+    src: '/res/spell/wizard/arcane-blast.png',
   },
 };
