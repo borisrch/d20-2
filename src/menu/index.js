@@ -230,6 +230,14 @@ const changeDescription = (spellName) => {
   const desc = document.getElementById('spell-desc-main');
   desc.innerHTML = spell.desc;
 
+  const info = document.getElementById('spell-desc-info');
+  if (spell.info !== null) {
+    info.style.display = 'block';
+    info.innerHTML = spell.info;
+  } else {
+    info.style.display = 'none';
+  }
+
   const lore = document.getElementById('spell-desc-lore');
   lore.innerText = spell.lore;
 };
