@@ -8,4 +8,5 @@ shop.html
 res/item
 res/player
 res/mobs
+res/spell
 dist/*.map
