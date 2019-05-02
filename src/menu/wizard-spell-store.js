@@ -4,12 +4,21 @@ const icons = {
   damage: '<span class="ra ra-sword colour-damage"></span>',
 };
 
+const text = {
+  runic(value) {
+    return `<span class="colour-runic">${value}</span>`;
+  },
+  damage(value) {
+    return `<span class="colour-damage">${value}</span>`;
+  },
+};
+
 const spells = {
   scorch: {
     name: 'Scorch',
     colour: 'orange',
     type: 'Basic',
-    desc: `Deal 1d4${icons.damage} damage whilst ignoring 1d2${icons.runic} armour.`,
+    desc: `Deal ${icons.damage}${text.damage(4)} damage whilst ignoring ${icons.runic}${text.runic(2)} armour.`,
     lore: 'A fiery blast that scorches even the strongest armour.',
     src: '/res/spell/wizard/scorch.png',
   },
@@ -41,7 +50,7 @@ const spells = {
     name: 'Arcane Blitz',
     colour: 'fusia',
     type: 'Threshold',
-    desc: `Applies 2 stacks of Arcana to target.`,
+    desc: 'Applies 2 stacks of Arcana to target.',
     lore: 'Each blitz of arcane power strikes its target more quickly than the last.',
     src: '/res/spell/wizard/arcane-blitz.png',
   },
