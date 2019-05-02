@@ -1,7 +1,7 @@
 body {
   background-color: #13101a;
   margin: 0px;
-  cursor: url('/res/common/cursor.png'), auto !important;
+  cursor: url('/res/common/cursor.png') 5 0, auto;
 }
 
 .c {
@@ -345,12 +345,6 @@ body {
   
 }
 
-.spell-icon {
-  margin-top: 4px;
-  margin-left: 0px;
-  height: 35px;
-}
-
 .locked {
   filter: opacity(0.6) grayscale(0.75) brightness(1.2);
 }
@@ -461,9 +455,11 @@ body {
 }
 
 .spell-icon {
+  margin-top: 4px;
+  margin-left: 0px;
+  height: 35px;
   width: 48px;
   height: 48px;
-  background-image: url('/res/spell/wizard/scorch.png');
 }
 
 .spell-name {
@@ -491,13 +487,15 @@ body {
 }
 
 .spell-desc-lore {
-  color: #5e7c9ebb;
+  color: #9bcaff85;
   font-family: 'Cabin', sans-serif;
   font-style: italic;
   padding: 15px;
   font-size: 0.95em;
   text-align: center;
 }
+
+
 
 .fire-spell {
   /* animation: fire-spell 4s infinite; */
