@@ -8,27 +8,39 @@ import { deathfireGraspCondition } from './conditions';
 import { endTurn } from './turn';
 
 const scorch = function () {
+  Stats.playerMana -= 75;
+  deathfireGraspCondition.active = false;
+
   const base = roll(2);
   const bonusRes = bonus(Stats.playerRunic, 2);
   const total = base + bonusRes;
 
-  Stats.playerMana -= 75;
-  deathfireGraspCondition.active = false;
+  let result = attack(Stats.playerDamage, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour - total);
 
-  if (DEV) {
-    console.log('Scorch base AC-ignore roll: ' + base);
-    console.log('Scorch bonus AC-ignore roll: ' + bonusRes);
+  if (Stats.currentMonster.type === 'undead' && result !== null) {
+    if (result - 2 <= 0) {
+      result = 0;
+    } else {
+      result -= 2;
+    }
   }
 
-  const result = attack(10, Stats.playerHitChanceModifier, 0, 1, Stats.monsterArmour - total);
   if (result != null) {
-    log(`You <i>Scorch</i> for ${result} damage!`, 'ps-sorch');
+    log(`You <i>Scorch</i> for ${result} damage!`, 'ps-scorch');
     Globals.sound.playQSound();
     Globals.particles.showScorch();
     monsterHealthHelper(result);
   } else {
     log('You missed Scorch!', 'miss-player');
+    Globals.sound.playMiss();
   }
+
+  Stats.playerLastSpell = {
+    name: 'Scorch',
+    result,
+    anim: 'poke-right',
+  };
+
   endTurn(result);
 };
 

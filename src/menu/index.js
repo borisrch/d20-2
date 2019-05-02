@@ -1,4 +1,5 @@
 import 'particles.js/particles';
+import Spells from './wizard-spell-store';
 
 const particlesJS = window.particlesJS;
 
@@ -202,11 +203,41 @@ armouryIcon.addEventListener('click', () => {
   }
 });
 
+class AlchemyManager {
+  constructor() {
+    this.draggedSpell = null;
+    this.draggedSpellElement = null;
+  }
+}
+
 let draggedSpell = null;
 let draggedSpellElement = null;
 
+const changeDescription = (spellName) => {
+  const spell = Spells.getSpell(spellName);
+
+  const icon = document.getElementById('spell-icon');
+  icon.src = spell.src;
+
+  const name = document.getElementById('spell-name');
+  name.innerText = spell.name;
+  name.className = '';
+  name.classList.add('spell-name', spell.colour);
+
+  const type = document.getElementById('spell-type');
+  type.innerText = spell.type;
+
+  const desc = document.getElementById('spell-desc-main');
+  desc.innerHTML = spell.desc;
+
+  const lore = document.getElementById('spell-desc-lore');
+  lore.innerText = spell.lore;
+};
+
 // Replaces spell selected visual.
 const handleClick = (e) => {
+  draggedSpell = e.target.id;
+  draggedSpellElement = e.target;
   const selected = document.getElementsByClassName('spell-selected');
   if (selected !== null) {
     Array.from(selected).forEach((el) => {
@@ -214,6 +245,7 @@ const handleClick = (e) => {
     });
   }
   e.target.parentElement.classList.add('spell-selected');
+  changeDescription(draggedSpell);
 };
 
 
@@ -311,24 +343,3 @@ spell1.addEventListener('click', handleClick);
 // };
 
 // setInterval(change, 1000);
-
-const wizardSpells = {
-  scorch: {
-    name: 'Scorch',
-    type: 'Basic',
-    desc: 'A fiery blast that scorches even the strongest armour.',
-    src: '/res/spell/wizard/scorch.png',
-  },
-  incinerate: {
-    name: 'Incinerate',
-    type: 'Basic',
-    desc: 'This evocation is notorious for burning numerous other knights to a crisp.',
-    src: '',
-  },
-  arcaneBlast: {
-    name: 'Arcane Blast',
-    type: 'Basic',
-    desc: '',
-    src: '/res/spell/wizard/arcane-blast.png',
-  },
-};
