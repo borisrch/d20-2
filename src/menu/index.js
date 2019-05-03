@@ -203,13 +203,6 @@ armouryIcon.addEventListener('click', () => {
   }
 });
 
-class AlchemyManager {
-  constructor() {
-    this.draggedSpell = null;
-    this.draggedSpellElement = null;
-  }
-}
-
 let draggedSpell = null;
 let draggedSpellElement = null;
 
@@ -342,6 +335,16 @@ const handleDrop = (e) => {
   if (e.stopPropagation) {
     e.stopPropagation();
   }
+  // Remove duplicate spells from other slots.
+  const duplicate = document.querySelectorAll('[data-spell]');
+  Array.from(duplicate).forEach((el) => {
+    if (el.getAttribute('data-spell') === draggedSpell) {
+      el.removeAttribute('data-spell');
+      // error
+      el.style.backgroundImage = '';
+    }
+  });
+
   e.target.style.backgroundImage = `url(/res/spell/wizard/${draggedSpell}.png)`;
   e.target.setAttribute('data-spell', draggedSpell);
   e.target.classList.remove('dragover');
@@ -353,27 +356,6 @@ const handleDragEnd = (e) => {
   e.target.classList.remove('dragover');
   draggedSpellElement.classList.remove('mini');
 };
-
-const spellScorch = document.getElementById('scorch');
-const spell4 = document.getElementById('spell-4');
-
-const spell1 = document.getElementById('spell-1');
-const spellArcaneBlast = document.getElementById('arcane-blast');
-
-// const slot1 = document.getElementById('slot-1');
-// slot1.addEventListener('dragover', handleDragOver);
-// slot1.addEventListener('dragenter', handleDragEnter);
-// slot1.addEventListener('dragleave', handleDragLeave);
-
-// slot1.addEventListener('drop', handleDrop);
-
-// spellScorch.addEventListener('dragstart', handleDragStart);
-// spellScorch.addEventListener('dragend', handleDragEnd);
-// spell4.addEventListener('click', handleClick);
-
-// spellArcaneBlast.addEventListener('dragstart', handleDragStart);
-// spellArcaneBlast.addEventListener('dragend', handleDragEnd);
-// spell1.addEventListener('click', handleClick);
 
 const addSlotEventListener = (slot) => {
   const s = document.getElementById(slot);
