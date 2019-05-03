@@ -379,3 +379,7 @@ const addSpellEventListener = (spell) => {
 spellId.forEach((spell) => {
   addSpellEventListener(spell);
 });
+
+// Set default spell clicked.
+const scorch = document.getElementById('scorch');
+scorch.click();
