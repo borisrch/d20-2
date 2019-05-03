@@ -213,6 +213,58 @@ class AlchemyManager {
 let draggedSpell = null;
 let draggedSpellElement = null;
 
+const slots = ['slot-1', 'slot-2', 'slot-3', 'slot-4'];
+const spellId = [
+  {
+    name: 'arcane-blast',
+    container: 'spell-1',
+  },
+  {
+    name: 'arcane-blitz',
+    container: 'spell-2',
+  },
+  {
+    name: 'arcane-barrage',
+    container: 'spell-3',
+  },
+  {
+    name: 'scorch',
+    container: 'spell-4',
+  },
+  {
+    name: 'incinerate',
+    container: 'spell-5',
+  },
+  {
+    name: 'blaze',
+    container: 'spell-6',
+  },
+  {
+    name: 'ice-spike',
+    container: 'spell-7',
+  },
+  {
+    name: 'frostbolt',
+    container: 'spell-8',
+  },
+  {
+    name: 'flurry',
+    container: 'spell-9',
+  },
+  {
+    name: 'prismatic-shield',
+    container: 'spell-10',
+  },
+  {
+    name: 'nimbus',
+    container: 'spell-11',
+  },
+  {
+    name: 'rune-flux',
+    container: 'spell-12',
+  },
+];
+
 const changeDescription = (spellName) => {
   const spell = Spells.getSpell(spellName);
 
@@ -308,46 +360,41 @@ const spell4 = document.getElementById('spell-4');
 const spell1 = document.getElementById('spell-1');
 const spellArcaneBlast = document.getElementById('arcane-blast');
 
-const slot1 = document.getElementById('slot-1');
-slot1.addEventListener('dragover', handleDragOver);
-slot1.addEventListener('dragenter', handleDragEnter);
-slot1.addEventListener('dragleave', handleDragLeave);
+// const slot1 = document.getElementById('slot-1');
+// slot1.addEventListener('dragover', handleDragOver);
+// slot1.addEventListener('dragenter', handleDragEnter);
+// slot1.addEventListener('dragleave', handleDragLeave);
 
-slot1.addEventListener('drop', handleDrop);
+// slot1.addEventListener('drop', handleDrop);
 
-spellScorch.addEventListener('dragstart', handleDragStart);
-spellScorch.addEventListener('dragend', handleDragEnd);
-spell4.addEventListener('click', handleClick);
+// spellScorch.addEventListener('dragstart', handleDragStart);
+// spellScorch.addEventListener('dragend', handleDragEnd);
+// spell4.addEventListener('click', handleClick);
 
-spellArcaneBlast.addEventListener('dragstart', handleDragStart);
-spellArcaneBlast.addEventListener('dragend', handleDragEnd);
-spell1.addEventListener('click', handleClick);
+// spellArcaneBlast.addEventListener('dragstart', handleDragStart);
+// spellArcaneBlast.addEventListener('dragend', handleDragEnd);
+// spell1.addEventListener('click', handleClick);
 
-// spellScorch.ondragstart = dragStartHandler(event);
+const addSlotEventListener = (slot) => {
+  const s = document.getElementById(slot);
+  s.addEventListener('dragover', handleDragOver);
+  s.addEventListener('dragenter', handleDragEnter);
+  s.addEventListener('dragleave', handleDragLeave);
+  s.addEventListener('drop', handleDrop);
+};
 
-// const spellName = document.getElementById('spell-name');
-// const spells = [
-//   'Scorch',
-//   'Incinerate',
-//   'Blaze',
-//   'Frostbolt',
-//   'Ice Spike',
-//   'Flurry',
-//   'Arcane Blast',
-//   'Arcane Blitz',
-//   'Arcane Barrage',
-//   'Prismatic Shield',
-//   'Rune Flux',
-//   'Nimbus',
-// ];
-// let c = 0;
+slots.forEach((slot) => {
+  addSlotEventListener(slot);
+});
 
-// const change = () => {
-//   if (c >= spells.length) {
-//     c = 0;
-//   }
-//   spellName.innerText = spells[c];
-//   c += 1;
-// };
+const addSpellEventListener = (spell) => {
+  const s = document.getElementById(spell.name);
+  const c = document.getElementById(spell.container);
+  s.addEventListener('dragstart', handleDragStart);
+  s.addEventListener('dragend', handleDragEnd);
+  c.addEventListener('click', handleClick);
+};
 
-// setInterval(change, 1000);
+spellId.forEach((spell) => {
+  addSpellEventListener(spell);
+});
