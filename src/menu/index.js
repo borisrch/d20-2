@@ -104,9 +104,8 @@ document.addEventListener('keydown', () => {
 
   if (!buffer) {
     buffer = true;
-    console.log(event.key);
     switch (event.key) {
-      case "ArrowLeft":
+      case 'ArrowLeft':
         if (!mainFocus) {
           buffer = false;
           break;
@@ -335,14 +334,16 @@ const handleDrop = (e) => {
   if (e.stopPropagation) {
     e.stopPropagation();
   }
+  const current = document.getElementById(e.target.id);
   // Remove duplicate spells from other slots.
   const duplicates = document.querySelectorAll('[data-spell]');
-  Array.from(duplicates).forEach((el) => {
-    if (el.getAttribute('data-spell') === draggedSpell) {
-      el.removeAttribute('data-spell');
-      el.style.backgroundImage = '';
+  for (let i = 0; i < duplicates.length; i += 1) {
+    if (duplicates[i].dataset.spell === draggedSpell) {
+      // Assign to duplicate slot, the spell of currently targetted slot.
+      duplicates[i].setAttribute('data-spell', e.target.getAttribute('data-spell'));
+      duplicates[i].style.backgroundImage = e.target.style.backgroundImage;
     }
-  });
+  }
 
   e.target.style.backgroundImage = `url(/res/spell/wizard/${draggedSpell}.png)`;
   e.target.setAttribute('data-spell', draggedSpell);
