@@ -233,11 +233,11 @@ const spellId = [
     container: 'spell-6',
   },
   {
-    name: 'ice-spike',
+    name: 'frostbolt',
     container: 'spell-7',
   },
   {
-    name: 'frostbolt',
+    name: 'ice-spike',
     container: 'spell-8',
   },
   {
@@ -336,11 +336,10 @@ const handleDrop = (e) => {
     e.stopPropagation();
   }
   // Remove duplicate spells from other slots.
-  const duplicate = document.querySelectorAll('[data-spell]');
-  Array.from(duplicate).forEach((el) => {
+  const duplicates = document.querySelectorAll('[data-spell]');
+  Array.from(duplicates).forEach((el) => {
     if (el.getAttribute('data-spell') === draggedSpell) {
       el.removeAttribute('data-spell');
-      // error
       el.style.backgroundImage = '';
     }
   });
