@@ -43,10 +43,14 @@ class UIManager {
     this.alchemyVisible = false;
     this.armoury = document.getElementById('armoury-interface');
     this.armouryVisible = false;
+    this.equipment = document.getElementById('equipment-interface');
+    this.equipmentVisible = false;
+    this.currentlyActive = 'main';
   }
 
   showAlchemyInterface() {
     this.alchemyVisible = true;
+    this.currentlyActive = 'alchemy';
     mainFocus = false;
     this.alchemy.classList.remove('hide');
     main.classList.add('darken');
@@ -55,13 +59,13 @@ class UIManager {
     particlesJS.load('alchemist-desk', 'src/menu/particles/desk.json', () => {});
   }
 
-  hideAlchemyInterface() {
-    this.alchemyVisible = false;
-    mainFocus = true;
-    this.clearParticles();
-    this.alchemy.classList.add('hide');
-    main.classList.remove('darken');
-  }
+  // hideAlchemyInterface() {
+  //   this.alchemyVisible = false;
+  //   mainFocus = true;
+  //   this.clearParticles();
+  //   this.alchemy.classList.add('hide');
+  //   main.classList.remove('darken');
+  // }
 
   isAlchemyVisible() {
     return this.alchemyVisible;
@@ -69,6 +73,7 @@ class UIManager {
 
   showArmouryInterface() {
     this.armouryVisible = true;
+    this.currentlyActive = 'armoury';
     mainFocus = false;
     this.armoury.classList.remove('hide');
     main.classList.add('darken');
@@ -76,16 +81,57 @@ class UIManager {
     particlesJS.load('furnace-flame', 'src/menu/particles/flames.json', () => {});
   }
 
-  hideArmouryInterface() {
-    this.armouryVisible = false;
-    mainFocus = true;
-    this.clearParticles();
-    this.armoury.classList.add('hide');
-    main.classList.remove('darken');
-  }
+  // hideArmouryInterface() {
+  //   this.armouryVisible = false;
+  //   mainFocus = true;
+  //   this.clearParticles();
+  //   this.armoury.classList.add('hide');
+  //   main.classList.remove('darken');
+  // }
 
   isArmouryVisible() {
     return this.armouryVisible;
+  }
+
+  showEquipmentInterface() {
+    this.equipmentVisible = true;
+    this.currentlyActive = 'equipment';
+    mainFocus = false;
+    this.equipment.classList.remove('hide');
+    main.classList.add('darken');
+  }
+
+  // hideEquipmentInterface() {
+  //   this.equipmentVisible = false;
+  //   mainFocus = true;
+  //   this.clearParticles();
+  //   this.equipment.classList.add('hide');
+  //   main.classList.remove('darken');
+  // }
+
+  isEquipmentVisible() {
+    return this.equipmentVisible;
+  }
+
+  hideInterfaces() {
+    if (this.isEquipmentVisible()) {
+      this.equipment.classList.add('hide');
+      this.equipmentVisible = false;
+    } else if (this.isAlchemyVisible()) {
+      this.alchemy.classList.add('hide');
+      this.alchemyVisible = false;
+    } else if (this.isArmouryVisible()) {
+      this.armoury.classList.add('hide');
+      this.armouryVisible = false;
+    }
+    this.currentlyActive = 'main';
+    mainFocus = true;
+    this.clearParticles();
+    main.classList.remove('darken');
+  }
+
+  getCurrentlyActive() {
+    return this.currentlyActive;
   }
 
   clearParticles() {
@@ -145,21 +191,17 @@ document.addEventListener('keydown', () => {
         buffer = false;
         break;
       case 'Escape':
-        if (UIM.isAlchemyVisible()) {
-          UIM.hideAlchemyInterface();
-        } else if (UIM.isArmouryVisible()) {
-          UIM.hideArmouryInterface();
-        }
+        UIM.hideInterfaces();
         buffer = false;
         break;
 
       case 'a':
-        if (UIM.isAlchemyVisible()) {
+        if (UIM.isAlchemyVisible() || UIM.isEquipmentVisible()) {
           buffer = false;
           break;
         }
         if (UIM.isArmouryVisible()) {
-          UIM.hideArmouryInterface();
+          UIM.hideInterfaces();
         } else {
           UIM.showArmouryInterface();
         }
@@ -167,14 +209,27 @@ document.addEventListener('keydown', () => {
         break;
 
       case 'z':
-        if (UIM.isArmouryVisible()) {
+        if (UIM.isArmouryVisible() || UIM.isEquipmentVisible()) {
           buffer = false;
           break;
         }
         if (UIM.isAlchemyVisible()) {
-          UIM.hideAlchemyInterface();
+          UIM.hideInterfaces();
         } else {
           UIM.showAlchemyInterface();
+        }
+        buffer = false;
+        break;
+
+      case 'x':
+        if (UIM.isAlchemyVisible() || UIM.isArmouryVisible()) {
+          buffer = false;
+          break;
+        }
+        if (UIM.isEquipmentVisible()) {
+          UIM.hideInterfaces();
+        } else {
+          UIM.showEquipmentInterface();
         }
         buffer = false;
         break;
@@ -257,32 +312,33 @@ const spellId = [
   },
 ];
 
+const icon = document.getElementById('spell-icon');
+const name = document.getElementById('spell-name');
+const type = document.getElementById('spell-type');
+const desc = document.getElementById('spell-desc-main');
+const info = document.getElementById('spell-desc-info');
+const lore = document.getElementById('spell-desc-lore');
+
 const changeDescription = (spellName) => {
   const spell = Spells.getSpell(spellName);
 
-  const icon = document.getElementById('spell-icon');
   icon.src = spell.src;
+  icon.className = spell.anim;
 
-  const name = document.getElementById('spell-name');
   name.innerText = spell.name;
   name.className = '';
   name.classList.add('spell-name', spell.colour);
 
-  const type = document.getElementById('spell-type');
   type.innerText = spell.type;
 
-  const desc = document.getElementById('spell-desc-main');
   desc.innerHTML = spell.desc;
 
-  const info = document.getElementById('spell-desc-info');
   if (spell.info !== null) {
     info.style.display = 'block';
     info.innerHTML = spell.info;
   } else {
     info.style.display = 'none';
   }
-
-  const lore = document.getElementById('spell-desc-lore');
   lore.innerText = spell.lore;
 };
 
