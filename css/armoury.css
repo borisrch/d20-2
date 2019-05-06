@@ -37,6 +37,14 @@ body {
   pointer-events: none;
 }
 
+.equipment-background {
+  width: 870px;
+  height: 456px;
+  z-index: 1;
+  position: absolute;
+  pointer-events: none;
+}
+
 .armoury-interface {
   /* width: 576px;
   height: 576px; */
@@ -62,6 +70,19 @@ body {
   left: 50%;
   transform: translateX(-50%);
   top: 50px;
+  user-select: none;
+}
+
+.equipment-interface {
+  width: 870px;
+  height: 456px;
+  border-radius: 2px;
+  overflow: hidden;
+  position: absolute;
+  z-index: 20;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 120px;
   user-select: none;
 }
 
