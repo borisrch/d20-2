@@ -1,4 +1,4 @@
-const icon = {
+export const icon = {
   runic: '<span class="ra ra-crystals colour-runic"></span>',
   armour: '<span class="ra ra-shield colour-ac"></span>',
   damage: '<span class="ra ra-sword colour-damage"></span>',
@@ -7,7 +7,7 @@ const icon = {
   arcana: '<span class="ra ra-focused-lightning colour-condition"></span>',
 };
 
-const text = {
+export const text = {
   runic(value) {
     return `<span class="colour-runic">${value}</span>`;
   },
@@ -27,5 +27,3 @@ const text = {
     return `<span class="bold colour-condition">${value}</span>`;
   },
 };
-
-export default { icon, text };
