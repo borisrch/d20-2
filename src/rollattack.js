@@ -1,15 +1,16 @@
+import MersenneTwister from 'mersenne-twister';
 import { DEV } from './dev';
 import { alzursThunderCondition, playerDisadvantage } from './conditions';
-import MersenneTwister from 'mersenne-twister';
 
-const throwIfMissing = () => { throw new Error('Missing Paramater') };
+
+const throwIfMissing = () => { throw new Error('Missing Paramater'); };
 
 const generator = new MersenneTwister();
 
 // Returns result of random 1 to n.
 export const roll = function (n) {
   const min = 1;
-  const max = Math.floor(n)
+  const max = Math.floor(n);
   const rand = generator.random();
   const result = Math.floor(rand * (max - min + 1)) + min;
   return result;
@@ -44,7 +45,7 @@ export const attack = function (playerDamage = throwIfMissing(), playerHitChance
   let hit = roll(20) + playerHitChanceModifier;
 
   if (playerDisadvantage.active === true) {
-    let hitSecond = roll(20) + playerHitChanceModifier;
+    const hitSecond = roll(20) + playerHitChanceModifier;
 
     if (DEV) {
       console.log(`Disadvantaged - hit: ${hit}, hitSecond: ${hitSecond}`);
@@ -57,37 +58,31 @@ export const attack = function (playerDamage = throwIfMissing(), playerHitChance
   }
 
   if (hit >= monsterArmour) {
-    for (let i = 0; i < playerMultiplier; i++) {
+    for (let i = 0; i < playerMultiplier; i += 1) {
       result += roll(playerDamage);
     }
-    result += playerDamageModifier;    
+    result += playerDamageModifier;
     return result + extra;
   }
   return result = null;
-}
+};
 
 // Returns result of damage or null, does not consider any conditions.
-export const pureAttack = function(playerDamage, playerHitChanceModifier, playerDamageModifier, playerMultiplier, monsterArmour) {
-
-  if (DEV) {
-    console.log('@PureAttack');
-    console.log('Damage: ' + playerDamage + ' HitChance: ' + playerHitChanceModifier + ' DamageMod ' + playerDamageModifier + ' Multiplier: ' + playerMultiplier + ' Armour: ' + monsterArmour);    
-  }
-
+export const pureAttack = function (
+  damage = throwIfMissing(),
+  hitchance = throwIfMissing(),
+  modifier = throwIfMissing(),
+  multiplier = throwIfMissing(),
+  armour = throwIfMissing(),
+) {
   let result = 0;
-  let hit = roll(20) + playerHitChanceModifier;  
-  if (hit >= monsterArmour) {
-    for (let i = 0; i < playerMultiplier; i++) {
-      result += roll(playerDamage);
+  const hit = roll(20) + hitchance;
+  if (hit >= armour) {
+    for (let i = 0; i < multiplier; i += 1) {
+      result += roll(damage);
     }
-    result += playerDamageModifier;    
+    result += modifier;
     return result;
   }
   return result = null;
-}
-
-// Returns random int. Utility function.
-export const getRandomInt = function(max) {
-  return Math.floor(Math.random() * Math.floor(max));
-}
-
+};
