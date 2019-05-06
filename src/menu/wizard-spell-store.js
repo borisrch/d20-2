@@ -37,6 +37,7 @@ const spells = {
     info: null,
     lore: 'A fiery blast that scorches even the strongest armour.',
     src: '/res/spell/wizard/scorch.png',
+    anim: 'fire-spell',
   },
   incinerate: {
     name: 'Incinerate',
@@ -46,6 +47,7 @@ const spells = {
     info: `${icon.burning} ${text.b('Burning')} - deals ${icon.runic}${text.runic(2)} damage per turn.`,
     lore: 'This evocation is notorious for burning numerous other knights to a crisp.',
     src: '/res/spell/wizard/incinerate.png',
+    anim: 'fire-spell',
   },
   blaze: {
     name: 'Blaze',
@@ -55,6 +57,7 @@ const spells = {
     info: null,
     lore: 'A spell that focuses the sun’s energies, degrading the effectiveness of armour.',
     src: '/res/spell/wizard/blaze.png',
+    anim: 'fire-spell',
   },
   arcaneBlast: {
     name: 'Arcane Blast',
@@ -64,6 +67,7 @@ const spells = {
     info: null,
     lore: 'Unstable arcane energy bursts from one plane to the other.',
     src: '/res/spell/wizard/arcane-blast.png',
+    anim: 'arcane-spell',
   },
   arcaneBlitz: {
     name: 'Arcane Blitz',
@@ -73,6 +77,7 @@ const spells = {
     info: `${icon.arcana} ${text.b('Arcana')} - Arcane spells consume ${text.i('Arcana')} stacks to deal bonus ${text.group('4')} damage per stack.`,
     lore: 'Each blitz of arcane power strikes its target more quickly than the last.',
     src: '/res/spell/wizard/arcane-blitz.png',
+    anim: 'arcane-spell',
   },
   arcaneBarrage: {
     name: 'Arcane Barrage',
@@ -82,6 +87,7 @@ const spells = {
     info: `${icon.arcana} ${text.b('Arcana')} - Arcane spells consume ${text.i('Arcana')} stacks to deal bonus ${text.group('4')} damage per stack.`,
     lore: 'Masters are capable of releasing a barrage of unrelenting power upon their enemies.',
     src: '/res/spell/wizard/arcane-barrage.png',
+    anim: 'arcane-spell',
   },
   frostbolt: {
     name: 'Frostbolt',
@@ -91,6 +97,7 @@ const spells = {
     info: `${icon.frozen} ${text.b('Frozen')} - Target is stunned and will not perform an attack this turn.`,
     lore: 'Even the simplest of ice manipulation can be bitterly cold.',
     src: '/res/spell/wizard/frostbolt.png',
+    anim: 'ice-spell',
   },
   iceSpike: {
     name: 'Ice Spike',
@@ -100,6 +107,7 @@ const spells = {
     info: null,
     lore: 'Imprison your foes in razor-sharp spikes of ice.',
     src: '/res/spell/wizard/ice-spike.png',
+    anim: 'ice-spell',
   },
   flurry: {
     name: 'Flurry',
@@ -109,15 +117,17 @@ const spells = {
     info: `${icon.frozen} ${text.b('Frozen')} - Target is stunned and will not perform an attack this turn.`,
     lore: 'Conjure frozen and flurry winds to chill the field of battle.',
     src: '/res/spell/wizard/flurry.png',
+    anim: 'ice-spell',
   },
   prismaticShield: {
-    name: 'Prismatic Shield',
+    name: 'Prismatic',
     colour: 'mint',
     type: 'Basic',
     desc: `Increase armour class by ${icon.runic}${text.runic('2')}${text.group(' + 2')} for 2 turns.`,
     info: null,
     lore: 'This enchantment grants protection from dark energies.',
     src: '/res/spell/wizard/prismatic-shield.png',
+    anim: 'prismatic-spell',
   },
   runeFlux: {
     name: 'Rune Flux',
@@ -127,6 +137,7 @@ const spells = {
     info: null,
     lore: 'Conjures an astral rune that crackles with power while raw energy leaks out.',
     src: '/res/spell/wizard/rune-flux.png',
+    anim: 'rune-flux-spell',
   },
   nimbus: {
     name: 'Nimbus',
@@ -136,6 +147,7 @@ const spells = {
     info: null,
     lore: 'Summons a cosmic ward that heals and protects those powerful enough to seek its aid.',
     src: '/res/spell/wizard/nimbus.png',
+    anim: 'nimbus-spell',
   },
   getSpell(name) {
     switch (name) {
