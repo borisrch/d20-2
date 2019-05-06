@@ -5,8 +5,5 @@ webpack.config.js
 d20.code-workspace
 .eslintrc.json
 shop.html
-res/item
-res/player
-res/mobs
-res/spell
-dist/*.map
+res/
+dist/
