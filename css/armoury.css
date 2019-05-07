@@ -209,13 +209,13 @@ body {
 .main-container {
   position: relative;
   left: 0px;
-  transition: all 0.4s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .main-bg {
   position: absolute;
   left: 0px;
-  transition: all 0.4s ease-in-out;
+  transition: all 0.3s ease-in-out;
   pointer-events: none;
 }
 
@@ -360,7 +360,7 @@ body {
 }
 
 .darken {
-  filter: brightness(20%);
+  filter: brightness(15%);
 }
 
 .alchemist-icon {
