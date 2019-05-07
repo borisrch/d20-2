@@ -30,7 +30,7 @@ export const wizardItems = [
       Stats.playerDamage += WIZARD_WEAPON_1.stats.damage;
       Stats.playerRunic += WIZARD_WEAPON_1.stats.runic;
       Stats.playerWeapon = this.id;
-      playerGraphic.src = '/res/player/wizard/wizard-1-animated.gif';
+      playerGraphic.src = '/res/player/wizard/wizard-1-lg.png';
     },
   },
   {

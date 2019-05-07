@@ -3,8 +3,6 @@ import Items from './wizard-item-store';
 
 let selectedItemType = null;
 
-const rings = ['ferocious-ring', 'guardian-ring', 'arcane-ring', 'seers-ring',];
-
 const typeArmour = document.getElementById('type-armour');
 const typeTrinket = document.getElementById('type-trinket');
 const typeRing = document.getElementById('type-ring');
@@ -100,6 +98,7 @@ const InitializeArmouryInterface = () => {
     typeArmour.addEventListener('click', updateItemType);
     typeTrinket.addEventListener('click', updateItemType);
     typeRing.addEventListener('click', updateItemType);
+    typeArmour.click();
   };
   addItemTypeEventListeners();
 };
