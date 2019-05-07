@@ -123,6 +123,32 @@ body {
   animation: furnace-lighting 4s infinite;
 }
 
+.armoury-currency {
+  position: absolute;
+  /* left: 25px;
+  top: 247px; */
+  left: 25px;
+  top: 25px;
+  width: 280px;
+  z-index: 4;
+  display: inline-block;
+  /* text-align: center; */
+  text-align: start;
+}
+
+.alchemist-currency {
+  position: absolute;
+  /* left: 25px;
+  top: 247px; */
+  left: 407px;
+  top: 25px;
+  width: 280px;
+  z-index: 4;
+  display: inline-block;
+  /* text-align: center; */
+  text-align: end;
+}
+
 .alchemist-bubble {
   position: absolute;
   width: 100px;
@@ -464,6 +490,7 @@ body {
 .spell-selected, .item-selected {
   box-shadow: 0px 0px 30px #00ffff80;
   animation: glow 4s infinite;
+  z-index: 21;
 }
 
 .spell-tree-icon, .item-type-icon {
@@ -471,6 +498,12 @@ body {
   height: 48px;
   position: relative;
   top: -4px;
+}
+
+.item-size {
+  height: 48px;
+  top: -4px;
+  position: relative;
 }
 
 /* .spell-selected::before {
@@ -523,6 +556,12 @@ body {
   font-size: 1.55em;
   text-align: center;
   letter-spacing: 1px;
+}
+
+.item-name {
+  font-family: "Upheavtt";
+  padding: 10px;
+  color: #cee5ff;
 }
 
 .spell-type {
@@ -671,6 +710,29 @@ body {
   animation: ice-spell 2s infinite;
 }
 
+.ora {
+  width: 1.2rem;
+  height: 1.2rem;
+  position: relative;
+  top: 3px;
+}
+
+.ora-text {
+  font-size: 1.2rem;
+  font-family: 'upheavtt', sans-serif;
+  letter-spacing: 2px;
+  color: #fff;
+  padding-left: 5px;
+}
+
+.blue-ora {
+  filter: drop-shadow(0px 0px 4px #03a8f47c);
+}
+
+.orange-ora {
+  filter: drop-shadow(0px 0px 4px #fb8a0077);
+}
+
 @font-face {
   font-family: "Upheavtt";
   src: url("./upheavtt.ttf");
@@ -776,6 +838,11 @@ body {
   height: 254px;
   top: 278px;
   left: 372px;
+}
+
+.item-grid {
+  width: 289px;
+  height: 254px;
 }
 
 .item {
