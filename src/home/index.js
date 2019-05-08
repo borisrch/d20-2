@@ -1,8 +1,45 @@
-import Path from 'path';
-
 import 'particles.js/particles';
+import * as PIXI from 'pixi.js';
+
 import InitializeAlchemyInterface from './alchemy-interface';
 import InitializeArmouryInterface from './armoury-interface';
+
+// Playground Begin
+const app = new PIXI.Application({
+  width: 1280, height: 720, backgroundColor: 0x1099bb, resolution: window.devicePixelRatio || 1,
+});
+document.body.appendChild(app.view);
+
+const container = new PIXI.Container();
+
+app.stage.addChild(container);
+
+// Create a new texture
+const texture = PIXI.Texture.from('/res/platform/palace-lg.png');
+const background = new PIXI.Sprite(texture);
+container.addChild(background);
+background.interactive = true;
+
+const easeInOutQuart = (t) => { 
+  return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t;
+};
+
+// Move container to the center
+// container.x = app.screen.width / 2;
+// container.y = app.screen.height / 2;
+
+// Center bunny sprite in local container coordinates
+// container.pivot.x = container.width / 2;
+// container.pivot.y = container.height / 2;
+
+// Listen for animate update
+// app.ticker.add((delta) => {
+//   // rotate the container!
+//   // use delta to create frame-independent transform
+//   container.rotation -= 0.01 * delta;
+// });
+
+// Playground End
 
 const particlesJS = window.particlesJS;
 
@@ -157,10 +194,33 @@ document.addEventListener('keydown', () => {
           break;
         }
         if (cameraLevel < 3) {
+
           currentPosition -= threshold;
           cameraLevel += 1;
           torches.style.left = currentPosition + 'px';
           main.style.left = currentPosition + 'px';
+
+          const time = {
+            start: performance.now(),
+            total: 1000,
+          };
+          const finalPosition = 590;
+
+          const easeOut = progress => Math.pow(--progress, 5) + 1;
+
+          const moveCameraRight = (delta) => {
+            time.elapsed = performance.now() - time.start;
+            const progress = Math.min((time.elapsed / time.total), 1);
+            const easing = easeOut(progress);
+            const position = easing * finalPosition;
+            container.x = -position;
+            if (position === finalPosition) {
+              app.ticker.remove(moveCameraRight);
+            }
+          };
+
+          app.ticker.add(moveCameraRight);
+
           setLevelColour(cameraLevel);
           setTimeout(() => { buffer = false; }, bufferDuration);
         } else {
