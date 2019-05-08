@@ -24,6 +24,8 @@ const easeInOutQuart = (t) => {
   return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t;
 };
 
+const easeOut = progress => Math.pow(--progress, 5) + 1;
+
 // Move container to the center
 // container.x = app.screen.width / 2;
 // container.y = app.screen.height / 2;
@@ -182,6 +184,7 @@ document.addEventListener('keydown', () => {
           cameraLevel -= 1;
           torches.style.left = currentPosition + 'px';
           main.style.left = currentPosition + 'px';
+          
           setLevelColour(cameraLevel);
           setTimeout(() => { buffer = false; }, bufferDuration);
         } else {
@@ -205,15 +208,15 @@ document.addEventListener('keydown', () => {
             total: 1000,
           };
           const finalPosition = 590;
-
-          const easeOut = progress => Math.pow(--progress, 5) + 1;
+          const basePosition = container.x;
 
           const moveCameraRight = (delta) => {
             time.elapsed = performance.now() - time.start;
             const progress = Math.min((time.elapsed / time.total), 1);
             const easing = easeOut(progress);
             const position = easing * finalPosition;
-            container.x = -position;
+            container.x = -position + basePosition;
+            // container.setTransform(-position);
             if (position === finalPosition) {
               app.ticker.remove(moveCameraRight);
             }
