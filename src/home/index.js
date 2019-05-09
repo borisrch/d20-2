@@ -4,17 +4,15 @@ import * as PIXI from 'pixi.js';
 import InitializeAlchemyInterface from './alchemy-interface';
 import InitializeArmouryInterface from './armoury-interface';
 
-// Playground Begin
+
 const app = new PIXI.Application({
   width: 1280, height: 720, backgroundColor: 0x1099bb, resolution: window.devicePixelRatio || 1,
 });
-document.body.appendChild(app.view);
+document.getElementById('main-bg').appendChild(app.view);
 
 const container = new PIXI.Container();
-
 app.stage.addChild(container);
 
-// Create a new texture
 const texture = PIXI.Texture.from('/res/platform/palace-lg.png');
 const background = new PIXI.Sprite(texture);
 container.addChild(background);
@@ -26,35 +24,18 @@ const easeInOutQuart = (t) => {
 
 const easeOut = progress => Math.pow(--progress, 5) + 1;
 
-// Move container to the center
-// container.x = app.screen.width / 2;
-// container.y = app.screen.height / 2;
-
-// Center bunny sprite in local container coordinates
-// container.pivot.x = container.width / 2;
-// container.pivot.y = container.height / 2;
-
-// Listen for animate update
-// app.ticker.add((delta) => {
-//   // rotate the container!
-//   // use delta to create frame-independent transform
-//   container.rotation -= 0.01 * delta;
-// });
-
-// Playground End
-
 const particlesJS = window.particlesJS;
-
 particlesJS.load('torch-1', '/src/home/particles/torch.json');
 
 let currentPosition = 0;
 let cameraLevel = 1;
 let buffer = false;
-const bufferDuration = 350;
+const bufferDuration = 500;
+
+let bufferQueue = [];
 
 let mainFocus = true;
 
-const main = document.getElementById('main-bg');
 const alchemistIcon = document.getElementById('alchemist-icon');
 const armouryIcon = document.getElementById('armoury-icon');
 
@@ -79,6 +60,31 @@ const setLevelColour = (level) => {
   }
 };
 
+const reduceBrightness = () => {
+  const time = {
+    start: performance.now(),
+    total: 1000,
+  };
+  const endBrightness = 0.25;
+  const startBrightness = 1;
+  const targetBrightness = startBrightness - endBrightness;
+  const filter = new PIXI.filters.ColorMatrixFilter();
+
+  const transition = (delta) => {
+    time.elapsed = performance.now() - time.start;
+    const progress = Math.min((time.elapsed / time.total), 1);
+    const easing = easeOut(progress);
+    const d = 1 - (easing * targetBrightness);
+    filter.brightness(d);
+    container.filters = [filter];
+    if (d <= endBrightness) {
+      app.ticker.remove(transition);
+    }
+  };
+  app.ticker.add(transition);
+};
+
+
 class UIManager {
   constructor() {
     this.alchemy = document.getElementById('alchemist-interface');
@@ -95,7 +101,7 @@ class UIManager {
     this.currentlyActive = 'alchemy';
     mainFocus = false;
     this.alchemy.classList.remove('hide');
-    main.classList.add('darken');
+    reduceBrightness();
     particlesJS.load('alchemist-bubble', '/src/home/particles/bubbles.json', () => {});
     particlesJS.load('alchemist-cauldron', '/src/home/particles/cauldron.json', () => {});
     particlesJS.load('alchemist-desk', '/src/home/particles/desk.json', () => {});
@@ -118,7 +124,12 @@ class UIManager {
     this.currentlyActive = 'armoury';
     mainFocus = false;
     this.armoury.classList.remove('hide');
-    main.classList.add('darken');
+
+    const filter = new PIXI.filters.ColorMatrixFilter();
+    container.filters = [filter];
+    filter.brightness(0.25);
+
+    // main.classList.add('darken');
     particlesJS.load('furnace-embers', '/src/home/particles/embers.json', () => {});
     particlesJS.load('furnace-flame', '/src/home/particles/flames.json', () => {});
   }
@@ -132,7 +143,7 @@ class UIManager {
     this.currentlyActive = 'equipment';
     mainFocus = false;
     this.equipment.classList.remove('hide');
-    main.classList.add('darken');
+    // main.classList.add('darken');
   }
 
   isEquipmentVisible() {
@@ -153,7 +164,7 @@ class UIManager {
     this.currentlyActive = 'main';
     mainFocus = true;
     this.clearParticles();
-    main.classList.remove('darken');
+    // main.classList.remove('darken');
   }
 
   getCurrentlyActive() {
@@ -168,8 +179,57 @@ class UIManager {
 
 const UIM = new UIManager();
 
+const moveCameraRight = () => {
+  const time = {
+    start: performance.now(),
+    total: bufferDuration,
+  };
+  const endPosition = 590;
+  const startPosition = container.x;
+  const move = (delta) => {
+    time.elapsed = performance.now() - time.start;
+    const progress = Math.min((time.elapsed / time.total), 1);
+    const easing = easeOut(progress);
+    const position = easing * endPosition;
+    container.x = -position + startPosition;
+    if (position === endPosition) {
+      app.ticker.remove(move);
+    }
+  };
+
+  app.ticker.add(move);
+};
+
+const moveCameraRightCommand = () => {
+
+}
+
+const moveCameraLeft = () => {
+  const time = {
+    start: performance.now(),
+    total: bufferDuration,
+  };
+  const endPosition = 590;
+  const startPosition = container.x;
+  console.log('Base position: ', startPosition);
+  const move = (delta) => {
+    time.elapsed = performance.now() - time.start;
+    const progress = Math.min((time.elapsed / time.total), 1);
+    const easing = easeOut(progress);
+    const position = easing * endPosition;
+    container.x = position + startPosition;
+    if (position === endPosition) {
+      console.log('final position: ', container.x);
+      app.ticker.remove(move);
+    }
+  };
+
+  app.ticker.add(move);
+};
+
+
 document.addEventListener('keydown', () => {
-  const torches = document.getElementById('main-container');
+  // const torches = document.getElementById('main-container');
   const threshold = 590;
   if (!buffer) {
     buffer = true;
@@ -182,29 +242,10 @@ document.addEventListener('keydown', () => {
         if (currentPosition !== 0) {
           currentPosition += threshold;
           cameraLevel -= 1;
-          torches.style.left = currentPosition + 'px';
-          main.style.left = currentPosition + 'px';
+          // torches.style.left = currentPosition + 'px';
+          // main.style.left = currentPosition + 'px';
 
-          const time = {
-            start: performance.now(),
-            total: 1000,
-          };
-          const finalPosition = 590;
-          const basePosition = container.x;
-
-          const moveCameraRight = (delta) => {
-            time.elapsed = performance.now() - time.start;
-            const progress = Math.min((time.elapsed / time.total), 1);
-            const easing = easeOut(progress);
-            const position = easing * finalPosition;
-            container.x = position + basePosition;
-            if (position === finalPosition) {
-              console.log(container.x);
-              app.ticker.remove(moveCameraRight);
-            }
-          };
-
-          app.ticker.add(moveCameraRight);
+          moveCameraLeft();
 
           setLevelColour(cameraLevel);
           setTimeout(() => { buffer = false; }, bufferDuration);
@@ -221,31 +262,10 @@ document.addEventListener('keydown', () => {
 
           currentPosition -= threshold;
           cameraLevel += 1;
-          torches.style.left = currentPosition + 'px';
-          main.style.left = currentPosition + 'px';
+          // torches.style.left = currentPosition + 'px';
+          // main.style.left = currentPosition + 'px';
 
-          const time = {
-            start: performance.now(),
-            total: 1000,
-          };
-          const finalPosition = 590;
-          const basePosition = container.x;
-
-          const moveCameraRight = (delta) => {
-            time.elapsed = performance.now() - time.start;
-            const progress = Math.min((time.elapsed / time.total), 1);
-            const easing = easeOut(progress);
-            const position = easing * finalPosition;
-            container.x = -position + basePosition;
-            // container.setTransform(-position);
-            if (position === finalPosition) {
-              container.x = Math.round(container.x);
-              console.log(container.x);
-              app.ticker.remove(moveCameraRight);
-            }
-          };
-
-          app.ticker.add(moveCameraRight);
+          moveCameraRight();
 
           setLevelColour(cameraLevel);
           setTimeout(() => { buffer = false; }, bufferDuration);
@@ -329,3 +349,4 @@ armouryIcon.addEventListener('click', () => {
 
 InitializeAlchemyInterface();
 InitializeArmouryInterface();
+
