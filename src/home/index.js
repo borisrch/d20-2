@@ -184,7 +184,28 @@ document.addEventListener('keydown', () => {
           cameraLevel -= 1;
           torches.style.left = currentPosition + 'px';
           main.style.left = currentPosition + 'px';
-          
+
+          const time = {
+            start: performance.now(),
+            total: 1000,
+          };
+          const finalPosition = 590;
+          const basePosition = container.x;
+
+          const moveCameraRight = (delta) => {
+            time.elapsed = performance.now() - time.start;
+            const progress = Math.min((time.elapsed / time.total), 1);
+            const easing = easeOut(progress);
+            const position = easing * finalPosition;
+            container.x = position + basePosition;
+            if (position === finalPosition) {
+              console.log(container.x);
+              app.ticker.remove(moveCameraRight);
+            }
+          };
+
+          app.ticker.add(moveCameraRight);
+
           setLevelColour(cameraLevel);
           setTimeout(() => { buffer = false; }, bufferDuration);
         } else {
@@ -218,6 +239,8 @@ document.addEventListener('keydown', () => {
             container.x = -position + basePosition;
             // container.setTransform(-position);
             if (position === finalPosition) {
+              container.x = Math.round(container.x);
+              console.log(container.x);
               app.ticker.remove(moveCameraRight);
             }
           };
