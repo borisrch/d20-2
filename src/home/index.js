@@ -6,7 +6,7 @@ import InitializeArmouryInterface from './armoury-interface';
 
 
 const app = new PIXI.Application({
-  width: 1280, height: 720, backgroundColor: 0x1099bb, resolution: window.devicePixelRatio || 1,
+  width: 1280, height: 720, backgroundColor: 0x1099bb, resizeTo: document.getElementById('main-interface'),
 });
 document.getElementById('main-bg').appendChild(app.view);
 
