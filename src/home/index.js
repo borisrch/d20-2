@@ -32,6 +32,7 @@ let cameraLevel = 1;
 let buffer = false;
 const bufferDuration = 500;
 
+// max 3 items
 let bufferQueue = [];
 
 let mainFocus = true;
@@ -84,6 +85,31 @@ const reduceBrightness = () => {
   app.ticker.add(transition);
 };
 
+const increaseBrightness = () => {
+  console.log('increase brightness::');
+  const time = {
+    start: performance.now(),
+    total: 1000,
+  };
+  const endBrightness = 1;
+  const startBrightness = 0.25;
+  const targetBrightness = 0.75;
+  const filter = new PIXI.filters.ColorMatrixFilter();
+  const transition = (delta) => {
+    time.elapsed = performance.now() - time.start;
+    const progress = Math.min((time.elapsed / time.total), 1);
+    const easing = easeOut(progress);
+    const d = startBrightness + (easing * targetBrightness);
+    filter.brightness(d);
+    container.filters = [filter];
+    console.log(d);
+    if (d >= endBrightness) {
+      app.ticker.remove(transition);
+    }
+  };
+  app.ticker.add(transition);
+};
+
 
 class UIManager {
   constructor() {
@@ -107,13 +133,13 @@ class UIManager {
     particlesJS.load('alchemist-desk', '/src/home/particles/desk.json', () => {});
   }
 
-  // hideAlchemyInterface() {
-  //   this.alchemyVisible = false;
-  //   mainFocus = true;
-  //   this.clearParticles();
-  //   this.alchemy.classList.add('hide');
-  //   main.classList.remove('darken');
-  // }
+  hideAlchemyInterface() {
+    this.alchemyVisible = false;
+    mainFocus = true;
+    this.clearParticles();
+    this.alchemy.classList.add('hide');
+    // main.classList.remove('darken');
+  }
 
   isAlchemyVisible() {
     return this.alchemyVisible;
@@ -123,15 +149,10 @@ class UIManager {
     this.armouryVisible = true;
     this.currentlyActive = 'armoury';
     mainFocus = false;
-    this.armoury.classList.remove('hide');
-
-    const filter = new PIXI.filters.ColorMatrixFilter();
-    container.filters = [filter];
-    filter.brightness(0.25);
-
-    // main.classList.add('darken');
     particlesJS.load('furnace-embers', '/src/home/particles/embers.json', () => {});
     particlesJS.load('furnace-flame', '/src/home/particles/flames.json', () => {});
+    this.armoury.classList.remove('hide');
+    reduceBrightness();
   }
 
   isArmouryVisible() {
@@ -143,7 +164,7 @@ class UIManager {
     this.currentlyActive = 'equipment';
     mainFocus = false;
     this.equipment.classList.remove('hide');
-    // main.classList.add('darken');
+    reduceBrightness();
   }
 
   isEquipmentVisible() {
@@ -164,7 +185,8 @@ class UIManager {
     this.currentlyActive = 'main';
     mainFocus = true;
     this.clearParticles();
-    // main.classList.remove('darken');
+    console.log('hiding interfaces');
+    increaseBrightness();
   }
 
   getCurrentlyActive() {
@@ -201,8 +223,23 @@ const moveCameraRight = () => {
 };
 
 const moveCameraRightCommand = () => {
-
-}
+  // if (!mainFocus) {
+  //   buffer = true;
+  //   return;
+  // }
+  buffer = true;
+  if (cameraLevel < 3) {
+    currentPosition += 590;
+    cameraLevel += 1;
+    moveCameraRight();
+    setLevelColour(cameraLevel);
+    setTimeout(() => {
+      buffer = false;
+    }, bufferDuration);
+  } else {
+    buffer = false;
+  }
+};
 
 const moveCameraLeft = () => {
   const time = {
@@ -227,109 +264,134 @@ const moveCameraLeft = () => {
   app.ticker.add(move);
 };
 
-
-document.addEventListener('keydown', () => {
-  // const torches = document.getElementById('main-container');
-  const threshold = 590;
-  if (!buffer) {
-    buffer = true;
-    switch (event.key) {
-      case 'ArrowLeft':
-        if (!mainFocus) {
-          buffer = false;
-          break;
-        }
-        if (currentPosition !== 0) {
-          currentPosition += threshold;
-          cameraLevel -= 1;
-          // torches.style.left = currentPosition + 'px';
-          // main.style.left = currentPosition + 'px';
-
-          moveCameraLeft();
-
-          setLevelColour(cameraLevel);
-          setTimeout(() => { buffer = false; }, bufferDuration);
-        } else {
-          buffer = false;
-        }
-        break;
-      case "ArrowRight":
-        if (!mainFocus) {
-          buffer = false;
-          break;
-        }
-        if (cameraLevel < 3) {
-
-          currentPosition -= threshold;
-          cameraLevel += 1;
-          // torches.style.left = currentPosition + 'px';
-          // main.style.left = currentPosition + 'px';
-
-          moveCameraRight();
-
-          setLevelColour(cameraLevel);
-          setTimeout(() => { buffer = false; }, bufferDuration);
-        } else {
-          console.log(cameraLevel);
-          buffer = false;
-        }
-        break;
-      case "ArrowUp":
-        buffer = false;
-        break;
-      case "ArrowDown":
-        buffer = false;
-        break;
-      case 'Escape':
-        UIM.hideInterfaces();
-        buffer = false;
-        break;
-
-      case 'a':
-        if (UIM.isAlchemyVisible() || UIM.isEquipmentVisible()) {
-          buffer = false;
-          break;
-        }
-        if (UIM.isArmouryVisible()) {
-          UIM.hideInterfaces();
-        } else {
-          UIM.showArmouryInterface();
-        }
-        buffer = false;
-        break;
-
-      case 'z':
-        if (UIM.isArmouryVisible() || UIM.isEquipmentVisible()) {
-          buffer = false;
-          break;
-        }
-        if (UIM.isAlchemyVisible()) {
-          UIM.hideInterfaces();
-        } else {
-          UIM.showAlchemyInterface();
-        }
-        buffer = false;
-        break;
-
-      case 'x':
-        if (UIM.isAlchemyVisible() || UIM.isArmouryVisible()) {
-          buffer = false;
-          break;
-        }
-        if (UIM.isEquipmentVisible()) {
-          UIM.hideInterfaces();
-        } else {
-          UIM.showEquipmentInterface();
-        }
-        buffer = false;
-        break;
-
-      default:
-        buffer = false;
-        break;
-    }
+const moveCameraLeftCommand = () => {
+  buffer = true;
+  // CameraLevel is mapped to 1 when container.x = 0;
+  if ((cameraLevel - 1) !== 0) {
+    currentPosition -= 590;
+    cameraLevel -= 1;
+    moveCameraLeft();
+    setLevelColour(cameraLevel);
+    setTimeout(() => {
+      buffer = false;
+    }, bufferDuration);
+  } else {
+    buffer = false;
   }
-});
+};
+
+const inputProperties = {
+  moveRight: {
+    key: 'ArrowRight',
+    command: moveCameraRightCommand,
+  },
+  moveLeft: {
+    key: 'ArrowLeft',
+    command: moveCameraLeftCommand,
+  },
+};
+
+
+const inputHandler = (e) => {
+  if (e.key === inputProperties.moveRight.key) {
+    if (!buffer) {
+      inputProperties.moveRight.command();
+    }
+  } else if (e.key === inputProperties.moveLeft.key) {
+    if (!buffer) {
+      inputProperties.moveLeft.command();
+    }
+  } else if (e.key === 'Escape') {
+    UIM.hideInterfaces();
+  }
+};
+
+document.addEventListener('keydown', inputHandler);
+
+// document.addEventListener('keydown', () => {
+//   // const torches = document.getElementById('main-container');
+//   const threshold = 590;
+//   if (!buffer) {
+//     buffer = true;
+//     switch (event.key) {
+//       case 'ArrowLeft':
+//         if (!mainFocus) {
+//           buffer = false;
+//           break;
+//         }
+//         if (currentPosition !== 0) {
+//           currentPosition += threshold;
+//           cameraLevel -= 1;
+//           // torches.style.left = currentPosition + 'px';
+//           // main.style.left = currentPosition + 'px';
+
+//           moveCameraLeft();
+
+//           setLevelColour(cameraLevel);
+//           setTimeout(() => { buffer = false; }, bufferDuration);
+//         } else {
+//           buffer = false;
+//         }
+//         break;
+//       case 'ArrowRight':
+//         moveCameraRightCommand();
+//         break;
+//       case "ArrowUp":
+//         buffer = false;
+//         break;
+//       case "ArrowDown":
+//         buffer = false;
+//         break;
+//       case 'Escape':
+//         UIM.hideInterfaces();
+//         buffer = false;
+//         break;
+
+//       case 'a':
+//         if (UIM.isAlchemyVisible() || UIM.isEquipmentVisible()) {
+//           buffer = false;
+//           break;
+//         }
+//         if (UIM.isArmouryVisible()) {
+//           UIM.hideInterfaces();
+//         } else {
+//           UIM.showArmouryInterface();
+//         }
+//         buffer = false;
+//         break;
+
+//       case 'z':
+//         if (UIM.isArmouryVisible() || UIM.isEquipmentVisible()) {
+//           buffer = false;
+//           break;
+//         }
+//         if (UIM.isAlchemyVisible()) {
+//           UIM.hideInterfaces();
+//         } else {
+//           UIM.showAlchemyInterface();
+//         }
+//         buffer = false;
+//         break;
+
+//       case 'x':
+//         if (UIM.isAlchemyVisible() || UIM.isArmouryVisible()) {
+//           buffer = false;
+//           break;
+//         }
+//         if (UIM.isEquipmentVisible()) {
+//           UIM.hideInterfaces();
+//         } else {
+//           UIM.showEquipmentInterface();
+//         }
+//         buffer = false;
+//         break;
+
+//       default:
+//         buffer = false;
+//         break;
+//     }
+//   }
+// });
 
 alchemistIcon.addEventListener('click', () => {
   if (UIM.isAlchemyVisible()) {
