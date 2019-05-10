@@ -133,14 +133,6 @@ class UIManager {
     particlesJS.load('alchemist-desk', '/src/home/particles/desk.json', () => {});
   }
 
-  hideAlchemyInterface() {
-    this.alchemyVisible = false;
-    mainFocus = true;
-    this.clearParticles();
-    this.alchemy.classList.add('hide');
-    // main.classList.remove('darken');
-  }
-
   isAlchemyVisible() {
     return this.alchemyVisible;
   }
@@ -280,6 +272,30 @@ const moveCameraLeftCommand = () => {
   }
 };
 
+const handleAlchemyInterfaceCommand = () => {
+  if (UIM.getCurrentlyActive() !== 'main') {
+    UIM.hideInterfaces();
+  } else {
+    UIM.showAlchemyInterface();
+  }
+};
+
+const handleArmouryInterfaceCommand = () => {
+  if (UIM.getCurrentlyActive() !== 'main') {
+    UIM.hideInterfaces();
+  } else {
+    UIM.showArmouryInterface();
+  }
+};
+
+const handleEquipmentInterfaceCommand = () => {
+  if (UIM.getCurrentlyActive() !== 'main') {
+    UIM.hideInterfaces();
+  } else {
+    UIM.showEquipmentInterface();
+  }
+};
+
 const inputProperties = {
   moveRight: {
     key: 'ArrowRight',
@@ -288,6 +304,18 @@ const inputProperties = {
   moveLeft: {
     key: 'ArrowLeft',
     command: moveCameraLeftCommand,
+  },
+  toggleAlchemy: {
+    key: 'a',
+    command: handleAlchemyInterfaceCommand,
+  },
+  toggleArmoury: {
+    key: 'z',
+    command: handleArmouryInterfaceCommand,
+  },
+  toggleEquipment: {
+    key: 's',
+    command: handleEquipmentInterfaceCommand,
   },
 };
 
@@ -301,6 +329,12 @@ const inputHandler = (e) => {
     if (!buffer) {
       inputProperties.moveLeft.command();
     }
+  } else if (e.key === inputProperties.toggleAlchemy.key) {
+    inputProperties.toggleAlchemy.command();
+  } else if (e.key === inputProperties.toggleArmoury.key) {
+    inputProperties.toggleArmoury.command();
+  } else if (e.key === inputProperties.toggleEquipment.key) {
+    inputProperties.toggleEquipment.command();
   } else if (e.key === 'Escape') {
     UIM.hideInterfaces();
   }
@@ -392,6 +426,8 @@ document.addEventListener('keydown', inputHandler);
 //     }
 //   }
 // });
+
+
 
 alchemistIcon.addEventListener('click', () => {
   if (UIM.isAlchemyVisible()) {
