@@ -423,6 +423,10 @@ const deathfire_grasp = function() {
 
 const runic_echoes = function() {
 
+  if (DEV) {
+    endTurn();
+  } else {
+
   Stats.playerMana = Stats.playerMana - 25;
 
   let bonusRes = bonus(Stats.playerRunic, 2);
@@ -444,6 +448,8 @@ const runic_echoes = function() {
   };
 
   endTurn();
+  // Temporary if for DEV no damage.
+  }
 }
 
 // const setMobileEvents = () => {
@@ -499,6 +505,11 @@ const lm = new LevelManager();
 if (DEV) {
   Stats.playerHealth = 1000;
 }
+
+// Investigate this further, might interfere with tap/touch library.
+document.documentElement.addEventListener('touchmove', function (event) {
+  event.preventDefault();
+}, false);
 
 window.onload = () => {
   const game = document.getElementById('game-interface');

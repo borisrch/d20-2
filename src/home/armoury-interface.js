@@ -49,6 +49,7 @@ const setItemsFromArray = (items) => {
     const image = document.createElement('img');
     image.src = items[i].src;
     image.id = items[i].id;
+    image.draggable = false;
     image.classList.add('item-size');
     image.addEventListener('click', updateItemDescription);
 
