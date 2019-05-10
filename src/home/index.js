@@ -86,7 +86,6 @@ const reduceBrightness = () => {
 };
 
 const increaseBrightness = () => {
-  console.log('increase brightness::');
   const time = {
     start: performance.now(),
     total: 1000,
@@ -102,7 +101,6 @@ const increaseBrightness = () => {
     const d = startBrightness + (easing * targetBrightness);
     filter.brightness(d);
     container.filters = [filter];
-    console.log(d);
     if (d >= endBrightness) {
       app.ticker.remove(transition);
     }
@@ -177,7 +175,6 @@ class UIManager {
     this.currentlyActive = 'main';
     mainFocus = true;
     this.clearParticles();
-    console.log('hiding interfaces');
     increaseBrightness();
   }
 
@@ -240,7 +237,6 @@ const moveCameraLeft = () => {
   };
   const endPosition = 590;
   const startPosition = container.x;
-  console.log('Base position: ', startPosition);
   const move = (delta) => {
     time.elapsed = performance.now() - time.start;
     const progress = Math.min((time.elapsed / time.total), 1);
@@ -248,7 +244,6 @@ const moveCameraLeft = () => {
     const position = easing * endPosition;
     container.x = position + startPosition;
     if (position === endPosition) {
-      console.log('final position: ', container.x);
       app.ticker.remove(move);
     }
   };
@@ -341,93 +336,6 @@ const inputHandler = (e) => {
 };
 
 document.addEventListener('keydown', inputHandler);
-
-// document.addEventListener('keydown', () => {
-//   // const torches = document.getElementById('main-container');
-//   const threshold = 590;
-//   if (!buffer) {
-//     buffer = true;
-//     switch (event.key) {
-//       case 'ArrowLeft':
-//         if (!mainFocus) {
-//           buffer = false;
-//           break;
-//         }
-//         if (currentPosition !== 0) {
-//           currentPosition += threshold;
-//           cameraLevel -= 1;
-//           // torches.style.left = currentPosition + 'px';
-//           // main.style.left = currentPosition + 'px';
-
-//           moveCameraLeft();
-
-//           setLevelColour(cameraLevel);
-//           setTimeout(() => { buffer = false; }, bufferDuration);
-//         } else {
-//           buffer = false;
-//         }
-//         break;
-//       case 'ArrowRight':
-//         moveCameraRightCommand();
-//         break;
-//       case "ArrowUp":
-//         buffer = false;
-//         break;
-//       case "ArrowDown":
-//         buffer = false;
-//         break;
-//       case 'Escape':
-//         UIM.hideInterfaces();
-//         buffer = false;
-//         break;
-
-//       case 'a':
-//         if (UIM.isAlchemyVisible() || UIM.isEquipmentVisible()) {
-//           buffer = false;
-//           break;
-//         }
-//         if (UIM.isArmouryVisible()) {
-//           UIM.hideInterfaces();
-//         } else {
-//           UIM.showArmouryInterface();
-//         }
-//         buffer = false;
-//         break;
-
-//       case 'z':
-//         if (UIM.isArmouryVisible() || UIM.isEquipmentVisible()) {
-//           buffer = false;
-//           break;
-//         }
-//         if (UIM.isAlchemyVisible()) {
-//           UIM.hideInterfaces();
-//         } else {
-//           UIM.showAlchemyInterface();
-//         }
-//         buffer = false;
-//         break;
-
-//       case 'x':
-//         if (UIM.isAlchemyVisible() || UIM.isArmouryVisible()) {
-//           buffer = false;
-//           break;
-//         }
-//         if (UIM.isEquipmentVisible()) {
-//           UIM.hideInterfaces();
-//         } else {
-//           UIM.showEquipmentInterface();
-//         }
-//         buffer = false;
-//         break;
-
-//       default:
-//         buffer = false;
-//         break;
-//     }
-//   }
-// });
-
-
 
 alchemistIcon.addEventListener('click', () => {
   if (UIM.isAlchemyVisible()) {
