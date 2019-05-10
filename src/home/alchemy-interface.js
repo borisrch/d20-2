@@ -151,33 +151,22 @@ const handleDragEnd = (e) => {
   draggedSpellElement.classList.remove('mini');
 };
 
-// const addSlotEventListener = (slot) => {
-//   const s = document.getElementById(slot);
-//   s.addEventListener('dragover', handleDragOver);
-//   s.addEventListener('dragenter', handleDragEnter);
-//   s.addEventListener('dragleave', handleDragLeave);
-//   s.addEventListener('drop', handleDrop);
-// };
-
-// slots.forEach((slot) => {
-//   addSlotEventListener(slot);
-// });
-
-// const addSpellEventListener = (spell) => {
-//   const s = document.getElementById(spell.name);
-//   const c = document.getElementById(spell.container);
-//   s.addEventListener('dragstart', handleDragStart);
-//   s.addEventListener('dragend', handleDragEnd);
-//   c.addEventListener('click', handleClick);
-// };
-
-// spellId.forEach((spell) => {
-//   addSpellEventListener(spell);
-// });
-
-// // Set default spell clicked.
-// const scorch = document.getElementById('scorch');
-// scorch.click();
+const updateSpellSlots = () => {
+  const usingStarterSet = true;
+  const starters = [
+    Spells.getSpell('scorch'),
+    Spells.getSpell('frostbolt'),
+    Spells.getSpell('arcane-blast'),
+    Spells.getSpell('prismatic-shield'),
+  ];
+  if (usingStarterSet) {
+    for (let i = 0; i < slots.length; i += 1) {
+      const s = document.getElementById(slots[i]);
+      s.style.backgroundImage = `url(${starters[i].src})`;
+      s.setAttribute('data-spell', starters[i].id);
+    }
+  }
+};
 
 const InitializeAlchemyInterface = () => {
   const addSlotEventListener = (slot) => {
@@ -207,6 +196,8 @@ const InitializeAlchemyInterface = () => {
   // Set default spell clicked.
   const scorch = document.getElementById('scorch');
   scorch.click();
+
+  updateSpellSlots();
 };
 
 export default InitializeAlchemyInterface;
