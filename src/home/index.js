@@ -17,6 +17,9 @@ const texture = PIXI.Texture.from('/res/platform/palace-lg.png');
 const background = new PIXI.Sprite(texture);
 container.addChild(background);
 background.interactive = true;
+const filter = new PIXI.filters.ColorMatrixFilter();
+filter.brightness(1);
+container.filters = [filter];
 
 const easeInOutQuart = (t) => { 
   return t<.5 ? 8*t*t*t*t : 1-8*(--t)*t*t*t;
@@ -69,7 +72,6 @@ const reduceBrightness = () => {
   const endBrightness = 0.25;
   const startBrightness = 1;
   const targetBrightness = startBrightness - endBrightness;
-  const filter = new PIXI.filters.ColorMatrixFilter();
 
   const transition = (delta) => {
     time.elapsed = performance.now() - time.start;
@@ -77,7 +79,6 @@ const reduceBrightness = () => {
     const easing = easeOut(progress);
     const d = 1 - (easing * targetBrightness);
     filter.brightness(d);
-    container.filters = [filter];
     if (d <= endBrightness) {
       app.ticker.remove(transition);
     }
@@ -93,14 +94,12 @@ const increaseBrightness = () => {
   const endBrightness = 1;
   const startBrightness = 0.25;
   const targetBrightness = 0.75;
-  const filter = new PIXI.filters.ColorMatrixFilter();
   const transition = (delta) => {
     time.elapsed = performance.now() - time.start;
     const progress = Math.min((time.elapsed / time.total), 1);
     const easing = easeOut(progress);
     const d = startBrightness + (easing * targetBrightness);
     filter.brightness(d);
-    container.filters = [filter];
     if (d >= endBrightness) {
       app.ticker.remove(transition);
     }
