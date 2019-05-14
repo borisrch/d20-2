@@ -49,7 +49,7 @@
     },
     "move": {
       "enable": true,
-      "speed": 10,
+      "speed": 5,
       "direction": "right",
       "random": false,
       "straight": true,
@@ -101,5 +101,5 @@
       }
     }
   },
-  "retina_detect": true
+  "retina_detect": false
 }
