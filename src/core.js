@@ -5,8 +5,8 @@ import { Howl } from 'howler';
 
 import '../css/tingle.min.css';
 import 'tippy.js/dist/tippy.css';
-import '../css/game-interface.css';
-import '../css/spell-interface.css';
+// import '../css/spell-interface.css';
+// import '../css/game-interface.css';
 
 import { roll, attack, pureAttack, bonus } from './rollattack';
 import { log } from './log';
@@ -452,19 +452,6 @@ const runic_echoes = function() {
   }
 }
 
-// const setMobileEvents = () => {
-//     // mobile - touch/press.
-//   const qElement = document.getElementById('q');
-//   const q = new Hammer(qElement);
-//   q.on('press', function(e) {
-//     qElement._tippy.show();
-//   });
-//   // q.on('tap', function(e) {
-//   //   console.log('tap fired for scorch');
-//   //   manaCheck(75, scorch);
-//   // });
-// }
-
 const getNextMonster = function (level) {
   switch (level) {
     case 0:
@@ -501,7 +488,6 @@ const pm = new ParticlesManager();
 Globals.particles = pm;
 const lm = new LevelManager();
 
-
 if (DEV) {
   Stats.playerHealth = 1000;
 }
@@ -512,16 +498,18 @@ document.documentElement.addEventListener('touchmove', function (event) {
 }, false);
 
 window.onload = () => {
+  const canvas = lm.setForestLevel();
+  canvas.classList.add('hidden');
   const game = document.getElementById('game-interface');
-  const el = document.getElementById('loading-container');
-  el.classList.add('animated', 'fadeOutUp');
+  const loading = document.getElementById('loading-container');
+  loading.classList.add('animated', 'fadeOutUp');
   setTimeout(() => {
-    el.classList.add('hidden');
+    loading.classList.add('hidden');
+    canvas.classList.remove('hidden');
+    canvas.classList.add('animated', 'fadeInUp');
     game.classList.remove('hidden');
     game.classList.add('animated', 'fadeInUp');
-    // Need to add sky animation now, or else it will interfere with fadeInUp.
     setTimeout(() => {
-      game.setAttribute('style', 'animation: animate-sky 25s linear infinite;');
       game.classList.remove('animated', 'fadeInUp');
       // Do not remove... Particles need this.
       window.dispatchEvent(new Event('resize'));

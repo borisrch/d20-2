@@ -1,5 +1,6 @@
+/* eslint-disable class-methods-use-this */
 import tingle from 'tingle.js';
-import { clearLog } from './log';
+import * as PIXI from 'pixi.js';
 
 import Globals from './globals';
 import Stats from './stats';
@@ -13,6 +14,7 @@ import Caretaker from './mobs/caretaker';
 
 import { resetMonsterConditions } from './conditions';
 import { updateStats } from './update';
+import { clearLog } from './log';
 
 const platform = document.getElementById('platform');
 const game = document.getElementById('game-interface');
@@ -145,6 +147,41 @@ class LevelManager {
       const el = document.getElementById(item.el);
       el.classList.add(item.style);
     });
+  }
+
+  setForestLevel() {
+    const app = new PIXI.Application({
+      width: 1280, height: 720, backgroundColor: 0xfffcf3,
+    });
+
+    document.getElementById('main-bg').appendChild(app.view);
+
+    const container = new PIXI.Container();
+    app.stage.addChild(container);
+    const texture = PIXI.Texture.from('/res/platform/background-1.png');
+    const background = new PIXI.TilingSprite(texture, app.screen.width + 375, 249);
+    container.addChild(background);
+    const time = {
+      start: performance.now(),
+      total: 25000,
+    };
+    const endPosition = 375;
+    let startPosition = container.x;
+    const move = (delta) => {
+      time.elapsed = performance.now() - time.start;
+      const progress = Math.min((time.elapsed / time.total), 1);
+      const position = progress * endPosition;
+      container.x = -position + startPosition;
+      if (position === endPosition) {
+        startPosition = 0;
+        container.x = 0;
+        time.start = performance.now();
+        move();
+      }
+    };
+    app.ticker.add(move);
+
+    return app.view;
   }
 
   endForest() {
